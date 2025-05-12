@@ -87,6 +87,10 @@ Route::group(['middleware' => 'check-login'], function () {
     //service Management 
     Route::get('/hospital-admin/services', [ServiceController::class, 'serviceView'])->name('admin.services');
     Route::get('/hospital-admin/services/create', [ServiceController::class, 'create'])->name('admin.services.create');
+    Route::get('/hospital-admin/services/edit/{id}', [ServiceController::class, 'edit'])->name('admin.services.edit');
+    Route::post('/hospital-admin/services/update/{id}', [ServiceController::class, 'update'])->name('admin.services.update');
+    Route::get('/hospital-admin/services/{id}', [ServiceController::class, 'destroy'])->name('admin.services.destroy');
+
+    //doctor management
+    
 });
-
-

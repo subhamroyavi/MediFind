@@ -5,8 +5,8 @@
     <div class="col-xl-12">
         <div class="card">
             <div class="card-header border-0 align-items-center d-flex pb-0">
-                <h4 class="card-title mb-0 flex-grow-1">Services Table</h4>
-                <!-- Search Form -->
+                <h4 class="card-title mb-0 flex-grow-1"><a href="{{ route('admin.services') }}">Services Table</a></h4>
+               <!-- Search Form -->
                 <form class="app-search d-none d-lg-block" method="GET" action="{{ url()->current() }}">
                     <div class="position-relative">
                         <input type="text" class="form-control" name="search" placeholder="Search..."
@@ -21,8 +21,8 @@
         <div class="card">
             <div class="card-header border-0 align-items-center d-flex pb-0">
                 <h4 class="card-title mb-0 flex-grow-1">
-                    <button type="button" class="btn btn-outline-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#addServiceModal">
-                        <i class="fa-solid fa-plus me-2"></i>Add New Service
+                    <button type="button" class="btn btn-outline-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#serviceFormModal">
+                        <i class="fa-solid fa-plus me-2"></i>{{ isset($editService) ? 'Edit' : 'Add New' }} Service
                     </button>
                 </h4>
                 <!-- App Search-->
@@ -60,8 +60,8 @@
                             <tr>
                                 <td>{{ $service->service_id }}</td>
                                 <td>{{ $service->service_name }}</td>
-                               <td>{{ $service->created_at }}</td>
-        <td>{{ $service->updated_at }}</td>
+                                <td>{{ $service->created_at }}</td>
+                                <td>{{ $service->updated_at }}</td>
                                 <td>
                                     <div class="dropdown">
                                         <button class="btn btn-light btn-sm dropdown" type="button"
@@ -76,16 +76,16 @@
                                                 </a>
                                             </li>
                                             <li>
-                                                <a class="dropdown-item" href="">
+                                                <a class="dropdown-item" href="{{ route('admin.services.edit', $service->service_id) }}">
                                                     <i class="mdi mdi-pencil-outline font-size-16 align-middle me-2 text-muted"></i>
                                                     Edit
                                                 </a>
                                             </li>
                                             <li class="dropdown-divider"></li>
                                             <li>
-                                                <form action="" method="POST">
+                                                <form action="{{ route('admin.services.destroy', $service->service_id) }}" method="get">
                                                     @csrf
-                                                    @method('DELETE')
+                                                    
                                                     <button type="submit" class="dropdown-item remove-item-btn">
                                                         <i class="mdi mdi-trash-can-outline font-size-16 align-middle me-2 text-muted"></i>
                                                         Delete
@@ -144,28 +144,44 @@
     </div>
 </div>
 
-<!-- Add Service Modal -->
-<div class="modal fade" id="addServiceModal" tabindex="-1" aria-labelledby="addServiceModalLabel" aria-hidden="true">
+<!-- Service Form Modal (Combined Create/Edit) -->
+<div class="modal fade" id="serviceFormModal" tabindex="-1" aria-labelledby="serviceFormModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addServiceModalLabel">Add New Service</h5>
+                <h5 class="modal-title" id="serviceFormModalLabel">
+                    {{ isset($editService) ? 'Edit Service' : 'Add New Service' }}
+                </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('admin.services.create') }}" method="get">
+            <form action="{{ isset($editService) ? route('admin.services.update', $editService->service_id) : route('admin.services.create') }}" method="{{ isset($editService) ? 'post' : 'get' }}">
                 @csrf
+
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="service_name" class="form-label">Service Name</label>
-                        <input type="text" class="form-control" id="service_name" name="service_name" required>
+                        <input type="text" class="form-control" id="service_name" name="service_name"
+                            value="{{ $editService->service_name ?? old('service_name') }}" required>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save Service</button>
+                    <button type="submit" class="btn btn-primary">
+                        {{ isset($editService) ? 'Update' : 'Save' }} Service
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+@if(isset($editService))
+@push('scripts')
+<script>
+    $(document).ready(function() {
+        $('#serviceFormModal').modal('show');
+    });
+</script>
+@endpush
+@endif
 @endsection
