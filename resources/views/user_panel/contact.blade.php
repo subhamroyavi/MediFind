@@ -2,23 +2,26 @@
 
 @section('main-content')
 
-    <!-- Hero Section -->
-    <section class="hero" style="min-height: 60vh; background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1584267385494-9fdd9a71ad75?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center/cover no-repeat;">
-        <div class="hero-content">
-            <h1>Contact Us</h1>
-            <p>We're here to help you with any questions or concerns about finding healthcare providers</p>
-        </div>
-    </section>
+<!-- Main Content -->
+<main class="section">
+    <div class="container">
 
-    <!-- Main Content -->
-    <main class="section">
-        <div class="container">
+        <div class="section-title">
+            <h2>Contacts</h2>
+
+            <!-- Breadcrumb Navigation -->
+            <div class="breadcrumb">
+                <a href="index.html">Home</a>
+                <span>/</span>
+                <a href="doctors.html">Contact</a>
+            </div>
+
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;">
                 <!-- Contact Form -->
                 <div class="contact-form">
                     <h2>Send Us a Message</h2>
                     <p>Have questions or feedback? Fill out the form below and we'll get back to you as soon as possible.</p>
-                    
+
                     <form style="margin-top: 2rem;">
                         <div class="form-group">
                             <label for="name">Your Name</label>
@@ -50,12 +53,12 @@
                         <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.75rem;">Send Message</button>
                     </form>
                 </div>
-                
+
                 <!-- Contact Information -->
                 <div class="contact-info">
                     <h2>Contact Information</h2>
                     <p>Reach out to us through any of these channels:</p>
-                    
+
                     <div style="margin-top: 2rem;">
                         <div class="contact-item">
                             <div class="contact-icon">
@@ -66,7 +69,7 @@
                                 <p>123 Healthcare Plaza<br>Suite 500<br>Cityville, ST 12345</p>
                             </div>
                         </div>
-                        
+
                         <div class="contact-item">
                             <div class="contact-icon">
                                 <i class="fas fa-phone-alt"></i>
@@ -74,11 +77,11 @@
                             <div>
                                 <h3>Phone</h3>
                                 <p>Main: (555) 123-4567<br>
-                                Support: (555) 123-4568<br>
-                                Fax: (555) 123-4569</p>
+                                    Support: (555) 123-4568<br>
+                                    Fax: (555) 123-4569</p>
                             </div>
                         </div>
-                        
+
                         <div class="contact-item">
                             <div class="contact-icon">
                                 <i class="fas fa-envelope"></i>
@@ -86,19 +89,19 @@
                             <div>
                                 <h3>Email</h3>
                                 <p>General Inquiries: info@medifind.com<br>
-                                Support: support@medifind.com<br>
-                                Partnerships: partners@medifind.com</p>
+                                    Support: support@medifind.com<br>
+                                    Partnerships: partners@medifind.com</p>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div style="margin-top: 3rem;">
                         <h3>Business Hours</h3>
                         <p>Monday - Friday: 9:00 AM - 6:00 PM<br>
-                        Saturday: 10:00 AM - 4:00 PM<br>
-                        Sunday: Closed</p>
+                            Saturday: 10:00 AM - 4:00 PM<br>
+                            Sunday: Closed</p>
                     </div>
-                    
+
                     <div style="margin-top: 2rem;">
                         <h3>Follow Us</h3>
                         <div class="social-links" style="justify-content: flex-start;">
@@ -111,7 +114,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Map Section -->
             <div class="content-section" style="margin-top: 3rem;">
                 <h2>Our Location</h2>
@@ -122,11 +125,11 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- FAQ Section -->
             <div class="content-section" style="margin-top: 3rem;">
                 <h2>Frequently Asked Questions</h2>
-                
+
                 <div style="margin-top: 2rem;">
                     <div class="faq-item" style="margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem;">
                         <h3 style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
@@ -137,7 +140,7 @@
                             <p>Healthcare providers can join our directory by completing the provider registration form on our website. After submission, our team will verify your credentials and contact you to complete the onboarding process. There may be a verification process to ensure the accuracy of the information.</p>
                         </div>
                     </div>
-                    
+
                     <div class="faq-item" style="margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem;">
                         <h3 style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
                             How often is the information on MediFind updated?
@@ -147,7 +150,7 @@
                             <p>We update our database continuously. Healthcare providers can update their information at any time through their provider portal. Our team also conducts regular audits to ensure information accuracy. If you notice any outdated information, please report it through our contact form.</p>
                         </div>
                     </div>
-                    
+
                     <div class="faq-item" style="margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem;">
                         <h3 style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
                             Is there a cost to use MediFind's services?
@@ -157,7 +160,7 @@
                             <p>MediFind is completely free for patients to use. Healthcare providers may have subscription options for enhanced listing features, but basic listings are free. We never charge patients for accessing information about healthcare providers or facilities.</p>
                         </div>
                     </div>
-                    
+
                     <div class="faq-item" style="margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem;">
                         <h3 style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
                             How can I leave a review for a healthcare provider?
@@ -168,13 +171,14 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div style="text-align: center; margin-top: 2rem;">
                     <a href="#" class="btn btn-secondary">View All FAQs</a>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
+</main>
 
 
 @endsection

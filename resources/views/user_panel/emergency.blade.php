@@ -2,24 +2,20 @@
 
 @section('main-content')
 
- <!-- Hero Section -->
- <section class="hero"
-        style="min-height: 60vh; background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1581595219315-a187dd40c322?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center/cover no-repeat;">
-        <div class="hero-content">
-            <h1>Emergency Medical Services</h1>
-            <p>Immediate access to emergency contacts, ambulance services, and urgent care facilities when you need them
-                most.</p>
-        </div>
-    </section>
+<!-- Main Content -->
+<main class="section">
+    <div class="container">
+        <!-- Page Header -->
+        <div class="section-title">
+            <h2>Emergency Contacts</h2>
 
-    <!-- Main Content -->
-    <main class="section">
-        <div class="container">
-            <!-- Emergency Contacts -->
-            <div class="section-title">
-                <h2>Emergency Contacts</h2>
-                <p>Immediate help when you need it</p>
+            <!-- Breadcrumb Navigation -->
+            <div class="breadcrumb">
+                <a href="index.html">Home</a>
+                <span>/</span>
+                <a href="doctors.html">Emergency</a>
             </div>
+
 
             <div class="features-grid">
                 <div class="feature-card">
@@ -211,6 +207,6 @@
                 </div>
             </div>
         </div>
-    </main>
+</main>
 
 @endsection

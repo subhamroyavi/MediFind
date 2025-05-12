@@ -37,7 +37,7 @@
                     </span>
                 </div>
                 <div class="hospital-content">
-                    <h3><a href="hospital-detail.html">City General Hospital</a></h3>
+                    <h3><a href="{{ route('hospitals.details')}}">City General Hospital</a></h3>
                     <div class="location">
                         <i class="fas fa-map-marker-alt"></i>
                         <span>123 Healthcare Ave, Downtown</span>
@@ -55,7 +55,7 @@
                             <i class="fas fa-phone-alt"></i>
                             <span>Emergency: 555-1234</span>
                         </div>
-                        <button class="view-details">View Details</button>
+                        <button class="view-details"><a href="{{ route('hospitals.details')}}">View Details</a></button>
                     </div>
                 </div>
             </div>
@@ -69,25 +69,25 @@
                     </span>
                 </div>
                 <div class="hospital-content">
-                    <h3><a href="hospital-detail.html">Regional Medical Center</a></h3>
+                    <h3><a href="{{ route('hospitals.details')}}">City General Hospital</a></h3>
                     <div class="location">
                         <i class="fas fa-map-marker-alt"></i>
-                        <span>456 Health St, Midtown</span>
+                        <span>123 Healthcare Ave, Downtown</span>
                     </div>
                     <div class="specialties">
                         <h4>Top Specialties:</h4>
                         <div class="specialties-list">
-                            <span class="specialty-tag">Pediatrics</span>
-                            <span class="specialty-tag">Oncology</span>
-                            <span class="specialty-tag">Orthopedics</span>
+                            <span class="specialty-tag">Cardiology</span>
+                            <span class="specialty-tag">Neurology</span>
+                            <span class="specialty-tag">Emergency Care</span>
                         </div>
                     </div>
                     <div class="hospital-cta">
                         <div class="emergency-number">
                             <i class="fas fa-phone-alt"></i>
-                            <span>Emergency: 555-5678</span>
+                            <span>Emergency: 555-1234</span>
                         </div>
-                        <button class="view-details">View Details</button>
+                        <button class="view-details"><a href="{{ route('hospitals.details')}}">View Details</a></button>
                     </div>
                 </div>
             </div>
@@ -101,25 +101,25 @@
                     </span>
                 </div>
                 <div class="hospital-content">
-                    <h3><a href="hospital-detail.html">University Hospital</a></h3>
+                    <h3><a href="{{ route('hospitals.details')}}">City General Hospital</a></h3>
                     <div class="location">
                         <i class="fas fa-map-marker-alt"></i>
-                        <span>789 Campus Dr, University District</span>
+                        <span>123 Healthcare Ave, Downtown</span>
                     </div>
                     <div class="specialties">
                         <h4>Top Specialties:</h4>
                         <div class="specialties-list">
-                            <span class="specialty-tag">Research</span>
-                            <span class="specialty-tag">Cardiac Surgery</span>
-                            <span class="specialty-tag">Neurosurgery</span>
+                            <span class="specialty-tag">Cardiology</span>
+                            <span class="specialty-tag">Neurology</span>
+                            <span class="specialty-tag">Emergency Care</span>
                         </div>
                     </div>
                     <div class="hospital-cta">
                         <div class="emergency-number">
                             <i class="fas fa-phone-alt"></i>
-                            <span>Emergency: 555-9012</span>
+                            <span>Emergency: 555-1234</span>
                         </div>
-                        <button class="view-details">View Details</button>
+                        <button class="view-details"><a href="{{ route('hospitals.details')}}">View Details</a></button>
                     </div>
                 </div>
             </div>

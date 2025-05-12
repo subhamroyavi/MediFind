@@ -32,10 +32,10 @@
                 </ul>
 
                 <div class="auth-buttons">
-                    <a href="profile.html" class="btn btn-login">Profile</a>
+                    <a href="{{ route('profile')}}" class="btn btn-login">Profile</a>
 
-                    <a href="login.html" class="btn btn-login">Login</a>
-                    <a href="signup.html" class="btn btn-signup">Sign Up</a>
+                    <a href="{{ route('login')}}" class="btn btn-login">Login</a>
+                    <a href="{{ route('signup')}}" class="btn btn-signup">Sign Up</a>
                 </div>
             </nav>
 
@@ -105,6 +105,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="{{asset('user_panel/js/main.css')}}"></script>
     <script src="{{asset('user_panel/js/mobile.menu.js')}}"></script>
+    <script src="{{asset('user_panel/js/tap.js')}}"></script>
+
 
 
 </body>

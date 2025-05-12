@@ -2,24 +2,22 @@
 
 @section('main-content')
 
+<!-- Main Content -->
+<main class="section">
+    <div class="container">
+        <div class="section-title">
 
-    <!-- Hero Section -->
-    <section class="hero"
-        style="min-height: 60vh; background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1530026186672-2cd00ffc50fe?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center/cover no-repeat;">
-        <div class="hero-content">
-            <h1>About MediFind</h1>
-            <p>Connecting you with the best healthcare providers in your community</p>
-        </div>
-    </section>
 
-    <!-- Main Content -->
-    <main class="section">
-        <div class="container">
+            <h2>About Us</h2>
+
+            <!-- Breadcrumb Navigation -->
+            <div class="breadcrumb">
+                <a href="index.html">Home</a>
+                <span>/</span>
+                <a href="doctors.html">About Us</a>
+            </div>
             <!-- Our Story -->
             <div class="content-section">
-                <div class="section-title">
-                    <h2>Our Story</h2>
-                </div>
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;">
                     <div>
@@ -167,21 +165,22 @@
                 </div>
             </div>
         </div>
-    </main>
+    </div>
+</main>
 
-    <!-- CTA Section -->
-    <section class="section cta-section">
-        <div class="container">
-            <div class="cta-content">
-                <h2>Ready to Find Quality Healthcare?</h2>
-                <p>Start your search for top-rated hospitals and doctors in your area today.</p>
-                <div class="cta-buttons">
-                    <a href="hospitals.html" class="cta-btn primary">Find Hospitals</a>
-                    <a href="doctors.html" class="cta-btn secondary">Find Doctors</a>
-                </div>
+<!-- CTA Section -->
+<section class="section cta-section">
+    <div class="container">
+        <div class="cta-content">
+            <h2>Ready to Find Quality Healthcare?</h2>
+            <p>Start your search for top-rated hospitals and doctors in your area today.</p>
+            <div class="cta-buttons">
+                <a href="hospitals.html" class="cta-btn primary">Find Hospitals</a>
+                <a href="doctors.html" class="cta-btn secondary">Find Doctors</a>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
 
 @endsection

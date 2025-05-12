@@ -11,7 +11,7 @@
             <span>/</span>
             <a href="doctors.html">Doctors</a>
             <span>/</span>
-            <a href="doctor-detail.html">Dr. Sarah Johnson</a>
+            <a href="{{ route('doctors.details')}}">Dr. Sarah Johnson</a>
         </div>
 
         <!-- Doctor Header -->

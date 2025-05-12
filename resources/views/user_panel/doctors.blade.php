@@ -33,7 +33,7 @@
                         <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Dr. Sarah Johnson">
                     </div>
                     <div class="doctor-content">
-                        <h3><a href="doctor-detail.html">Dr. Sarah Johnson</a></h3>
+                        <h3><a href="{{ route('doctors.details')}}"">Dr. Sarah Johnson</a></h3>
                         <p class="specialty">Cardiologist</p>
                         <div class="hospital">
                             <i class="fas fa-hospital"></i>
@@ -50,8 +50,8 @@
                             </div>
                         </div>
                         <div class="doctor-cta">
-                            <a href="doctor-detail.html" class="view-profile">View Profile</a>
-                            <button class="book-appointment">Book Appointment</button>
+                            <a href="{{ route('doctors.details')}}" class="view-profile">View Profile</a>
+                            <!-- <button class="book-appointment">Book Appointment</button> -->
                         </div>
                     </div>
                 </div>
@@ -62,7 +62,7 @@
                         <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Dr. Michael Chen">
                     </div>
                     <div class="doctor-content">
-                        <h3><a href="doctor-detail.html">Dr. Michael Chen</a></h3>
+                        <h3><a href="{{ route('doctors.details')}}"">Dr. Michael Chen</a></h3>
                         <p class="specialty">Neurologist</p>
                         <div class="hospital">
                             <i class="fas fa-hospital"></i>
@@ -79,8 +79,8 @@
                             </div>
                         </div>
                         <div class="doctor-cta">
-                            <a href="doctor-detail.html" class="view-profile">View Profile</a>
-                            <button class="book-appointment">Book Appointment</button>
+                            <a href="{{ route('doctors.details')}}" class="view-profile">View Profile</a>
+                            <!-- <button class="book-appointment">Book Appointment</button> -->
                         </div>
                     </div>
                 </div>
@@ -91,7 +91,7 @@
                         <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Dr. Angela Martinez">
                     </div>
                     <div class="doctor-content">
-                        <h3><a href="doctor-detail.html">Dr. Angela Martinez</a></h3>
+                        <h3><a href="{{ route('doctors.details')}}"">Dr. Angela Martinez</a></h3>
                         <p class="specialty">Pediatrician</p>
                         <div class="hospital">
                             <i class="fas fa-hospital"></i>
@@ -108,8 +108,8 @@
                             </div>
                         </div>
                         <div class="doctor-cta">
-                            <a href="doctor-detail.html" class="view-profile">View Profile</a>
-                            <button class="book-appointment">Book Appointment</button>
+                            <a href="{{ route('doctors.details')}}" class="view-profile">View Profile</a>
+                            <!-- <button class="book-appointment">Book Appointment</button> -->
                         </div>
                     </div>
                 </div>
