@@ -95,24 +95,18 @@
                                                     View
                                                 </button>
                                             </li>
-                                            <li>
-                                                <button class="dropdown-item edit-doctor-btn" data-id="{{ $doctor->id }}" data-bs-toggle="modal" data-bs-target="#editUserModal">
-                                                    <i class="mdi mdi-pencil-outline font-size-16 align-middle me-2 text-muted"></i>
-                                                    Edit
-                                                </button>
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item" href="javascript:void(0);">
-                                                    <i class="mdi mdi-file-download-outline font-size-16 align-middle me-2 text-muted"></i>
-                                                    Download
-                                                </a>
-                                            </li>
+                                           <li>
+    <a href="{{ route('admin.doctors.edit', ['id' => $doctor->doctor_id]) }}" class="dropdown-item edit-doctor-btn">
+        <i class="mdi mdi-pencil-outline font-size-16 align-middle me-2 text-muted"></i>Edit
+    </a>
+</li>
+                                           
                                             <li class="dropdown-divider"></li>
                                             <li>
-                                                <a class="dropdown-item remove-item-btn" href="#">
-                                                    <i class="mdi mdi-trash-can-outline font-size-16 align-middle me-2 text-muted"></i>
-                                                    Delete
-                                                </a>
+                                                
+                                                <a href="{{ route('admin.doctors.destroy', ['id' => $doctor->doctor_id]) }}" class="dropdown-item edit-doctor-btn">
+        <i class="mdi mdi-pencil-outline font-size-16 align-middle me-2 text-muted"></i>Delete
+    </a>
                                             </li>
                                         </ul>
                                     </div>

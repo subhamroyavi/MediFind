@@ -24,7 +24,7 @@
                 <ul>
                     <li><a href="{{ route('index')}}" class="nav-link">Home</a></li>
                     <li><a href="{{ route('hospitals.view')}}" class="nav-link">Hospitals</a></li>
-                    <li><a href="" class="nav-link">Doctors</a></li>
+                    <li><a href="{{ url('user_panel/doctors') }}" class="nav-link">Doctors</a></li>
                     <li><a href="{{ route('ambulances.view')}}" class="nav-link">Ambulances</a></li>
                     <li><a href="{{ route('emergency.view')}}" class="nav-link">Emergency</a></li>
                     <li><a href="{{ route('about.view')}}" class="nav-link">About</a></li>

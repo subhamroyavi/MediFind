@@ -36,35 +36,35 @@ class AdminDoctorController extends Controller
         return view('admin_panel.doctorsAction');
     }
 
-   public function store(Request $request)
-{
-    $validated = $request->validate([
-        'first_name' => 'required|string|max:255',
-        'last_name' => 'required|string|max:255',
-        'phone' => 'required|string',
-        'email' => 'required|email|unique:doctors,email',
-        'experience_years' => 'required|integer|min:0',
-        'home_town' => 'nullable|string|max:255',
-        'organization_type' => 'required|in:government,private,public',
-        'status' => 'required|boolean',
-        'image' => 'nullable|image|mimes:jpeg,png,gif|max:2048'
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'phone' => 'required|string',
+            'email' => 'required|email|unique:doctors,email',
+            'experience_years' => 'required|integer|min:0',
+            'home_town' => 'nullable|string|max:255',
+            'organization_type' => 'required|in:government,private,public',
+            'status' => 'required|boolean',
+            'image' => 'nullable|image|mimes:jpeg,png,gif|max:2048'
 
-    ]);
+        ]);
 
-    // Handle image upload
-    if ($request->hasFile('image')) {
-        $image = $request->file('image');
-        $filename = 'doctor_'.time().'_'.$image->getClientOriginalExtension();
-        $path = $image->storeAs('public/doctors', $filename);
-        $validated['image'] = 'doctors/'.$filename; // Store relative path
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $filename = 'doctor_' . time() . '_' . $image->getClientOriginalExtension();
+            $path = $image->storeAs('public/doctors', $filename);
+            $validated['image'] = 'doctors/' . $filename; // Store relative path
+        }
+
+        // Create doctor record
+        Doctor::create($validated);
+
+        return redirect()->route('admin.doctors.index')
+            ->with('success', 'Doctor created successfully!');
     }
-
-    // Create doctor record
-    Doctor::create($validated);
-
-    return redirect()->route('admin.doctors.index')
-        ->with('success', 'Doctor created successfully!');
-}
 
     // public function show(Doctor $doctor)
     // {
@@ -72,46 +72,50 @@ class AdminDoctorController extends Controller
     //     return view('doctors.show', compact('doctor'));
     // }
 
-    public function edit(Doctor $doctor)
+    public function edit($id)
     {
         // $services = Service::all();
         // $hospitals = Hospital::all();
-        return view('admin_panel.doctorsAction');
+        $doctors = Doctor::findOrFail($id);
+        return view('admin_panel.doctorsAction', compact('doctors'));
     }
 
-    // public function update(Request $request, Doctor $doctor)
-    // {
-    //     $validated = $request->validate([
-    //         'first_name' => 'sometimes|required|string|max:255',
-    //         'last_name' => 'sometimes|required|string|max:255',
-    //         'specialization' => 'sometimes|required|string',
-    //         'phone' => 'sometimes|required|string',
-    //         'email' => 'sometimes|required|email|unique:doctors,email,'.$doctor->doctor_id.',doctor_id',
-    //         'experience_years' => 'nullable|integer',
-    //         'home_town' => 'nullable|string',
-    //         'organization_type' => 'nullable|string',
-    //         'services' => 'nullable|array',
-    //         'hospitals' => 'nullable|array'
-    //     ]);
+    public function update(Request $request, $id)
+    {
+        // dd($id);
 
-    //     $doctor->update($validated);
+        $validated = $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'phone' => 'required|string',
+            'email' => 'required|email',
+            'experience_years' => 'required|integer|min:0',
+            'home_town' => 'nullable|string|max:255',
+            'organization_type' => 'required|in:government,private,public',
+            'status' => 'required|boolean',
+            'image' => 'nullable|image|mimes:jpeg,png,gif|max:2048'
 
-    //     if ($request->has('services')) {
-    //         $doctor->services()->sync($request->services);
-    //     }
+        ]);
 
-    //     if ($request->has('hospitals')) {
-    //         $doctor->hospitals()->sync($request->hospitals);
-    //     }
+        Doctor::findOrFail($id)->update($validated);
 
-    //     return redirect()->route('doctors.show', $doctor)->with('success', 'Doctor updated successfully');
-    // }
 
-    // public function destroy(Doctor $doctor)
-    // {
-    //     $doctor->delete();
-    //     return redirect()->route('doctors.index')->with('success', 'Doctor deleted successfully');
-    // }
+        // if ($request->has('services')) {
+        //     $doctor->services()->sync($request->services);
+        // }
+
+        // if ($request->has('hospitals')) {
+        //     $doctor->hospitals()->sync($request->hospitals);
+        // }
+
+        return redirect()->route('admin.doctors.index')->with('success', 'Doctor updated successfully');
+    }
+
+    public function destroy($id)
+    {
+       Doctor::findOrFail($id)->delete($id);
+        return redirect()->route('admin.doctors.index')->with('success', 'Doctor deleted successfully');
+    }
 
     // public function addService(Request $request, Doctor $doctor)
     // {
