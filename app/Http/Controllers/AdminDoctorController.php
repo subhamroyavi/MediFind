@@ -26,43 +26,45 @@ class AdminDoctorController extends Controller
         }
 
         return view('admin_panel.doctors', compact('doctors', 'search'));
-
     }
 
-    // public function create()
-    // {
-    //     $services = Service::all();
-    //     // $hospitals = Hospital::all();
-    //     return view('doctors.create', compact('services', 'hospitals'));
-    // }
+    public function create()
+    {
+        // $services = Service::all();
+        // $hospitals = Hospital::all();
+        // return view('admin_panel.doctorsAction', compact('services', 'hospitals'));
+        return view('admin_panel.doctorsAction');
+    }
 
-    // public function store(Request $request)
-    // {
-    //     $validated = $request->validate([
-    //         'first_name' => 'required|string|max:255',
-    //         'last_name' => 'required|string|max:255',
-    //         'specialization' => 'required|string',
-    //         'phone' => 'required|string',
-    //         'email' => 'required|email|unique:doctors,email',
-    //         'experience_years' => 'nullable|integer',
-    //         'home_town' => 'nullable|string',
-    //         'organization_type' => 'nullable|string',
-    //         'services' => 'nullable|array',
-    //         'hospitals' => 'nullable|array'
-    //     ]);
+   public function store(Request $request)
+{
+    $validated = $request->validate([
+        'first_name' => 'required|string|max:255',
+        'last_name' => 'required|string|max:255',
+        'phone' => 'required|string',
+        'email' => 'required|email|unique:doctors,email',
+        'experience_years' => 'required|integer|min:0',
+        'home_town' => 'nullable|string|max:255',
+        'organization_type' => 'required|in:government,private,public',
+        'status' => 'required|boolean',
+        'image' => 'nullable|image|mimes:jpeg,png,gif|max:2048'
 
-    //     $doctor = Doctor::create($validated);
-        
-    //     if ($request->has('services')) {
-    //         $doctor->services()->sync($request->services);
-    //     }
-        
-    //     if ($request->has('hospitals')) {
-    //         $doctor->hospitals()->sync($request->hospitals);
-    //     }
+    ]);
 
-    //     return redirect()->route('doctors.show', $doctor)->with('success', 'Doctor created successfully');
-    // }
+    // Handle image upload
+    if ($request->hasFile('image')) {
+        $image = $request->file('image');
+        $filename = 'doctor_'.time().'_'.$image->getClientOriginalExtension();
+        $path = $image->storeAs('public/doctors', $filename);
+        $validated['image'] = 'doctors/'.$filename; // Store relative path
+    }
+
+    // Create doctor record
+    Doctor::create($validated);
+
+    return redirect()->route('admin.doctors.index')
+        ->with('success', 'Doctor created successfully!');
+}
 
     // public function show(Doctor $doctor)
     // {
@@ -70,12 +72,12 @@ class AdminDoctorController extends Controller
     //     return view('doctors.show', compact('doctor'));
     // }
 
-    // public function edit(Doctor $doctor)
-    // {
-    //     $services = Service::all();
-    //     $hospitals = Hospital::all();
-    //     return view('doctors.edit', compact('doctor', 'services', 'hospitals'));
-    // }
+    public function edit(Doctor $doctor)
+    {
+        // $services = Service::all();
+        // $hospitals = Hospital::all();
+        return view('admin_panel.doctorsAction');
+    }
 
     // public function update(Request $request, Doctor $doctor)
     // {
@@ -93,11 +95,11 @@ class AdminDoctorController extends Controller
     //     ]);
 
     //     $doctor->update($validated);
-        
+
     //     if ($request->has('services')) {
     //         $doctor->services()->sync($request->services);
     //     }
-        
+
     //     if ($request->has('hospitals')) {
     //         $doctor->hospitals()->sync($request->hospitals);
     //     }

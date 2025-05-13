@@ -31,9 +31,11 @@ class UserSeeder extends Seeder
             //     'status' => $faker->boolean,
             // ]);
 
-            Service::create([
-                'service_name' => $faker->firstName
-            ]);
+            // Service::create([
+            //     'service_name' => $faker->firstName
+            // ]);
+
+            
         }
     }
 }

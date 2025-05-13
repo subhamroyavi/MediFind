@@ -25,6 +25,7 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- https://fontawesome.com/search -->
+    <link href="{{asset('admin_panel/assets/libs/select2/css/select2.min.css')}}" rel="stylesheet" type="text/css">
 
 
 
@@ -85,14 +86,14 @@
 
                     <div class="dropdown d-none d-lg-inline-block ms-1">
                         <button type="button" class="btn header-item noti-icon waves-effect" data-toggle="fullscreen">
-                        <i class="fa-solid fa-expand"></i>
+                            <i class="fa-solid fa-expand"></i>
                         </button>
                     </div>
 
 
                     <div class="dropdown d-inline-block">
                         <button type="button" class="btn header-item noti-icon right-bar-toggle waves-effect">
-                        <i class="fa-solid fa-gear"></i>
+                            <i class="fa-solid fa-gear"></i>
                         </button>
                     </div>
 
@@ -125,7 +126,7 @@
             </div>
 
             <button type="button" class="btn btn-sm px-3 font-size-24 header-item waves-effect vertical-menu-btn" id="vertical-menu-btn">
-            <i class="fa-solid fa-align-left"></i>
+                <i class="fa-solid fa-align-left"></i>
             </button>
 
             <div data-simplebar class="vertical-scroll">
@@ -208,14 +209,14 @@
                 <div class="dropdown-menu dropdown-menu-end">
                     <!-- item-->
                     <a class="dropdown-item" href="pages-profile.html"><i class="mdi mdi-account-circle text-muted font-size-16 align-middle me-1"></i> <span class="align-middle">Profile</span></a>
-                    
-                    
+
+
                     <div class="dropdown-divider"></div>
-                    
+
                     <a class="dropdown-item" href="#"><span class="badge bg-primary mt-1 float-end">New</span><i class="mdi mdi-cog-outline text-muted font-size-16 align-middle me-1"></i> <span class="align-middle">Settings</span></a>
-                    
+
                     <a class="dropdown-item" href="auth-lock-screen.html"><i class="mdi mdi-lock text-muted font-size-16 align-middle me-1"></i> <span class="align-middle">Lock screen</span></a>
-                    
+
                     <a class="dropdown-item" href="{{route('admin.logout')}}"><i class="mdi mdi-lock text-muted font-size-16 align-middle me-1"></i> <span class="align-middle">Log Out</span></a>
                 </div>
             </div>
@@ -323,6 +324,8 @@
     <script src="{{asset('admin_panel/assets/js/pages/form-wizard.init.js')}}"></script>
 
     <script src="{{asset('admin_panel/assets/js/app.js')}}"></script>
+    <script src="{{asset('admin_panel/assets/libs/select2/js/select2.min.js')}}"></script>
+
 
 </body>
 

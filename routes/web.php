@@ -93,15 +93,16 @@ Route::group(['middleware' => 'check-login'], function () {
     Route::get('/hospital-admin/services/{id}', [ServiceController::class, 'destroy'])->name('admin.services.destroy');
 
     //doctor management
-    Route::resource('doctors', AdminDoctorController::class)->names([
-        'index'   => 'admin.doctors.index',
-        'create'  => 'admin.doctors.create',
-        'store'   => 'admin.doctors.store',
-        'show'    => 'admin.doctors.show',
-        'edit'    => 'admin.doctors.edit',
-        'update'  => 'admin.doctors.update',
-        'destroy' => 'admin.doctors.destroy'
-    ]);
+    Route::resource('doctors', AdminDoctorController::class)
+        ->names([
+            'index'   => 'admin.doctors.index',
+            'create'  => 'admin.doctors.create',
+            'store'   => 'admin.doctors.store',
+            'show'    => 'admin.doctors.show',
+            'edit'    => 'admin.doctors.edit',
+            'update'  => 'admin.doctors.update',
+            'destroy' => 'admin.doctors.destroy'
+        ]);
     Route::post('doctors/{doctor}/services', [AdminDoctorController::class, 'addService'])->name('doctors.add-service');
     Route::delete('doctors/{doctor}/services/{service}', [AdminDoctorController::class, 'removeService'])->name('doctors.remove-service');
     Route::post('doctors/{doctor}/hospitals', [AdminDoctorController::class, 'assignHospital'])->name('doctors.assign-hospital');
