@@ -161,7 +161,7 @@
                         </li>
 
                         <li>
-                            <a href="" class="waves-effect">
+                            <a href="{{ route('admin.doctors.index') }}" class="waves-effect">
                                 <i class="fas fa-user-md"></i>
                                 <span class="badge rounded-pill bg-success float-end">3</span>
                                 <span>Doctors</span>
