@@ -20,6 +20,7 @@ class Doctor extends Model
         'email',
         'experience_years',
         'home_town',
+        'specialization',
         'organization_type',
         'status',
         'image'

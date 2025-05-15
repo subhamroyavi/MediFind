@@ -12,7 +12,7 @@ class AdminDoctorController extends Controller
     public function index(Request $request)
     {
         // $doctors = Doctor::with(['services', 'hospitals', 'location', 'reviews.user'])->get();
-        // $doctors = Service::all();
+        // $service = Service::all();
         // dd($doctors);
         $search = $request->search;
         if ($search) {
@@ -48,6 +48,7 @@ class AdminDoctorController extends Controller
             'home_town' => 'nullable|string|max:255',
             'organization_type' => 'required|in:government,private,public',
             'status' => 'required|boolean',
+            'specialization' => 'required|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,gif|max:2048'
 
         ]);
@@ -83,7 +84,7 @@ class AdminDoctorController extends Controller
 
     public function update(Request $request, $id)
     {
-        // dd($id);
+        // dd($request->all());
 
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
@@ -93,6 +94,7 @@ class AdminDoctorController extends Controller
             'experience_years' => 'required|integer|min:0',
             'home_town' => 'nullable|string|max:255',
             'organization_type' => 'required|in:government,private,public',
+            'specialization' => 'required|string|max:255',
             'status' => 'required|boolean',
             'image' => 'nullable|image|mimes:jpeg,png,gif|max:2048'
 

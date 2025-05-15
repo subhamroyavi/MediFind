@@ -39,7 +39,6 @@
                                         Add New Doctor
                                     @endisset
                                 </h4>
-
                                 <form action="{{ isset($doctors->doctor_id) ? route('admin.doctors.update', $doctors->doctor_id) : route('admin.doctors.store') }}" method={{isset($doctors->doctor_id) ? "post" : "get"}} enctype="multipart/form-data">
                                     @csrf
                                     
@@ -135,7 +134,19 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-lg-12">
+                                        <div class="col-lg-6">
+                                            
+                                            <div class="mb-3">
+                                                <label class="form-label">Specialist <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control @error('specialist') is-invalid @enderror"
+                                                    name="specialization" value="{{ old('specialist', $doctors->specialization ?? '') }}" >
+                                                @error('specialist')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            
                                             <div class="mb-3">
                                                 <label for="image" class="form-label">Profile Image</label>
                                                 <input type="file" class="form-control @error('image') is-invalid @enderror"

@@ -98,46 +98,12 @@ class AdminLoginController extends Controller
         ], 422);
     }
 
-    // public function loginCheck(Request $request)
-    // {
-    //     $validated = $request->validate([
-    //         'email' => 'required|email',
-    //         'password' => 'required'
-    //     ]);
-
-    //     // Find user by email only
-    //     $user = User::where('email', $validated['email'])->first();
-
-    //     // Check if user exists and password matches
-    //     if ($user && Hash::check($request->password, $user->password)) {
-    //         // Manually log in the user
-    //         $request->session()->put([
-    //             'authenticated' => true,
-    //             'user_id' => $user->id,
-    //             'user_email' => $user->email
-    //         ]);
-
-    //         // Regenerate session ID for security
-    //         $request->session()->regenerate();
-
-    //         return response()->json([
-    //             'success' => true,
-    //             'message' => 'Login successful!',
-    //             'redirect' => route('admin.dashboard')
-    //         ]);
-    //     }
-
-    //     // Authentication failed
-    //     return response()->json([
-    //         'success' => false,
-    //         'errors' => ['email' => 'The provided credentials do not match our records.']
-    //     ], 422);
-    // }
 
     public function logout()
     {
-        session::forget('user');
-        Session::flush('user');
+        Session::forget('authenticated');
+        Session::forget('user_id');
+        Session::forget('user_email');
 
         return redirect()->route('admin.login');
     }

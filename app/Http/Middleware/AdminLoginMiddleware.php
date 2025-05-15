@@ -16,9 +16,10 @@ class AdminLoginMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if($request->session()->get('email')){
+        if (!$request->session()->get('authenticated')) {
             return redirect()->route('admin.login');
         }
-        return $next($request);
+
+            return $next($request);
     }
 }

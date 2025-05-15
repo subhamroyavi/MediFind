@@ -56,6 +56,7 @@
                                 <th scope="col">Doctor</th>
                                 <th scope="col" style="width: 20%;">Email</th>
                                 <th scope="col">Phone</th>
+                                <th scope="col">Specialist</th>
                                 <th scope="col">Experience</th>
                                 <th scope="col">Home</th>
                                 <th scope="col">Organization</th>
@@ -77,6 +78,7 @@
                                 </td>
                                 <td>{{ $doctor->email }}</td>
                                 <td>{{ $doctor->phone }}</td>
+                                <td>{{ $doctor->specialization }}</td>
                                 <td>{{ $doctor->experience_years }}Years</td>
                                 <td>{{ $doctor->home_town }}</td>
                                 <td>{{ $doctor->organization_type }}</td>
