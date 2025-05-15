@@ -170,7 +170,7 @@
                         </li>
 
                         <li>
-                            <a href="" class="waves-effect">
+                            <a href="{{ route('admin.ambulance.index') }}" class="waves-effect">
                                 <i class="fas fa-ambulance"></i><span class="badge rounded-pill bg-success float-end">3</span>
                                 <span>Ambulances</span>
                             </a>

@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminLoginController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\AdminDoctorController;
+use App\Http\Controllers\AdminAmbulanceController;
 
 
 use App\Http\Controllers\AmbulanceController;
@@ -105,4 +106,12 @@ Route::group(['middleware' => 'check-login'], function () {
     Route::delete('doctors/{doctor}/services/{service}', [AdminDoctorController::class, 'removeService'])->name('doctors.remove-service');
     Route::post('doctors/{doctor}/hospitals', [AdminDoctorController::class, 'assignHospital'])->name('doctors.assign-hospital');
     Route::delete('doctors/{doctor}/hospitals/{hospital}', [AdminDoctorController::class, 'unassignHospital'])->name('doctors.unassign-hospital');
+
+    //ambulace management
+    Route::get('ambulance', [AdminAmbulanceController::class, 'index'])->name('admin.ambulance.index');
+    Route::get('ambulance/create', [AdminAmbulanceController::class, 'create'])->name('admin.ambulance.create');
+    Route::get('ambulance/store', [AdminAmbulanceController::class, 'store'])->name('admin.ambulance.store');
+    Route::get('ambulance/edit/{id}', [AdminAmbulanceController::class, 'edit'])->name('admin.ambulance.edit');
+    Route::post('ambulance/update/{id}', [AdminAmbulanceController::class, 'update'])->name('admin.ambulance.update');
+    Route::get('ambulance/destroy/{id}', [AdminAmbulanceController::class, 'destroy'])->name('admin.ambulance.destroy');
 });

@@ -4,15 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Doctor;
-use App\Models\Service;
 use App\Models\Hospital;
+use App\Models\Service;
 
 class AdminDoctorController extends Controller
 {
     public function index(Request $request)
     {
         // $doctors = Doctor::with(['services', 'hospitals', 'location', 'reviews.user'])->get();
-        // $doctors = Doctor::all();
+        // $doctors = Service::all();
         // dd($doctors);
         $search = $request->search;
         if ($search) {
@@ -38,6 +38,7 @@ class AdminDoctorController extends Controller
 
     public function store(Request $request)
     {
+        
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
