@@ -13,16 +13,23 @@ class Ambulance extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'first_name',
+         'first_name',
         'last_name',
-        'image',
-        'phone',
         'email',
         'phone',
+        'license_number',
         'vehicle_number',
-        'service_type',
+        'vehicle_model',
         'organization_type',
-        'status'
+        'service_type',
+        'insurance_number',
+        'status',
+        'image',
     ];
+
+   public function location()
+    {
+        return $this->hasOne(Location::class, 'entity_id');
+    }
     							
 }

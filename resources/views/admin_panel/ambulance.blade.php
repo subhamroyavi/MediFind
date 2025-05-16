@@ -24,10 +24,10 @@
         <div class="card">
             <div class="card-header border-0 align-items-center d-flex pb-0">
                 <h4 class="card-title mb-0 flex-grow-1">
-                    
-                     <a href="{{ route('admin.ambulance.create') }}" class="btn btn-outline-primary waves-effect waves-light">
-    <i class="fa-solid fa-plus me-2"></i>Add New Ambulamce
-</a>
+
+                    <a href="{{ route('admin.ambulance.create') }}" class="btn btn-outline-primary waves-effect waves-light">
+                        <i class="fa-solid fa-plus me-2"></i>Add New Ambulamce
+                    </a>
                 </h4>
                 <!-- App Search-->
 
@@ -50,8 +50,8 @@
             <div class="card-body">
                 <div class="table-responsive table-card">
                     <table class="table table-hover table-nowrap align-middle mb-0">
-                        <thead class="bg-light"> 
-        
+                        <thead class="bg-light">
+
                             <tr class="text-muted text-uppercase">
                                 <th scope="col">Ambulance ID</th>
                                 <th scope="col" style="width: 20%;">ambulance</th>
@@ -68,6 +68,7 @@
 
                         <tbody>
                             @foreach($ambulances as $ambulance)
+
                             <tr>
                                 <td>
                                     <p class="fw-medium mb-0">{{ $ambulance->ambulance_id }}</p>
@@ -83,35 +84,14 @@
                                 <td>{{ $ambulance->service_type }}</td>
                                 <td>{{ $ambulance->organization_type }}</td>
                                 <td><span class="badge {{ $ambulance->status == 1 ? 'badge-soft-success' : 'badge-soft-danger' }}  p-2">{{ $ambulance->status == 1 ? 'Active' : 'Deactive' }}</span></td>
-
                                 <td>
-                                    <div class="dropdown">
-                                        <button class="btn btn-light btn-sm dropdown" type="button"
-                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="fa-solid fa-ellipsis-vertical align-middle font-size-16"></i>
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-end">
-                                            <li>
-                                                <button class="dropdown-item view-ambulance-btn" data-id="{{ $ambulance->id }}">
-                                                    <i class="mdi mdi-eye-outline font-size-16 align-middle me-2 text-muted"></i>
-                                                    View
-                                                </button>
-                                            </li>
-                                           <li>
-    <a href="{{ route('admin.ambulance.edit', ['id' => $ambulance->ambulance_id]) }}" class="dropdown-item edit-ambulance-btn">
-        <i class="mdi mdi-pencil-outline font-size-16 align-middle me-2 text-muted"></i>Edit
-    </a>
-</li>
-                                           
-                                            <li class="dropdown-divider"></li>
-                                            <li>
-    <a href="{{ route('admin.ambulance.destroy', ['id' => $ambulance->ambulance_id]) }}" class="dropdown-item edit-ambulance-btn">
-        <i class="mdi mdi-pencil-outline font-size-16 align-middle me-2 text-muted"></i>Delete
-    </a>
-</li>
-                                        </ul>
+                                    <div class="d-flex gap-3">
+                                        <a href="{{ route('admin.ambulance.edit', ['id' => $ambulance->ambulance_id]) }}" class="btn btn-danger btn-sm"><i class="fa-solid fa-eye"></i></a>
+                                        <a href="{{ route('admin.ambulance.edit', ['id' => $ambulance->ambulance_id]) }}" class="btn btn-success btn-sm"><i class="fa-solid fa-pencil"></i></a>
+                                        <a href="{{ route('admin.ambulance.destroy', ['id' => $ambulance->ambulance_id]) }}" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></a>
                                     </div>
                                 </td>
+
                             </tr>
                             @endforeach
                         </tbody><!-- end tbody -->

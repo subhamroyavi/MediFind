@@ -34,10 +34,10 @@ use App\Http\Controllers\AdminAmbulanceController;
 
 Route::get('/', [IndexController::class, 'index'])->name('index');
 
-Route::get('/hospitals', [HospitalController::class, 'index'])->name('hospitals.view');
-Route::get('/hospital-details', [HospitalController::class, 'hospital_details'])->name('hospitals.details');
+Route::get('user_panel/hospitals', [HospitalController::class, 'index'])->name('hospitals.view');
+Route::get('user_panel/hospital-details', [HospitalController::class, 'hospital_details'])->name('hospitals.details');
 
-Route::get('user_panel/doctors', [DoctorController::class, 'index'])->name('doctors.index');
+Route::get('user_panel/doctors', [DoctorController::class, 'index'])->name('doctors');
 Route::get('/doctor-details', [DoctorController::class, 'doctor_details'])->name('doctors.details');
 
 Route::get('/ambulances', [AmbulanceController::class, 'index'])->name('ambulances.view');
@@ -95,11 +95,13 @@ Route::middleware(['check-login'])->group(function () {
     Route::get('ambulance', [AdminAmbulanceController::class, 'index'])->name('admin.ambulance.index');
     Route::get('ambulance/create', [AdminAmbulanceController::class, 'create'])->name('admin.ambulance.create');
     Route::post('ambulance/store', [AdminAmbulanceController::class, 'store'])->name('admin.ambulance.store');
+    Route::post('ambulance/view/{id}', [AdminAmbulanceController::class, 'view'])->name('admin.ambulance.view');
     Route::get('ambulance/edit/{id}', [AdminAmbulanceController::class, 'edit'])->name('admin.ambulance.edit');
     Route::post('ambulance/update/{id}', [AdminAmbulanceController::class, 'update'])->name('admin.ambulance.update');
     Route::get('ambulance/destroy/{id}', [AdminAmbulanceController::class, 'destroy'])->name('admin.ambulance.destroy');
 
     Route::get('ambulance/createBlade', [AdminAmbulanceController::class, 'createBlade'])->name('admin.ambulance.createBlade');
+    Route::get('ambulance/blade', [AdminAmbulanceController::class, 'blade'])->name('admin.ambulance.createBlade');
 
 
      // Hospital Routes
