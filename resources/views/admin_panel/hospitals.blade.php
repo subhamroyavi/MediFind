@@ -2,30 +2,30 @@
 
 @section('main-content')
 
-
 <div class="row">
-
     <div class="col-xl-12">
         <div class="card">
             <div class="card-header border-0 align-items-center d-flex pb-0">
-                <h4 class="card-title mb-0 flex-grow-1">Hospitals Table
-                </h4>
-                <!-- App Search-->
-                <form class="app-search d-none d-lg-block">
+                <h4 class="card-title mb-0 flex-grow-1">Hospital Table</h4>
+
+                <!-- Search Form -->
+                <form class="app-search d-none d-lg-block" method="GET" action="{{ url()->current() }}">
                     <div class="position-relative">
-                        <input type="text" class="form-control" placeholder="Search...">
-                        <span class="fa-solid fa-magnifying-glass"></span>
+                        <input type="text" class="form-control" name="search" placeholder="Search..."
+                            value="{{ request('search') }}">
+                        <button type="submit" class="btn btn-link position-absolute end-0 top-0 text-muted">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
                     </div>
                 </form>
-
             </div>
         </div>
         <div class="card">
             <div class="card-header border-0 align-items-center d-flex pb-0">
                 <h4 class="card-title mb-0 flex-grow-1">
-                    <button type="button" class="btn btn-outline-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#addUserModal">
-                        <i class="fa-solid fa-plus me-2"></i>Add New User
-                    </button>
+                    <a href="{{ route('admin.hospital.create') }}" class="btn btn-outline-primary waves-effect waves-light">
+                        <i class="fa-solid fa-plus me-2"></i>Add New Hospital
+                    </a>
                 </h4>
                 <!-- App Search-->
 
@@ -50,236 +50,81 @@
                     <table class="table table-hover table-nowrap align-middle mb-0">
                         <thead class="bg-light">
                             <tr class="text-muted text-uppercase">
-
-                                <th scope="col">Invoice ID</th>
-                                <th scope="col">Client</th>
-                                <th scope="col" style="width: 20%;">Email</th>
-                                <th scope="col">Country</th>
-                                <th scope="col">Date</th>
-                                <th scope="col">Billed</th>
+                                <th scope="col">Hospital ID</th>
+                                <th scope="col" style="width: 20%;">Hospital</th>
+                                <th scope="col" style="width: 20%;">Description</th>
+                                <th scope="col">Organization</th>
                                 <th scope="col" style="width: 8%;">Status</th>
                                 <th scope="col" style="width: 12%;">Action</th>
                             </tr>
                         </thead>
 
                         <tbody>
+                            @foreach($hospitals as $hospital)
                             <tr>
                                 <td>
-                                    <p class="fw-medium mb-0">Lec-2152</p>
+                                    <p class="fw-medium mb-0">{{ $hospital->hospital_id }}</p>
                                 </td>
-                                <td><img src="assets/images/users/avatar-1.jpg" alt=""
+                                <td>
+                                    <img src="{{ asset('storage/' . $hospital->image) }}" alt="{{$hospital->first_name}}"
                                         class="avatar-xs rounded-circle me-2">
                                     <a href="#javascript: void(0);"
-                                        class="text-body align-middle fw-medium">Donald Risher</a>
+                                        class="text-body align-middle fw-medium">{{ $hospital->hospital_name }}</a>
                                 </td>
-                                <td>morbi.quis@protonmail.org</td>
-                                <td>USA</td>
-                                <td>20 Sep, 2022</td>
-                                <td>$240.00</td>
-                                <td><span class="badge badge-soft-success p-2">Paid</span></td>
-                                <td>
-                                    <div class="dropdown">
-                                        <button class="btn btn-light btn-sm dropdown" type="button"
-                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="fa-solid fa-ellipsis-vertical align-middle font-size-16"></i>
 
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-end">
-                                            <li>
-                                                <button class="dropdown-item"
-                                                    href="javascript:void(0);"><i
-                                                        class="mdi mdi-eye-outline font-size-16 align-middle me-2 text-muted"></i>
-                                                    View</button>
-                                            </li>
-                                            <li>
-                                                <button class="dropdown-item"
-                                                    href="javascript:void(0);"><i
-                                                        class="mdi mdi-pencil-outline font-size-16 align-middle me-2 text-muted"></i>
-                                                    Edit</button>
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item"
-                                                    href="javascript:void(0);"><i
-                                                        class="mdi mdi-file-download-outline font-size-16 align-middle me-2 text-muted"></i>
-                                                    Download</a>
-                                            </li>
-                                            <li class="dropdown-divider"></li>
-                                            <li>
-                                                <a class="dropdown-item remove-item-btn" href="#">
-                                                    <i
-                                                        class="mdi mdi-trash-can-outline font-size-16 align-middle me-2 text-muted"></i>
-                                                    Delete
+                                <td>
+                                    <div class="description-container" style="max-width: 300px;">
+                                        <div class="short-description">
+                                            {{ Str::limit($hospital->description, 10, '...') }}
+                                            @if(strlen($hospital->description) > 10)
+                                                <a href="#" class="read-more-link text-primary" style="font-size: 12px;" 
+                                                   data-bs-toggle="modal" data-bs-target="#descriptionModal"
+                                                   data-description="{{ $hospital->description }}"
+                                                   data-title="{{ $hospital->hospital_name }} Description">
+                                                    Read more
                                                 </a>
-                                            </li>
-                                        </ul>
+                                            @endif
+                                        </div>
                                     </div>
                                 </td>
-                            </tr>
-
-                            <tr>
-                              
-                                <td>
-                                    <p class="fw-medium mb-0">Lec-2153</p>
-                                </td>
-                                <td><img src="assets/images/users/avatar-2.jpg" alt=""
-                                        class="avatar-xs rounded-circle me-2">
-                                    <a href="#javascript: void(0);"
-                                        class="text-body align-middle fw-medium">Brody Holman</a>
-                                </td>
-                                <td>metus@protonmail.org</td>
-                                <td>USA</td>
-                                <td>12 Arl, 2022</td>
-                                <td>$390.00</td>
-                                <td><span class="badge badge-soft-warning p-2">Unpaid</span></td>
-                                <td>
-                                    <div class="dropdown">
-                                        <button class="btn btn-light btn-sm dropdown" type="button"
-                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="fa-solid fa-ellipsis-vertical align-middle font-size-16"></i>
-
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-end">
-                                            <li>
-                                                <button class="dropdown-item"
-                                                    href="javascript:void(0);"><i
-                                                        class="mdi mdi-eye-outline font-size-16 align-middle me-2 text-muted"></i>
-                                                    View</button>
-                                            </li>
-                                            <li>
-                                                <button class="dropdown-item"
-                                                    href="javascript:void(0);"><i
-                                                        class="mdi mdi-pencil-outline font-size-16 align-middle me-2 text-muted"></i>
-                                                    Edit</button>
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item"
-                                                    href="javascript:void(0);"><i
-                                                        class="mdi mdi-file-download-outline font-size-16 align-middle me-2 text-muted"></i>
-                                                    Download</a>
-                                            </li>
-                                            <li class="dropdown-divider"></li>
-                                            <li>
-                                                <a class="dropdown-item remove-item-btn" href="#">
-                                                    <i
-                                                        class="mdi mdi-trash-can-outline font-size-16 align-middle me-2 text-muted"></i>
-                                                    Delete
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-
-
-                            <tr>
                                 
+                                <td>{{ $hospital->organization_type }}</td>
                                 <td>
-                                    <p class="fw-medium mb-0">Lec-2156</p>
+                                    <span class="badge {{ $hospital->status == 1 ? 'badge-soft-success' : 'badge-soft-danger' }}  p-2">
+                                        {{ $hospital->status == 1 ? 'Active' : 'Deactive' }}
+                                    </span>
                                 </td>
-                                <td><img src="assets/images/users/avatar-5.jpg" alt=""
-                                        class="avatar-xs rounded-circle me-2">
-                                    <a href="#javascript: void(0);"
-                                        class="text-body align-middle fw-medium">Howard Lyons</a>
-                                </td>
-                                <td>neque.sed.dictum@icloud.org</td>
-                                <td>USA</td>
-                                <td>18 Sep, 2022</td>
-                                <td>$480.00</td>
-                                <td><span class="badge badge-soft-info p-2">Refund</span></td>
+
                                 <td>
                                     <div class="dropdown">
                                         <button class="btn btn-light btn-sm dropdown" type="button"
                                             data-bs-toggle="dropdown" aria-expanded="false">
                                             <i class="fa-solid fa-ellipsis-vertical align-middle font-size-16"></i>
-
                                         </button>
                                         <ul class="dropdown-menu dropdown-menu-end">
                                             <li>
-                                                <button class="dropdown-item"
-                                                    href="javascript:void(0);"><i
-                                                        class="mdi mdi-eye-outline font-size-16 align-middle me-2 text-muted"></i>
-                                                    View</button>
+                                                <button class="dropdown-item view-hospital-btn" data-id="{{ $hospital->id }}">
+                                                    <i class="mdi mdi-eye-outline font-size-16 align-middle me-2 text-muted"></i>
+                                                    View
+                                                </button>
                                             </li>
                                             <li>
-                                                <button class="dropdown-item"
-                                                    href="javascript:void(0);"><i
-                                                        class="mdi mdi-pencil-outline font-size-16 align-middle me-2 text-muted"></i>
-                                                    Edit</button>
+                                                <a href="{{ route('admin.hospital.edit', ['id' => $hospital->hospital_id]) }}" class="dropdown-item edit-hospital-btn">
+                                                    <i class="mdi mdi-pencil-outline font-size-16 align-middle me-2 text-muted"></i>Edit
+                                                </a>
                                             </li>
-                                            <li>
-                                                <a class="dropdown-item"
-                                                    href="javascript:void(0);"><i
-                                                        class="mdi mdi-file-download-outline font-size-16 align-middle me-2 text-muted"></i>
-                                                    Download</a>
-                                            </li>
+
                                             <li class="dropdown-divider"></li>
                                             <li>
-                                                <a class="dropdown-item remove-item-btn" href="#">
-                                                    <i
-                                                        class="mdi mdi-trash-can-outline font-size-16 align-middle me-2 text-muted"></i>
-                                                    Delete
+                                                <a href="{{ route('admin.hospital.destroy', ['id' => $hospital->hospital_id]) }}" class="dropdown-item edit-hospital-btn">
+                                                    <i class="mdi mdi-pencil-outline font-size-16 align-middle me-2 text-muted"></i>Delete
                                                 </a>
                                             </li>
                                         </ul>
                                     </div>
                                 </td>
                             </tr>
-
-
-                            <tr>
-                                
-                                <td>
-                                    <p class="fw-medium mb-0">Lec-2158</p>
-                                </td>
-                                <td><img src="assets/images/users/avatar-7.jpg" alt=""
-                                        class="avatar-xs rounded-circle me-2">
-                                    <a href="#javascript: void(0);"
-                                        class="text-body align-middle fw-medium">Jena Hall</a>
-                                </td>
-                                <td>morbi.quis@protonmail.org</td>
-                                <td>USA</td>
-                                <td>30 Nov, 2022</td>
-                                <td>$170.00</td>
-                                <td><span class="badge badge-soft-danger p-2">Cancel</span></td>
-                                <td>
-                                    <div class="dropdown">
-                                        <button class="btn btn-light btn-sm dropdown" type="button"
-                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="fa-solid fa-ellipsis-vertical align-middle font-size-16"></i>
-
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-end">
-                                            <li>
-                                                <button class="dropdown-item"
-                                                    href="javascript:void(0);"><i
-                                                        class="mdi mdi-eye-outline font-size-16 align-middle me-2 text-muted"></i>
-                                                    View</button>
-                                            </li>
-                                            <li>
-                                                <button class="dropdown-item"
-                                                    href="javascript:void(0);"><i
-                                                        class="mdi mdi-pencil-outline font-size-16 align-middle me-2 text-muted"></i>
-                                                    Edit</button>
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item"
-                                                    href="javascript:void(0);"><i
-                                                        class="mdi mdi-file-download-outline font-size-16 align-middle me-2 text-muted"></i>
-                                                    Download</a>
-                                            </li>
-                                            <li class="dropdown-divider"></li>
-                                            <li>
-                                                <a class="dropdown-item remove-item-btn" href="#">
-                                                    <i
-                                                        class="mdi mdi-trash-can-outline font-size-16 align-middle me-2 text-muted"></i>
-                                                    Delete
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-
+                            @endforeach
                         </tbody><!-- end tbody -->
                     </table><!-- end table -->
                 </div><!-- end table responsive -->
@@ -288,79 +133,79 @@
     </div>
 </div>
 
-<div class="row align-items-center mb-4 gy-3">
-    <div class="col-md-5">
-        <p class="mb-0 text-muted">Showing <b>1</b> to <b>5</b> of <b>10</b> results</p>
-    </div>
-    <div class="col-sm-auto ms-auto">
-        <nav aria-label="...">
-            <ul class="pagination mb-0">
-                <li class="page-item disabled">
-                    <span class="page-link">Previous</span>
-                </li>
-                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                <li class="page-item" aria-current="page">
-                    <span class="page-link">2</span>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
-                </li>
-            </ul>
-        </nav>
-    </div>
-</div>
-
-<!-- Add User Modal -->
-<div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+<!-- Description Modal -->
+<div class="modal fade" id="descriptionModal" tabindex="-1" aria-labelledby="descriptionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addUserModalLabel">Add New User</h5>
+                <h5 class="modal-title" id="descriptionModalLabel">Hospital Description</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('admin.users.store') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="first_name" class="form-label">First Name</label>
-                        <input type="text" class="form-control" id="first_name" name="first_name" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="last_name" class="form-label">Last Name</label>
-                        <input type="text" class="form-control" id="last_name" name="last_name" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="phone" class="form-label">Phone</label>
-                        <input type="text" class="form-control" id="phone" name="phone">
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="password_confirmation" class="form-label">Confirm Password</label>
-                        <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="user_image" class="form-label">Profile Image</label>
-                        <input type="file" class="form-control" id="user_image" name="image">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save User</button>
-                </div>
-            </form>
+            <div class="modal-body" id="modalDescriptionContent">
+                <!-- Description content will be inserted here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
         </div>
     </div>
 </div>
 
+<!-- Pagination -->
+<div class="col-sm-auto ms-auto">
+    <div class="row align-items-center mb-4 gy-3">
+        <div class="col-md-5">
+            <p class="mb-0 text-muted">
+                Showing <b>{{ $hospitals->firstItem() }}</b> to
+                <b>{{ $hospitals->lastItem() }}</b> of
+                <b>{{ $hospitals->total() }}</b> results
+            </p>
+        </div>
+        <div class="col-sm-auto ms-auto">
+            <nav aria-label="...">
+                <ul class="pagination mb-0">
+                    {{-- Previous Page Link --}}
+                    <li class="page-item {{ $hospitals->onFirstPage() ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $hospitals->previousPageUrl() }}" tabindex="-1" aria-disabled="{{ $hospitals->onFirstPage() ? 'true' : 'false' }}">
+                            Previous
+                        </a>
+                    </li>
 
+                    {{-- Pagination Elements --}}
+                    @foreach ($hospitals->getUrlRange(1, $hospitals->lastPage()) as $page => $url)
+                    <li class="page-item {{ $hospitals->currentPage() == $page ? 'active' : '' }}" aria-current="{{ $hospitals->currentPage() == $page ? 'page' : '' }}">
+                        <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                    </li>
+                    @endforeach
 
+                    {{-- Next Page Link --}}
+                    <li class="page-item {{ !$hospitals->hasMorePages() ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $hospitals->nextPageUrl() }}" aria-disabled="{{ !$hospitals->hasMorePages() ? 'true' : 'false' }}">
+                            Next
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
 
+@endsection
+
+@section('js-content')
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function() {
+        // Handle the description modal
+        $('#descriptionModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var description = button.data('description');
+            var title = button.data('title');
+            
+            var modal = $(this);
+            modal.find('.modal-title').text(title);
+            modal.find('.modal-body').html(description);
+        });
+    });
+</script>
 @endsection

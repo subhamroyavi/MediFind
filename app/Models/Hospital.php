@@ -9,5 +9,18 @@ class Hospital extends Model
 {
     use HasFactory;
     protected $table = 'Hospitals';
-    protected $guarded = [];
+    protected $primaryKey = 'hospital_id';
+    public $timestamps = false;
+
+    protected $fillable = [
+            'hospital_name',
+            'description',
+            'organization_type',
+            'status'
+        ];
 }
+
+
+
+
+

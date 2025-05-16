@@ -161,12 +161,12 @@ class AdminController extends Controller
         return view('admin_panel.dashboard', compact('totalUsers', 'activeUsers', 'recentUsers'));
     }
 
-    public function adminHospitalView()
+    public function index()
     {
         return view('admin_panel.hospitals');
     }
 
-    public function adminHospitalCreate()
+    public function create()
     {
         return view('admin_panel.hospital_Create');
     }

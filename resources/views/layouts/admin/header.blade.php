@@ -105,7 +105,7 @@
         <div class="vertical-menu">
 
             <!-- LOGO -->
-            <div class="navbar-brand-box">
+            <!-- <div class="navbar-brand-box">
                 <a href="index.html" class="logo logo-dark">
                     <span class="logo-sm">
                         <img src="{{asset('admin_panel/assets/images/logo-sm-dark.png')}}" alt="logo-sm-dark" height="24">
@@ -123,11 +123,43 @@
                         <img src="{{asset('admin_panel/assets/images/logo-light.png')}}" alt="logo-light" height="22">
                     </span>
                 </a>
-            </div>
 
-            <button type="button" class="btn btn-sm px-3 font-size-24 header-item waves-effect vertical-menu-btn" id="vertical-menu-btn">
-                <i class="fa-solid fa-align-left"></i>
-            </button>
+            </div> -->
+            
+<div class="navbar-brand-box">
+    <!-- Dark Logo Variant -->
+    <a href="{{ route('admin.dashboard') }}" class="logo logo-dark">
+        <span class="logo-sm">
+            <h4 class="page-title mb-0">
+                <i class="fas fa-heartbeat me-2"></i>
+            </h4>
+        </span>
+        <span class="logo-lg">
+            <h4 class="page-title mb-0">
+                <i class="fas fa-heartbeat me-2"></i>MediFind
+            </h4>
+        </span>
+    </a>
+
+    <!-- Light Logo Variant -->
+    <a href="{{ route('admin.dashboard') }}" class="logo logo-light">
+        <span class="logo-sm">
+            <h4 class="page-title mb-0">
+                <i class="fas fa-heartbeat me-2"></i>
+            </h4>
+        </span>
+        <span class="logo-lg">
+            <h4 class="page-title mb-0">
+                <i class="fas fa-heartbeat me-2"></i>MediFind
+            </h4>
+        </span>
+    </a>
+</div>
+
+<!-- Vertical Menu Button (unchanged) -->
+<button type="button" class="btn btn-sm px-3 font-size-24 header-item waves-effect vertical-menu-btn" id="vertical-menu-btn">
+    <i class="fa-solid fa-align-left"></i>
+</button>
 
             <div data-simplebar class="vertical-scroll">
 
@@ -256,6 +288,9 @@
                     </div>
                 </div>
             </footer>
+
+                    @yield('js-content')
+
 
         </div>
         <!-- end main content-->

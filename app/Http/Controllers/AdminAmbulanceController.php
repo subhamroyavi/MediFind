@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Ambulance;
+use App\Models\Location;
 
 class AdminAmbulanceController extends Controller
 {
@@ -30,6 +31,7 @@ class AdminAmbulanceController extends Controller
 
     public function store(Request $request) {
 
+        // dd($request->file('image'));
         $validated = $request->validate([
         'first_name' => 'required|string|max:255',
         'last_name' => 'required|string|max:255',
@@ -53,7 +55,22 @@ class AdminAmbulanceController extends Controller
         $validated['image'] = 'ambulances/' . $filename;
     }
 
-    Ambulance::create($validated);
+    $id = Ambulance::create($validated);
+    // dd($id->ambulance_id);
+
+    Location::create([
+        'entity_type' => 'ambulance',
+            'entity_id' => $id->ambulance_id,
+            'address_line1' => 'Shitala Bari Road',
+            'address_line2'=> 'Shitala Bari Road',
+            'city' => 'Dinhata',
+            'district' => 'Cooch Behar',
+            'pincode'=> '736135',
+            'state' => 'West Bengal',
+            'country' => 'India',
+            'google_maps_link' => 'gyggyyg',
+           
+    ]);
 
     return redirect()->route('admin.ambulance.index')
         ->with('success', 'Ambulance created successfully!');
@@ -96,6 +113,10 @@ $validated = $request->validate([
 Ambulance::findOrFail($id)->delete($id);
         return redirect()->route('admin.ambulance.index')->with('success', 'Ambulance updated successfully');
 
+    }
+
+    public function createBlade(){
+        return view('admin_panel.hospital_Create');
     }
 
 }

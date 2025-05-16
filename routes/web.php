@@ -1,24 +1,25 @@
 <?php
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\AdminLoginController;
-use App\Http\Controllers\ServiceController;
-use App\Http\Controllers\AdminDoctorController;
-use App\Http\Controllers\AdminAmbulanceController;
-
-
-use App\Http\Controllers\AmbulanceController;
-use App\Http\Controllers\ContactController;
-use App\Http\Controllers\DoctorController;
-use App\Http\Controllers\EmergencyController;
-use App\Http\Controllers\HospitalController;
 use App\Http\Controllers\IndexController;
-use App\Http\Controllers\SignupController;
-use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Route;
 
-use Illuminate\Http\Request;
+
+use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\SignupController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\HospitalController;
+use App\Http\Controllers\AmbulanceController;
+use App\Http\Controllers\EmergencyController;
+use App\Http\Controllers\AdminLoginController;
+use App\Http\Controllers\AdminDoctorController;
+
+use App\Http\Controllers\AdminHospitalController;
+use App\Http\Controllers\AdminAmbulanceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,10 +66,7 @@ Route::middleware(['check-login'])->group(function () {
     // Dashboard Route
     Route::get('/hospital-admin', [AdminController::class, 'adminIndex'])->name('admin.dashboard');
 
-    // Hospital Routes
-    Route::get('/hospital-admin/hospitals', [AdminController::class, 'adminHospitalView'])->name('admin.hospitals');
-    Route::get('/hospital-admin/hospitals/create', [AdminController::class, 'adminHospitalCreate'])->name('admin.hospitals-create');
-
+   
     // User Management Routes
     Route::get('/hospital-admin/users', [AdminController::class, 'adminUserView'])->name('admin.users');
     Route::post('/hospital-admin/users', [AdminController::class, 'storeUser'])->name('admin.users.store');
@@ -96,10 +94,20 @@ Route::middleware(['check-login'])->group(function () {
     //ambulace management
     Route::get('ambulance', [AdminAmbulanceController::class, 'index'])->name('admin.ambulance.index');
     Route::get('ambulance/create', [AdminAmbulanceController::class, 'create'])->name('admin.ambulance.create');
-    Route::get('ambulance/store', [AdminAmbulanceController::class, 'store'])->name('admin.ambulance.store');
+    Route::post('ambulance/store', [AdminAmbulanceController::class, 'store'])->name('admin.ambulance.store');
     Route::get('ambulance/edit/{id}', [AdminAmbulanceController::class, 'edit'])->name('admin.ambulance.edit');
     Route::post('ambulance/update/{id}', [AdminAmbulanceController::class, 'update'])->name('admin.ambulance.update');
     Route::get('ambulance/destroy/{id}', [AdminAmbulanceController::class, 'destroy'])->name('admin.ambulance.destroy');
 
+    Route::get('ambulance/createBlade', [AdminAmbulanceController::class, 'createBlade'])->name('admin.ambulance.createBlade');
+
+
+     // Hospital Routes
+    Route::get('hospitals', [AdminHospitalController::class, 'index'])->name('admin.hospitals');
+    Route::get('hospitals/create', [AdminHospitalController::class, 'create'])->name('admin.hospital.create');
+    Route::post('hospitals/store', [AdminHospitalController::class, 'store'])->name('admin.hospital.store');
+    Route::get('hospitals/edit/{id}', [AdminHospitalController::class, 'edit'])->name('admin.hospital.edit');
+    Route::post('hospitals/update/{id}', [AdminHospitalController::class, 'update'])->name('admin.hospital.update');
+    Route::get('hospitals/destroy/{id}', [AdminHospitalController::class, 'destroy'])->name('admin.hospital.destroy');
 
 });
