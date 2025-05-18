@@ -4,30 +4,30 @@
 
 <div class="row">
     <div class="col-xl-12">
+        <!-- Hospitals Table Header Card -->
         <div class="card">
             <div class="card-header border-0 align-items-center d-flex pb-0">
-                <h4 class="card-title mb-0 flex-grow-1">Hospitals Table
-                </h4>
-
-                <!-- Search Form -->
-                <form class="app-search d-none d-lg-block" method="GET" action="{{ url()->current() }}">
+                <h4 class="card-title mb-0 flex-grow-1">Doctors Table</h4>
+                
+                <!-- Add New User Button -->
+                <div class="app-search d-none d-lg-block">
                     <div class="position-relative">
-                        <input type="text" class="form-control" name="search" placeholder="Search..."
-                            value="{{ request('search') }}">
-                        <button type="submit" class="btn btn-link position-absolute end-0 top-0 text-muted">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                        </button>
+                        <h4 class="card-title mb-0 flex-grow-1">
+                            <a href="{{ route('admin.doctors.create') }}" class="btn btn-outline-primary waves-effect waves-light">
+                                <i class="fa-solid fa-plus me-2"></i>Add New Doctor
+                            </a>
+                        </h4>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
         <div class="card">
             <div class="card-header border-0 align-items-center d-flex pb-0">
                 <h4 class="card-title mb-0 flex-grow-1">
-                    
-                     <a href="{{ route('admin.doctors.create') }}" class="btn btn-outline-primary waves-effect waves-light">
-    <i class="fa-solid fa-plus me-2"></i>Add New User
-</a>
+
+                    <a href="{{ route('admin.doctors.create') }}" class="btn btn-outline-primary waves-effect waves-light">
+                        <i class="fa-solid fa-plus me-2"></i>Add New User
+                    </a>
                 </h4>
                 <!-- App Search-->
 
@@ -97,18 +97,18 @@
                                                     View
                                                 </button>
                                             </li>
-                                           <li>
-    <a href="{{ route('admin.doctors.edit', ['id' => $doctor->doctor_id]) }}" class="dropdown-item edit-doctor-btn">
-        <i class="mdi mdi-pencil-outline font-size-16 align-middle me-2 text-muted"></i>Edit
-    </a>
-</li>
-                                           
+                                            <li>
+                                                <a href="{{ route('admin.doctors.edit', ['id' => $doctor->doctor_id]) }}" class="dropdown-item edit-doctor-btn">
+                                                    <i class="mdi mdi-pencil-outline font-size-16 align-middle me-2 text-muted"></i>Edit
+                                                </a>
+                                            </li>
+
                                             <li class="dropdown-divider"></li>
                                             <li>
-                                                
+
                                                 <a href="{{ route('admin.doctors.destroy', ['id' => $doctor->doctor_id]) }}" class="dropdown-item edit-doctor-btn">
-        <i class="mdi mdi-pencil-outline font-size-16 align-middle me-2 text-muted"></i>Delete
-    </a>
+                                                    <i class="mdi mdi-pencil-outline font-size-16 align-middle me-2 text-muted"></i>Delete
+                                                </a>
                                             </li>
                                         </ul>
                                     </div>

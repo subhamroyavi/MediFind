@@ -12,7 +12,7 @@
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesdesign" name="author" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="{{asset('admin_panel/assets/images/favicon.ico')}}">
+    <!-- <link rel="shortcut icon" href="{{asset('admin_panel/assets/images/favicon.ico')}}"> -->
 
     <!-- Layout Js -->
     <script src="{{asset('admin_panel/assets/js/layout.js')}}"></script>
@@ -27,7 +27,18 @@
     <!-- https://fontawesome.com/search -->
     <link href="{{asset('admin_panel/assets/libs/select2/css/select2.min.css')}}" rel="stylesheet" type="text/css">
 
+    <!-- DataTables -->
+    <link href="{{ asset('admin_panel/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('admin_panel/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('admin_panel/assets/libs/datatables.net-select-bs4/css/select.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+    <!-- Responsive datatable examples -->
+    <link href="{{ asset('admin_panel/assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
 
+
+    <!-- DataTables core CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <!-- FixedColumns CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/4.3.0/css/fixedColumns.dataTables.min.css">
 
 
 </head>
@@ -125,41 +136,41 @@
                 </a>
 
             </div> -->
-            
-<div class="navbar-brand-box">
-    <!-- Dark Logo Variant -->
-    <a href="{{ route('admin.dashboard') }}" class="logo logo-dark">
-        <span class="logo-sm">
-            <h4 class="page-title mb-0">
-                <i class="fas fa-heartbeat me-2"></i>
-            </h4>
-        </span>
-        <span class="logo-lg">
-            <h4 class="page-title mb-0">
-                <i class="fas fa-heartbeat me-2"></i>MediFind
-            </h4>
-        </span>
-    </a>
 
-    <!-- Light Logo Variant -->
-    <a href="{{ route('admin.dashboard') }}" class="logo logo-light">
-        <span class="logo-sm">
-            <h4 class="page-title mb-0">
-                <i class="fas fa-heartbeat me-2"></i>
-            </h4>
-        </span>
-        <span class="logo-lg">
-            <h4 class="page-title mb-0">
-                <i class="fas fa-heartbeat me-2"></i>MediFind
-            </h4>
-        </span>
-    </a>
-</div>
+            <div class="navbar-brand-box">
+                <!-- Dark Logo Variant -->
+                <a href="{{ route('admin.dashboard') }}" class="logo logo-dark">
+                    <span class="logo-sm">
+                        <h4 class="page-title mb-0">
+                            <i class="fas fa-heartbeat me-2"></i>
+                        </h4>
+                    </span>
+                    <span class="logo-lg">
+                        <h4 class="page-title mb-0">
+                            <i class="fas fa-heartbeat me-2"></i>MediFind
+                        </h4>
+                    </span>
+                </a>
 
-<!-- Vertical Menu Button (unchanged) -->
-<button type="button" class="btn btn-sm px-3 font-size-24 header-item waves-effect vertical-menu-btn" id="vertical-menu-btn">
-    <i class="fa-solid fa-align-left"></i>
-</button>
+                <!-- Light Logo Variant -->
+                <a href="{{ route('admin.dashboard') }}" class="logo logo-light">
+                    <span class="logo-sm">
+                        <h4 class="page-title mb-0">
+                            <i class="fas fa-heartbeat me-2"></i>
+                        </h4>
+                    </span>
+                    <span class="logo-lg">
+                        <h4 class="page-title mb-0">
+                            <i class="fas fa-heartbeat me-2"></i>MediFind
+                        </h4>
+                    </span>
+                </a>
+            </div>
+
+            <!-- Vertical Menu Button (unchanged) -->
+            <button type="button" class="btn btn-sm px-3 font-size-24 header-item waves-effect vertical-menu-btn" id="vertical-menu-btn">
+                <i class="fa-solid fa-align-left"></i>
+            </button>
 
             <div data-simplebar class="vertical-scroll">
 
@@ -289,7 +300,9 @@
                 </div>
             </footer>
 
-                    @yield('js-content')
+            <!-- jQuery (required) -->
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            @yield('js-content')
 
 
         </div>
@@ -361,6 +374,39 @@
     <script src="{{asset('admin_panel/assets/js/app.js')}}"></script>
     <script src="{{asset('admin_panel/assets/libs/select2/js/select2.min.js')}}"></script>
 
+    <!-- jQuery UI (required for .datepicker) -->
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
+    <!-- Datatable init js -->
+    <script src="{{ asset('admin_panel/assets/js/pages/datatables.init.js') }}"></script>
+    <script src="{{ asset('admin_panel/assets/js/app.js') }}"></script>
+
+    <!-- Required datatable js -->
+    <script src="{{ asset('admin_panel/assets/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('admin_panel/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+    <!-- Buttons examples -->
+    <script src="{{ asset('admin_panel/assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('admin_panel/assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('admin_panel/assets/libs/jszip/jszip.min.js') }}"></script>
+    <script src="{{ asset('admin_panel/assets/libs/pdfmake/build/pdfmake.min.js') }}"></script>
+    <script src="{{ asset('admin_panel/assets/libs/pdfmake/build/vfs_fonts.js') }}"></script>
+    <script src="{{ asset('admin_panel/assets/libs/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('admin_panel/assets/libs/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
+    <script src="{{ asset('admin_panel/assets/libs/datatables.net-buttons/js/buttons.colVis.min.js') }}"></script>
+
+    <script src="{{ asset('admin_panel/assets/libs/datatables.net-keytable/js/dataTables.keyTable.min.js') }}"></script>
+    <script src="{{ asset('admin_panel/assets/libs/datatables.net-select/js/dataTables.select.min.js') }}"></script>
+
+    <!-- Responsive examples -->
+    <script src="{{ asset('admin_panel/assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('admin_panel/assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') }}"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- DataTables core JS -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <!-- FixedColumns JS -->
+    <script src="https://cdn.datatables.net/fixedcolumns/4.3.0/js/dataTables.fixedColumns.min.js"></script>
 
 </body>
 

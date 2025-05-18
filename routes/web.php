@@ -86,10 +86,12 @@ Route::middleware(['check-login'])->group(function () {
     //doctor management
     Route::get('doctors', [AdminDoctorController::class, 'index'])->name('admin.doctors.index');
     Route::get('doctors/create', [AdminDoctorController::class, 'create'])->name('admin.doctors.create');
-    Route::get('doctors/{id}/edit', [AdminDoctorController::class, 'edit'])->name('admin.doctors.edit');
     Route::post('doctors', [AdminDoctorController::class, 'store'])->name('admin.doctors.store');
+    Route::get('doctors/{id}/edit', [AdminDoctorController::class, 'edit'])->name('admin.doctors.edit');
     Route::put('doctors/{id}', [AdminDoctorController::class, 'update'])->name('admin.doctors.update');
     Route::delete('doctors/{id}', [AdminDoctorController::class, 'destroy'])->name('admin.doctors.destroy');
+
+    Route::get('doctors/test', [AdminDoctorController::class, 'test'])->name('admin.doctors.test');
 
     //ambulace management
     Route::get('ambulance', [AdminAmbulanceController::class, 'index'])->name('admin.ambulance.index');

@@ -2,8 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+
+use App\Models\Location;
+use App\Models\Education;
+use App\Models\Experience;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Doctor extends Model
 {
@@ -18,35 +22,25 @@ class Doctor extends Model
         'last_name',
         'phone',
         'email',
-        'experience_years',
-        'home_town',
+        'small_description',
         'specialization',
         'organization_type',
         'status',
         'image'
     ];
 
-    // public function services()
-    // {
-    //     return $this->belongsToMany(MedicalService::class, 'doctor_services', 'doctor_id', 'service_id')
-    //         ->withPivot('status')
-    //         ->withTimestamps();
-    // }
+    public function location()
+    {
+        return $this->hasOne(Location::class, 'entity_id');
+    }
 
-    // public function hospitals()
-    // {
-    //     return $this->belongsToMany(Hospital::class, 'hospitals_doctor', 'doctor_id', 'hospital_id')
-    //         ->withPivot('status')
-    //         ->withTimestamps();
-    // }
+    public function education()
+    {
+        return $this->hasMany(Education::class, 'doctor_id');
+    }
 
-    // public function location()
-    // {
-    //     return $this->morphOne(Location::class, 'entity');
-    // }
-
-    // public function reviews()
-    // {
-    //     return $this->morphMany(Review::class, 'entity');
-    // }
+    public function experience()
+    {
+        return $this->hasMany(Experience::class, 'doctor_id');
+    }
 }

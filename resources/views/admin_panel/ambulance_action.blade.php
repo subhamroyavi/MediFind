@@ -20,7 +20,7 @@
                     method="POST"
                     enctype="multipart/form-data">
                     @csrf
-                  
+
 
                     <div class="row mb-4">
                         <div class="col-12">
