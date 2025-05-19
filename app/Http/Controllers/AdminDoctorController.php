@@ -27,7 +27,7 @@ class AdminDoctorController extends Controller
                 ->orWhere('phone', 'like', "%$search%")
                 ->orderBy('created_at', 'DESC')->paginate(5)->withQueryString();
         } else {
-            $doctors = Doctor::orderBy('created_at', 'DESC')->paginate(5);
+            $doctors = Doctor::orderBy('created_at', 'DESC')->get();
         }
 
 
@@ -176,7 +176,7 @@ class AdminDoctorController extends Controller
             // Basic Info
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'phone' => 'required|string|max:20',
             'email' => 'required|email',
             'small_description' => 'required|string|max:255',

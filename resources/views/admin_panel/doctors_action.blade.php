@@ -11,9 +11,9 @@
                     <a href="{{ route('admin.doctors.index') }}">Doctors / </a>
                     @isset($doctor->doctor_id)
                     Edit Doctor / <img src="{{ asset('storage/' . $doctor->image) }}" alt="{{$doctor->first_name}}"
-                                        class="avatar-xs rounded-circle me-2">
-                                    <a href="#javascript: void(0);"
-                                        class="text-body align-middle fw-medium">{{ $doctor->first_name .' '. $doctor->last_name }}</a>
+                        class="avatar-xs rounded-circle me-2">
+                    <a href="#javascript: void(0);"
+                        class="text-body align-middle fw-medium">{{ $doctor->first_name .' '. $doctor->last_name }}</a>
 
                     @else
                     Doctor Registration Form
@@ -24,7 +24,7 @@
                     method="POST"
                     enctype="multipart/form-data">
                     @csrf
-                   
+
 
                     <div class="row mb-4">
                         <div class="col-12">
@@ -87,20 +87,21 @@
                             </div>
 
                             <div class="row">
+
                                 <div class="col-lg-6">
                                     <div class="mb-3">
-    <label class="form-label" for="image">Profile Image</label>
-    <input type="file" class="form-control @error('image') is-invalid @enderror"
-           name="image" accept="image/*">
-    @error('image')
-        <div class="invalid-feedback">{{ htmlspecialchars($message) }}</div>
-    @enderror
-    @if(isset($doctor->image))
-        <div class="mt-2">
-            <img src="{{ asset('storage/'.$doctor->image) }}" width="100" alt="Current Image">
-        </div>
-    @endif
-</div>
+                                        <label class="form-label" for="image">Profile Image</label>
+                                        <input type="file" class="form-control @error('image') is-invalid @enderror"
+                                            name="image" accept="image/*">
+                                        @error('image')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                        @if(isset($doctor->image))
+                                        <div class="mt-2">
+                                            <img src="{{ asset('storage/'.$doctor->image) }}" width="100" alt="Current Image">
+                                        </div>
+                                        @endif
+                                    </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="mb-3">
@@ -239,7 +240,7 @@
                                             <div class="mb-3">
                                                 <label class="form-label" for="educations[{{ $index }}][year]">Completion Year <span class="text-danger">*</span></label>
                                                 <input type="text" class="form-control @error('educations.'.$index.'.year') is-invalid @enderror"
-                                                    name="educations[{{ $index }}][year]" 
+                                                    name="educations[{{ $index }}][year]"
                                                     placeholder="YYYY"
                                                     value="{{ old('educations.'.$index.'.year', $education->year) }}">
                                                 @error('educations.'.$index.'.year')
@@ -294,7 +295,7 @@
                                             <div class="mb-3">
                                                 <label class="form-label" for="educations[0][year]">Completion Year <span class="text-danger">*</span></label>
                                                 <input type="text" class="form-control @error('educations.0.year') is-invalid @enderror"
-                                                    name="educations[0][year]" 
+                                                    name="educations[0][year]"
                                                     placeholder="YYYY"
                                                     value="{{ old('educations.0.year') }}">
                                                 @error('educations.0.year')
@@ -365,7 +366,7 @@
                                             <div class="mb-3">
                                                 <label class="form-label" for="experiences[{{ $index }}][start_year]">Start Year</label>
                                                 <input type="text" class="form-control @error('experiences.'.$index.'.start_year') is-invalid @enderror"
-                                                    name="experiences[{{ $index }}][start_year]" 
+                                                    name="experiences[{{ $index }}][start_year]"
                                                     placeholder="YYYY"
                                                     value="{{ old('experiences.'.$index.'.start_year', $experience->start_year) }}">
                                                 @error('experiences.'.$index.'.start_year')
@@ -377,7 +378,7 @@
                                             <div class="mb-3">
                                                 <label class="form-label" for="experiences[{{ $index }}][end_year]">End Year</label>
                                                 <input type="text" class="form-control @error('experiences.'.$index.'.end_year') is-invalid @enderror"
-                                                    name="experiences[{{ $index }}][end_year]" 
+                                                    name="experiences[{{ $index }}][end_year]"
                                                     placeholder="YYYY"
                                                     value="{{ old('experiences.'.$index.'.end_year', $experience->end_year) }}">
                                                 @error('experiences.'.$index.'.end_year')
@@ -436,7 +437,7 @@
                                             <div class="mb-3">
                                                 <label class="form-label" for="experiences[0][start_year]">Start Year</label>
                                                 <input type="text" class="form-control @error('experiences.0.start_year') is-invalid @enderror"
-                                                    name="experiences[0][start_year]" 
+                                                    name="experiences[0][start_year]"
                                                     placeholder="YYYY"
                                                     value="{{ old('experiences.0.start_year') }}">
                                                 @error('experiences.0.start_year')
@@ -448,7 +449,7 @@
                                             <div class="mb-3">
                                                 <label class="form-label" for="experiences[0][end_year]">End Year</label>
                                                 <input type="text" class="form-control @error('experiences.0.end_year') is-invalid @enderror"
-                                                    name="experiences[0][end_year]" 
+                                                    name="experiences[0][end_year]"
                                                     placeholder="YYYY"
                                                     value="{{ old('experiences.0.end_year') }}">
                                                 @error('experiences.0.end_year')
@@ -646,14 +647,14 @@
     document.addEventListener('DOMContentLoaded', function() {
         // Initialize education index
         let educationIndex = document.querySelectorAll('.education-entry').length;
-        
+
         // Add education entry
         document.getElementById('add-education').addEventListener('click', function() {
             let container = document.getElementById('education-container');
             let template = container.querySelector('.education-entry:last-child').cloneNode(true);
             let newEntry = document.createElement('div');
             newEntry.className = 'education-entry mb-4 border p-3';
-            
+
             // Get the current highest index
             let currentHighestIndex = 0;
             container.querySelectorAll('.education-entry').forEach(entry => {
@@ -668,9 +669,9 @@
                     }
                 }
             });
-            
+
             const newIndex = currentHighestIndex + 1;
-            
+
             // Replace all indices with the new index
             let html = template.innerHTML.replace(/educations\[\d+\]/g, `educations[${newIndex}]`);
             newEntry.innerHTML = html;
@@ -695,7 +696,7 @@
             let template = container.querySelector('.experience-entry:last-child').cloneNode(true);
             let newEntry = document.createElement('div');
             newEntry.className = 'experience-entry mb-4 border p-3';
-            
+
             // Get the current highest index
             let currentHighestIndex = 0;
             container.querySelectorAll('.experience-entry').forEach(entry => {
@@ -710,9 +711,9 @@
                     }
                 }
             });
-            
+
             const newIndex = currentHighestIndex + 1;
-            
+
             // Replace all indices with the new index
             let html = template.innerHTML.replace(/experiences\[\d+\]/g, `experiences[${newIndex}]`);
             html = html.replace(/new_hospital_name_\d+/g, `new_hospital_name_${newIndex}`);
@@ -757,12 +758,12 @@
 
         // Validate year inputs to only allow numbers
         document.addEventListener('input', function(e) {
-            if (e.target.name && (e.target.name.includes('[year]') || 
-                                 e.target.name.includes('[start_year]') || 
-                                 e.target.name.includes('[end_year]'))) {
+            if (e.target.name && (e.target.name.includes('[year]') ||
+                    e.target.name.includes('[start_year]') ||
+                    e.target.name.includes('[end_year]'))) {
                 // Remove any non-digit characters
                 e.target.value = e.target.value.replace(/\D/g, '');
-                
+
                 // Limit to 4 digits
                 if (e.target.value.length > 4) {
                     e.target.value = e.target.value.slice(0, 4);

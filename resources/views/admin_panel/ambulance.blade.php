@@ -1,63 +1,37 @@
 @extends('layouts.admin_app')
 
 @section('main-content')
-
 <div class="row">
-    <div class="col-xl-12">
-        <!-- Search and Add New Section -->
+    <div class="col-12">
+
+        <!-- Hospitals Table Header Card -->
         <div class="card">
             <div class="card-header border-0 align-items-center d-flex pb-0">
-                <h4 class="card-title mb-0 flex-grow-1">Ambulance Table</h4>
+                <h4 class="card-title mb-0 flex-grow-1">ambulances Table</h4>
 
-                <!-- Search Form -->
-                <form class="app-search d-none d-lg-block" method="GET" action="{{ url()->current() }}">
+                <!-- Add New User Button -->
+                <div class="app-search d-none d-lg-block">
                     <div class="position-relative">
-                        <input type="text" class="form-control" name="search" placeholder="Search..."
-                            value="{{ request('search') }}">
-                        <button type="submit" class="btn btn-link position-absolute end-0 top-0 text-muted">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                        </button>
+                        <h4 class="card-title mb-0 flex-grow-1">
+                            <a href="{{ route('admin.ambulance.create') }}" class="btn btn-outline-primary waves-effect waves-light">
+                                <i class="fa-solid fa-plus me-2"></i>Add New ambulance
+                            </a>
+                        </h4>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
-
-        <!-- Table Section -->
         <div class="card">
-            <div class="card-header border-0 align-items-center d-flex pb-0">
-                <div class="flex-grow-1">
-                    <a href="{{ route('admin.ambulance.create') }}" class="btn btn-outline-primary waves-effect waves-light">
-                        <i class="fa-solid fa-plus me-2"></i>Add New Ambulance
-                    </a>
-                </div>
-
-                <!-- Sort Dropdown -->
-                <div>
-                    <div class="dropdown">
-                        <a class="dropdown-toggle text-reset" href="#" data-bs-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                            <span class="fw-semibold">Sort By:</span>
-                            <span class="text-muted">Yearly<i class="fa-solid fa-chevron-down ms-1"></i></span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end">
-                            <a class="dropdown-item" href="#">Yearly</a>
-                            <a class="dropdown-item" href="#">Monthly</a>
-                            <a class="dropdown-item" href="#">Weekly</a>
-                            <a class="dropdown-item" href="#">Today</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <div class="card-body">
-                <div class="table-responsive table-card">
-                    <table class="table table-hover table-nowrap align-middle mb-0">
-                        <thead class="bg-light">
-                            <tr class="text-muted text-uppercase">
-                                <th scope="col">ID</th>
-                                <th scope="col" style="width: 20%;">Ambulance</th>
+                <!-- Add wrapper div with horizontal scroll -->
+                <div class="table-responsive" style="overflow-x: auto;">
+                    <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th scope="col" style="width: 20%;">ambulance</th>
                                 <th scope="col" style="width: 20%;">Email</th>
-                                <th scope="col">Phone</th>
+                                <th scope="col" style="width: 20%;">Phone</th>
                                 <th scope="col">Vehicle No.</th>
                                 <th scope="col" style="width: 20%;">Location</th>
                                 <th scope="col">Organization</th>
@@ -66,7 +40,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($ambulances as $ambulance)
+                            @foreach ($ambulances as $ambulance)
                             <tr>
                                 <td>
                                     <p class="fw-medium mb-0">{{ $ambulance->ambulance_id }}</p>
@@ -108,7 +82,7 @@
                                     </div>
                                 </td>
                             </tr>
-                            
+
                             <!-- Vehicle Details Modal  -->
                             <div class="modal fade vechicle_details{{ $ambulance->ambulance_id }}" id="" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-xl">
@@ -179,17 +153,19 @@
                                 </div><!-- /.modal-dialog -->
                             </div><!-- /.modal -->
 
-
                             <!-- Location Details Modal  -->
                             <div class="modal fade location_details{{ $ambulance->ambulance_id }}" id="" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-xl">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="myExtraLargeModalLabel">Location Details</h5>
+                                            <h5 class="modal-title" id="myExtraLargeModalLabel"><img src="{{ asset('storage/' . $ambulance->image) }}" alt="{{$ambulance->first_name}}"
+                                                    class="avatar-xs rounded-circle me-2">
+                                                <a href="#javascript: void(0);"
+                                                    class="text-body align-middle fw-medium">{{ $ambulance->first_name .' '. $ambulance->last_name }}</a> Location Details
+                                            </h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <!-- location Information Tab -->
                                             <!-- Address Information Tab -->
                                             <div class="tab-pane" id="address-info" role="tabpanel">
                                                 <div class="row">
@@ -311,63 +287,153 @@
                                     </div><!-- /.modal-content -->
                                 </div><!-- /.modal-dialog -->
                             </div><!-- /.modal -->
-                            @empty
-                            <tr>
-                                <td colspan="10" class="text-center py-4">No ambulances found</td>
-                            </tr>
-                            @endforelse
 
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
+
             </div>
         </div>
+    </div> <!-- end col -->
+</div> <!-- end row -->
 
-        <!-- Pagination -->
-        <div class="row align-items-center mt-3 gy-3">
-            <div class="col-md-5">
-                <p class="mb-0 text-muted">
-                    Showing <b>{{ $ambulances->firstItem() }}</b> to
-                    <b>{{ $ambulances->lastItem() }}</b> of
-                    <b>{{ $ambulances->total() }}</b> results
-                </p>
-            </div>
-            <div class="col-md-7">
-                <nav aria-label="Page navigation" class="d-flex justify-content-end">
-                    <ul class="pagination mb-0">
-                        {{-- Previous Page Link --}}
-                        <li class="page-item {{ $ambulances->onFirstPage() ? 'disabled' : '' }}">
-                            <a class="page-link" href="{{ $ambulances->previousPageUrl() }}"
-                                aria-label="Previous" {{ $ambulances->onFirstPage() ? 'aria-disabled=true' : '' }}>
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
+@endsection
 
-                        {{-- Pagination Elements --}}
-                        @foreach ($ambulances->getUrlRange(1, $ambulances->lastPage()) as $page => $url)
-                        @if($page == $ambulances->currentPage())
-                        <li class="page-item active" aria-current="page">
-                            <span class="page-link">{{ $page }}</span>
-                        </li>
-                        @else
-                        <li class="page-item">
-                            <a class="page-link" href="{{ $url }}">{{ $page }}</a>
-                        </li>
-                        @endif
-                        @endforeach
+@section('js-content')
+<style>
+    /* Custom styling for the DataTable */
+    .dataTables_wrapper {
+        padding-top: 10px;
+        position: relative;
+    }
 
-                        {{-- Next Page Link --}}
-                        <li class="page-item {{ !$ambulances->hasMorePages() ? 'disabled' : '' }}">
-                            <a class="page-link" href="{{ $ambulances->nextPageUrl() }}"
-                                aria-label="Next" {{ !$ambulances->hasMorePages() ? 'aria-disabled=true' : '' }}>
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-    </div>
-</div>
+    /* Search box styling */
+    .dataTables_filter {
+        float: right;
+        margin-bottom: 15px;
+    }
 
+    .dataTables_filter input {
+        margin-left: 10px;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+        padding: 5px 10px;
+    }
+
+    /* Pagination styling */
+    .dataTables_paginate {
+        float: right;
+        margin-top: 15px;
+    }
+
+    .paginate_button {
+        padding: 5px 10px;
+        margin-left: 5px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .paginate_button.current {
+        background: #727cf5;
+        color: white;
+        border-color: #727cf5;
+    }
+
+    .paginate_button:hover {
+        background: #f1f1f1;
+    }
+
+    /* Scrollbar styling */
+    .dataTables_scrollBody {
+        overflow-x: auto !important;
+    }
+
+    .dataTables_scrollBody::-webkit-scrollbar {
+        height: 8px;
+    }
+
+    .dataTables_scrollBody::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    .dataTables_scrollBody::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 4px;
+    }
+
+    .dataTables_scrollBody::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+    /* Info text styling */
+    .dataTables_info {
+        padding-top: 15px;
+        float: left;
+    }
+
+    /* Length menu styling */
+    .dataTables_length {
+        float: left;
+        margin-bottom: 15px;
+    }
+
+    .dataTables_length select {
+        border-radius: 4px;
+        border: 1px solid #ddd;
+        padding: 5px;
+    }
+</style>
+
+
+<script>
+    $(document).ready(function() {
+        // Initialize with error handling and default sorting
+        initDataTable();
+
+        function initDataTable() {
+            var table = $('#datatable').DataTable({
+                destroy: true, // Allows reinitialization
+                retrieve: true, // Prevents errors if already initialized
+                scrollX: true,
+                responsive: true,
+                dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                pagingType: "simple_numbers",
+                order: [
+                    [4, 'desc']
+                ],
+                lengthMenu: [
+                    [10, 25, 50, 100, -1],
+                    [10, 25, 50, 100, "All"]
+                ],
+                pageLength: 10,
+                order: [
+                    [0, 'desc']
+                ], // Sort by 5th column (Start date) in descending order
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search...",
+                    lengthMenu: "Show _MENU_ entries",
+                    info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                    infoEmpty: "Showing 0 to 0 of 0 entries",
+                    infoFiltered: "(filtered from _MAX_ total entries)",
+                    paginate: {
+                        first: "First",
+                        last: "Last",
+                        next: "Next",
+                        previous: "Previous"
+                    }
+                }
+            });
+
+            // Suppress DataTables warnings in console
+            $.fn.dataTable.ext.errMode = 'none';
+
+            return table;
+        }
+    });
+</script>
 @endsection

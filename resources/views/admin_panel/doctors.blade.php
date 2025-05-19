@@ -52,7 +52,7 @@
                                 <td>{{ $doctor->email }}</td>
                                 <td>{{ $doctor->specialization }}</td>
                                 <td>{{ $doctor->organization_type }}</td>
-<td><span class="badge bg-info" type="button" data-bs-toggle="modal" data-bs-target=".location_details{{ $doctor->doctor_id }}">{{ $doctor->location ? $doctor->location->city . ', ' . $doctor->location->state : 'N/A' }}</span>
+                                <td><span class="badge bg-info" type="button" data-bs-toggle="modal" data-bs-target=".location_details{{ $doctor->doctor_id }}">{{ $doctor->location ? $doctor->location->city . ', ' . $doctor->location->state : 'N/A' }}</span>
 
                                 <td><span class="badge {{ $doctor->status == 1 ? 'badge-soft-success' : 'badge-soft-danger' }}  p-2">{{ $doctor->status == 1 ? 'Active' : 'Deactive' }}</span></td>
 
@@ -75,15 +75,16 @@
                                 </td>
 
                             </tr>
-                        <!-- Location Details Modal  -->
+                            <!-- Location Details Modal  -->
                             <div class="modal fade location_details{{ $doctor->doctor_id }}" id="" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-xl">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="myExtraLargeModalLabel"><img src="{{ asset('storage/' . $doctor->image) }}" alt="{{$doctor->first_name}}"
-                                        class="avatar-xs rounded-circle me-2">
-                                    <a href="#javascript: void(0);"
-                                        class="text-body align-middle fw-medium">{{ $doctor->first_name .' '. $doctor->last_name }}</a> Location Details</h5>
+                                                    class="avatar-xs rounded-circle me-2">
+                                                <a href="#javascript: void(0);"
+                                                    class="text-body align-middle fw-medium">{{ $doctor->first_name .' '. $doctor->last_name }}</a> Location Details
+                                            </h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
@@ -209,7 +210,7 @@
                                     </div><!-- /.modal-content -->
                                 </div><!-- /.modal-dialog -->
                             </div><!-- /.modal -->
-                           
+
                             @endforeach
                         </tbody>
                     </table>
