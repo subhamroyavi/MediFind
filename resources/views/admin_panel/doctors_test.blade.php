@@ -1,14 +1,14 @@
 @extends('layouts.admin_app')
 
 @section('main-content')
-<div class="row">
-    <div class="col-12">
 
+<div class="row">
+    <div class="col-xl-12">
         <!-- Hospitals Table Header Card -->
         <div class="card">
             <div class="card-header border-0 align-items-center d-flex pb-0">
                 <h4 class="card-title mb-0 flex-grow-1">Doctors Table</h4>
-
+                
                 <!-- Add New User Button -->
                 <div class="app-search d-none d-lg-block">
                     <div class="position-relative">
@@ -22,187 +22,145 @@
             </div>
         </div>
         <div class="card">
+            <div class="card-header border-0 align-items-center d-flex pb-0">
+                <h4 class="card-title mb-0 flex-grow-1">
+
+                    <a href="{{ route('admin.doctors.create') }}" class="btn btn-outline-primary waves-effect waves-light">
+                        <i class="fa-solid fa-plus me-2"></i>Add New User
+                    </a>
+                </h4>
+                <!-- App Search-->
+
+                <div>
+                    <div class="dropdown">
+                        <a class="dropdown-toggle text-reset" href="#" data-bs-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            <span class="fw-semibold">Sort By:</span>
+                            <span class="text-muted">Yearly<i class="fa-solid fa-chevron-down"></i></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="#">Yearly</a>
+                            <a class="dropdown-item" href="#">Monthly</a>
+                            <a class="dropdown-item" href="#">Weekly</a>
+                            <a class="dropdown-item" href="#">Today</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="card-body">
-                <!-- Add wrapper div with horizontal scroll -->
-                <div class="table-responsive" style="overflow-x: auto;">
-                    <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                        <thead>
-                            <tr>
-                                <th>Id</th>
-                                <th>Doctor</th>
-                                <th>Phone</th>
-                                <th>Email</th>
-                                <th>Specialist</th>
-                                <th>Organization</th>
-                                <th>Location</th>
-                                <th>Status</th>
-                                <th>Action</th>
+                <div class="table-responsive table-card">
+                    <table class="table table-hover table-nowrap align-middle mb-0">
+                        <thead class="bg-light">
+                            <tr class="text-muted text-uppercase">
+                                <th scope="col">Doctor ID</th>
+                                <th scope="col">Doctor</th>
+                                <th scope="col" style="width: 20%;">Email</th>
+                                <th scope="col">Phone</th>
+                                <th scope="col">Specialist</th>
+                                <th scope="col">Experience</th>
+                                <th scope="col">Home</th>
+                                <th scope="col">Organization</th>
+                                <th scope="col" style="width: 8%;">Status</th>
+                                <th scope="col" style="width: 12%;">Action</th>
                             </tr>
                         </thead>
+
                         <tbody>
-                            @foreach ($doctors as $doctor)
+                            @foreach($doctors as $doctor)
                             <tr>
-                                <td>{{ $doctor->doctor_id }}</td>
+                                <td>
+                                    <p class="fw-medium mb-0">{{ $doctor->doctor_id }}</p>
+                                </td>
                                 <td><img src="{{ asset('storage/' . $doctor->image) }}" alt="{{$doctor->first_name}}"
                                         class="avatar-xs rounded-circle me-2">
                                     <a href="#javascript: void(0);"
                                         class="text-body align-middle fw-medium">{{ $doctor->first_name .' '. $doctor->last_name }}</a>
                                 </td>
-                                <td>{{ $doctor->phone }}</td>
                                 <td>{{ $doctor->email }}</td>
-                                <td>System Architect</td>
-                                <td>System Architect</td>
-                                <td>$320,800</td>
-                                <td>61</td>
-                                <td>2011/04/25</td>
+                                <td>{{ $doctor->phone }}</td>
+                                <td>{{ $doctor->specialization }}</td>
+                                <td>{{ $doctor->experience_years }}Years</td>
+                                <td>{{ $doctor->home_town }}</td>
+                                <td>{{ $doctor->organization_type }}</td>
+                                <td><span class="badge {{ $doctor->status == 1 ? 'badge-soft-success' : 'badge-soft-danger' }}  p-2">{{ $doctor->status == 1 ? 'Active' : 'Deactive' }}</span></td>
+
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn btn-light btn-sm dropdown" type="button"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="fa-solid fa-ellipsis-vertical align-middle font-size-16"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li>
+                                                <button class="dropdown-item view-doctor-btn" data-id="{{ $doctor->id }}">
+                                                    <i class="mdi mdi-eye-outline font-size-16 align-middle me-2 text-muted"></i>
+                                                    View
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <a href="{{ route('admin.doctors.edit', ['id' => $doctor->doctor_id]) }}" class="dropdown-item edit-doctor-btn">
+                                                    <i class="mdi mdi-pencil-outline font-size-16 align-middle me-2 text-muted"></i>Edit
+                                                </a>
+                                            </li>
+
+                                            <li class="dropdown-divider"></li>
+                                            <li>
+
+                                                <a href="{{ route('admin.doctors.destroy', ['id' => $doctor->doctor_id]) }}" class="dropdown-item edit-doctor-btn">
+                                                    <i class="mdi mdi-pencil-outline font-size-16 align-middle me-2 text-muted"></i>Delete
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
                             </tr>
                             @endforeach
-                          
-                        </tbody>
-                    </table>
-                </div>
-
+                        </tbody><!-- end tbody -->
+                    </table><!-- end table -->
+                </div><!-- end table responsive -->
             </div>
         </div>
-    </div> <!-- end col -->
-</div> <!-- end row -->
+    </div>
+</div>
 
-@endsection
+<!-- Pagination -->
+<div class="col-sm-auto ms-auto">
+    <div class="row align-items-center mb-4 gy-3">
+        <div class="col-md-5">
+            <p class="mb-0 text-muted">
+                Showing <b>{{ $doctors->firstItem() }}</b> to
+                <b>{{ $doctors->lastItem() }}</b> of
+                <b>{{ $doctors->total() }}</b> results
+            </p>
+        </div>
+        <div class="col-sm-auto ms-auto">
+            <nav aria-label="...">
+                <ul class="pagination mb-0">
+                    {{-- Previous Page Link --}}
+                    <li class="page-item {{ $doctors->onFirstPage() ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $doctors->previousPageUrl() }}" tabindex="-1" aria-disabled="{{ $doctors->onFirstPage() ? 'true' : 'false' }}">
+                            Previous
+                        </a>
+                    </li>
 
-@section('js-content')
-<style>
-    /* Custom styling for the DataTable */
-    .dataTables_wrapper {
-        padding-top: 10px;
-        position: relative;
-    }
+                    {{-- Pagination Elements --}}
+                    @foreach ($doctors->getUrlRange(1, $doctors->lastPage()) as $page => $url)
+                    <li class="page-item {{ $doctors->currentPage() == $page ? 'active' : '' }}" aria-current="{{ $doctors->currentPage() == $page ? 'page' : '' }}">
+                        <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                    </li>
+                    @endforeach
 
-    /* Search box styling */
-    .dataTables_filter {
-        float: right;
-        margin-bottom: 15px;
-    }
-
-    .dataTables_filter input {
-        margin-left: 10px;
-        border-radius: 4px;
-        border: 1px solid #ddd;
-        padding: 5px 10px;
-    }
-
-    /* Pagination styling */
-    .dataTables_paginate {
-        float: right;
-        margin-top: 15px;
-    }
-
-    .paginate_button {
-        padding: 5px 10px;
-        margin-left: 5px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        cursor: pointer;
-    }
-
-    .paginate_button.current {
-        background: #727cf5;
-        color: white;
-        border-color: #727cf5;
-    }
-
-    .paginate_button:hover {
-        background: #f1f1f1;
-    }
-
-    /* Scrollbar styling */
-    .dataTables_scrollBody {
-        overflow-x: auto !important;
-    }
-
-    .dataTables_scrollBody::-webkit-scrollbar {
-        height: 8px;
-    }
-
-    .dataTables_scrollBody::-webkit-scrollbar-track {
-        background: #f1f1f1;
-    }
-
-    .dataTables_scrollBody::-webkit-scrollbar-thumb {
-        background: #888;
-        border-radius: 4px;
-    }
-
-    .dataTables_scrollBody::-webkit-scrollbar-thumb:hover {
-        background: #555;
-    }
-
-    /* Info text styling */
-    .dataTables_info {
-        padding-top: 15px;
-        float: left;
-    }
-
-    /* Length menu styling */
-    .dataTables_length {
-        float: left;
-        margin-bottom: 15px;
-    }
-
-    .dataTables_length select {
-        border-radius: 4px;
-        border: 1px solid #ddd;
-        padding: 5px;
-    }
-</style>
+                    {{-- Next Page Link --}}
+                    <li class="page-item {{ !$doctors->hasMorePages() ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $doctors->nextPageUrl() }}" aria-disabled="{{ !$doctors->hasMorePages() ? 'true' : 'false' }}">
+                            Next
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
 
 
-<script>
-    $(document).ready(function() {
-        // Initialize with error handling and default sorting
-        initDataTable();
-
-        function initDataTable() {
-            var table = $('#datatable').DataTable({
-                destroy: true, // Allows reinitialization
-                retrieve: true, // Prevents errors if already initialized
-                scrollX: true,
-                responsive: true,
-                dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
-                    "<'row'<'col-sm-12'tr>>" +
-                    "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-                pagingType: "simple_numbers",
-                order: [
-                    [4, 'desc']
-                ],
-                lengthMenu: [
-                    [10, 25, 50, 100, -1],
-                    [10, 25, 50, 100, "All"]
-                ],
-                pageLength: 10,
-                order: [
-                    [4, 'desc']
-                ], // Sort by 5th column (Start date) in descending order
-                language: {
-                    search: "_INPUT_",
-                    searchPlaceholder: "Search...",
-                    lengthMenu: "Show _MENU_ entries",
-                    info: "Showing _START_ to _END_ of _TOTAL_ entries",
-                    infoEmpty: "Showing 0 to 0 of 0 entries",
-                    infoFiltered: "(filtered from _MAX_ total entries)",
-                    paginate: {
-                        first: "First",
-                        last: "Last",
-                        next: "Next",
-                        previous: "Previous"
-                    }
-                }
-            });
-
-            // Suppress DataTables warnings in console
-            $.fn.dataTable.ext.errMode = 'none';
-
-            return table;
-        }
-    });
-</script>
 @endsection

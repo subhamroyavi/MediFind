@@ -7,9 +7,9 @@
             <div class="card-header border-0 align-items-center d-flex pb-0">
                 <h4 class="card-title mb-0 flex-grow-1">
                     @isset($doctors->doctor_id)
-                        Edit Doctor
+                    Edit Doctor
                     @else
-                        Add New Doctor
+                    Add New Doctor
                     @endisset
                 </h4>
 
@@ -34,14 +34,14 @@
                             <div class="card-body">
                                 <h4 class="card-title mb-4">
                                     @isset($doctors->doctor_id)
-                                        Edit Doctor
+                                    Edit Doctor
                                     @else
-                                        Add New Doctor
+                                    Add New Doctor
                                     @endisset
                                 </h4>
                                 <form action="{{ isset($doctors->doctor_id) ? route('admin.doctors.update', $doctors->doctor_id) : route('admin.doctors.store') }}" method={{isset($doctors->doctor_id) ? "post" : "get"}} enctype="multipart/form-data">
                                     @csrf
-                                    
+
 
                                     <div class="row">
                                         <!-- Left Column -->
@@ -135,32 +135,33 @@
                                         </div>
 
                                         <div class="col-lg-6">
-                                            
+
                                             <div class="mb-3">
                                                 <label class="form-label">Specialist <span class="text-danger">*</span></label>
                                                 <input type="text" class="form-control @error('specialist') is-invalid @enderror"
-                                                    name="specialization" value="{{ old('specialist', $doctors->specialization ?? '') }}" >
+                                                    name="specialization" value="{{ old('specialist', $doctors->specialization ?? '') }}">
                                                 @error('specialist')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
-                                            
+
                                             <div class="mb-3">
                                                 <label for="image" class="form-label">Profile Image</label>
                                                 <input type="file" class="form-control @error('image') is-invalid @enderror"
-                                                    name="image">
+                                                    name="image" accept="image/*">
                                                 @error('image')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                                 @isset($doctors->image)
-                                                    <div class="mt-2">
-                                                        <img src="{{ asset('storage/' . $doctors->image) }}" alt="Current Image" width="100" class="img-thumbnail">
-                                                        <p class="text-muted small mt-1">Current Image</p>
-                                                    </div>
-                                                @endisset
+                                                <div class="mt-2">
+                                                    <img src="{{ asset('storage/'.$doctors->image) }}" alt="Current Image" width="100" class="img-thumbnail">
+                                                    <p class="text-muted small mt-1">Current Image</p>
+                                                </div>
+                                                 @endif
                                             </div>
+                                            
                                         </div>
 
                                         <div class="col-lg-12">
@@ -168,9 +169,9 @@
                                                 <a href="{{ route('admin.doctors.index') }}" class="btn btn-secondary">Cancel</a>
                                                 <button type="submit" class="btn btn-primary">
                                                     @isset($doctors->doctor_id)
-                                                        Update Doctor
+                                                    Update Doctor
                                                     @else
-                                                        Save Doctor
+                                                    Save Doctor
                                                     @endisset
                                                 </button>
                                             </div>

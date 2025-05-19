@@ -164,31 +164,102 @@ class AdminDoctorController extends Controller
     {
         // $services = Service::all();
         // $hospitals = Hospital::all();
-        $doctors = Doctor::findOrFail($id);
-        return view('admin_panel.doctorsAction', compact('doctors'));
+        $doctor = Doctor::findOrFail($id);
+        // return view('admin_panel.doctorsAction', compact('doctors'));
+        return view('admin_panel.doctors_action', compact('doctor'));
     }
 
     public function update(Request $request, $id)
     {
         // dd($request->all());
-
         $validated = $request->validate([
+            // Basic Info
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'phone' => 'required|string',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'phone' => 'required|string|max:20',
             'email' => 'required|email',
-            'experience_years' => 'required|integer|min:0',
-            'home_town' => 'nullable|string|max:255',
-            'organization_type' => 'required|in:government,private,public',
-            'specialization' => 'required|string|max:255',
-            'status' => 'required|boolean',
-            'image' => 'nullable|image|mimes:jpeg,png,gif|max:2048'
+            'small_description' => 'required|string|max:255',
 
+            // Professional Info
+            'specialization' => 'required|string|max:255',
+            'organization_type' => 'required|in:government,private,public',
+            'status' => 'required|boolean',
+
+            // Location
+            'address_line1' => 'required|string|max:255',
+            'address_line2' => 'nullable|string|max:255',
+            'city' => 'required|string|max:255',
+            'district' => 'required|string|max:255',
+            'state' => 'required|string|max:255',
+            'pincode' => 'required|string|max:20',
+            'country' => 'required|string|max:255',
+            'google_maps_link' => 'nullable|url',
         ]);
 
-        Doctor::findOrFail($id)->update($validated);
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $filename = 'doctor_' . time() . '.' . $image->getClientOriginalExtension();
+            $path = $image->storeAs('public/doctors', $filename);
+            $validated['image'] = 'doctors/' . $filename; // update relative path
+        }
 
-        return redirect()->route('admin.doctors.index')->with('success', 'Doctor updated successfully');
+        try {
+            // Update doctor record
+            $doctor = Doctor::findOrFail($id)->update([
+                'first_name' => $validated['first_name'],
+                'last_name' => $validated['last_name'],
+                'phone' => $validated['phone'],
+                'email' => $validated['email'],
+                'small_description' => $validated['small_description'],
+                'specialization' => $validated['specialization'],
+                'organization_type' => $validated['organization_type'],
+                'status' => $validated['status'],
+                'image' => $validated['image'],
+            ]);
+
+            // dd($doctor);
+
+            // Find related location
+            $location = Location::where('entity_type', 'doctor')
+                ->where('entity_id', $id)
+                ->first();
+
+            if ($location) {
+                // Update the associated location
+                $location->update([
+
+                    'address_line1' => $validated['address_line1'],
+                    'address_line2' => $validated['address_line2'],
+                    'city' => $validated['city'],
+                    'district' => $validated['district'],
+                    'state' => $validated['state'],
+                    'pincode' => $validated['pincode'],
+                    'country' => $validated['country'],
+                    'google_maps_link' => $validated['google_maps_link'] ?? null,
+                ]);
+            } else {
+                // Handle case where location doesn't exist (maybe create new one?)
+                Location::create([
+                    'entity_type' => 'doctor',
+                    'entity_id' => $doctor->doctor_id,
+                    'address_line1' => $validated['address_line1'],
+                    'address_line2' => $validated['address_line2'],
+                    'city' => $validated['city'],
+                    'district' => $validated['district'],
+                    'state' => $validated['state'],
+                    'pincode' => $validated['pincode'],
+                    'country' => $validated['country'],
+                    'google_maps_link' => $validated['google_maps_link'] ?? null,
+                ]);
+            }
+
+            return redirect()->route('admin.doctors.index')
+                ->with('success', 'Doctor Update successfully!');
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', 'Error creating doctor: ' . $e->getMessage());
+        }
     }
 
     public function destroy($id)

@@ -108,6 +108,7 @@
                                     </div>
                                 </td>
                             </tr>
+                            
                             <!-- Vehicle Details Modal  -->
                             <div class="modal fade vechicle_details{{ $ambulance->ambulance_id }}" id="" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-xl">

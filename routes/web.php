@@ -88,8 +88,8 @@ Route::middleware(['check-login'])->group(function () {
     Route::get('doctors/create', [AdminDoctorController::class, 'create'])->name('admin.doctors.create');
     Route::post('doctors', [AdminDoctorController::class, 'store'])->name('admin.doctors.store');
     Route::get('doctors/{id}/edit', [AdminDoctorController::class, 'edit'])->name('admin.doctors.edit');
-    Route::put('doctors/{id}', [AdminDoctorController::class, 'update'])->name('admin.doctors.update');
-    Route::delete('doctors/{id}', [AdminDoctorController::class, 'destroy'])->name('admin.doctors.destroy');
+    Route::post('doctors/{id}', [AdminDoctorController::class, 'update'])->name('admin.doctors.update');
+    Route::get('doctors/{id}', [AdminDoctorController::class, 'destroy'])->name('admin.doctors.destroy');
 
     Route::get('doctors/test', [AdminDoctorController::class, 'test'])->name('admin.doctors.test');
 

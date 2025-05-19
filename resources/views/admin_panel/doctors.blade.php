@@ -1,14 +1,14 @@
 @extends('layouts.admin_app')
 
 @section('main-content')
-
 <div class="row">
-    <div class="col-xl-12">
+    <div class="col-12">
+
         <!-- Hospitals Table Header Card -->
         <div class="card">
             <div class="card-header border-0 align-items-center d-flex pb-0">
                 <h4 class="card-title mb-0 flex-grow-1">Doctors Table</h4>
-                
+
                 <!-- Add New User Button -->
                 <div class="app-search d-none d-lg-block">
                     <div class="position-relative">
@@ -22,214 +22,340 @@
             </div>
         </div>
         <div class="card">
-            <div class="card-header border-0 align-items-center d-flex pb-0">
-                <h4 class="card-title mb-0 flex-grow-1">
-
-                    <a href="{{ route('admin.doctors.create') }}" class="btn btn-outline-primary waves-effect waves-light">
-                        <i class="fa-solid fa-plus me-2"></i>Add New User
-                    </a>
-                </h4>
-                <!-- App Search-->
-
-                <div>
-                    <div class="dropdown">
-                        <a class="dropdown-toggle text-reset" href="#" data-bs-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                            <span class="fw-semibold">Sort By:</span>
-                            <span class="text-muted">Yearly<i class="fa-solid fa-chevron-down"></i></span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end">
-                            <a class="dropdown-item" href="#">Yearly</a>
-                            <a class="dropdown-item" href="#">Monthly</a>
-                            <a class="dropdown-item" href="#">Weekly</a>
-                            <a class="dropdown-item" href="#">Today</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="card-body">
-                <div class="table-responsive table-card">
-                    <table class="table table-hover table-nowrap align-middle mb-0">
-                        <thead class="bg-light">
-                            <tr class="text-muted text-uppercase">
-                                <th scope="col">Doctor ID</th>
-                                <th scope="col">Doctor</th>
-                                <th scope="col" style="width: 20%;">Email</th>
-                                <th scope="col">Phone</th>
-                                <th scope="col">Specialist</th>
-                                <th scope="col">Experience</th>
-                                <th scope="col">Home</th>
-                                <th scope="col">Organization</th>
-                                <th scope="col" style="width: 8%;">Status</th>
-                                <th scope="col" style="width: 12%;">Action</th>
+                <!-- Add wrapper div with horizontal scroll -->
+                <div class="table-responsive" style="overflow-x: auto;">
+                    <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Doctor</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Specialist</th>
+                                <th>Organization</th>
+                                <th>Location</th>
+                                <th>Status</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
-
                         <tbody>
-                            @foreach($doctors as $doctor)
+                            @foreach ($doctors as $doctor)
                             <tr>
-                                <td>
-                                    <p class="fw-medium mb-0">{{ $doctor->doctor_id }}</p>
-                                </td>
+                                <td>{{ $doctor->doctor_id }}</td>
                                 <td><img src="{{ asset('storage/' . $doctor->image) }}" alt="{{$doctor->first_name}}"
                                         class="avatar-xs rounded-circle me-2">
                                     <a href="#javascript: void(0);"
                                         class="text-body align-middle fw-medium">{{ $doctor->first_name .' '. $doctor->last_name }}</a>
                                 </td>
-                                <td>{{ $doctor->email }}</td>
                                 <td>{{ $doctor->phone }}</td>
+                                <td>{{ $doctor->email }}</td>
                                 <td>{{ $doctor->specialization }}</td>
-                                <td>{{ $doctor->experience_years }}Years</td>
-                                <td>{{ $doctor->home_town }}</td>
                                 <td>{{ $doctor->organization_type }}</td>
+<td><span class="badge bg-info" type="button" data-bs-toggle="modal" data-bs-target=".location_details{{ $doctor->doctor_id }}">{{ $doctor->location ? $doctor->location->city . ', ' . $doctor->location->state : 'N/A' }}</span>
+
                                 <td><span class="badge {{ $doctor->status == 1 ? 'badge-soft-success' : 'badge-soft-danger' }}  p-2">{{ $doctor->status == 1 ? 'Active' : 'Deactive' }}</span></td>
 
                                 <td>
-                                    <div class="dropdown">
-                                        <button class="btn btn-light btn-sm dropdown" type="button"
-                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="fa-solid fa-ellipsis-vertical align-middle font-size-16"></i>
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-end">
-                                            <li>
-                                                <button class="dropdown-item view-doctor-btn" data-id="{{ $doctor->id }}">
-                                                    <i class="mdi mdi-eye-outline font-size-16 align-middle me-2 text-muted"></i>
-                                                    View
-                                                </button>
-                                            </li>
-                                            <li>
-                                                <a href="{{ route('admin.doctors.edit', ['id' => $doctor->doctor_id]) }}" class="dropdown-item edit-doctor-btn">
-                                                    <i class="mdi mdi-pencil-outline font-size-16 align-middle me-2 text-muted"></i>Edit
-                                                </a>
-                                            </li>
+                                    <div class="d-flex gap-2">
+                                        <a href="{{ route('admin.doctors.edit', ['id' => $doctor->doctor_id]) }}"
+                                            class="btn btn-sm btn-primary" title="View">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </a>
+                                        <a href="{{ route('admin.doctors.edit', ['id' => $doctor->doctor_id]) }}"
+                                            class="btn btn-sm btn-success" title="Edit">
+                                            <i class="fa-solid fa-pencil"></i>
+                                        </a>
+                                        <a href="{{ route('admin.doctors.destroy', ['id' => $doctor->doctor_id]) }}"
+                                            class="btn btn-sm btn-danger" title="Delete">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </a>
 
-                                            <li class="dropdown-divider"></li>
-                                            <li>
-
-                                                <a href="{{ route('admin.doctors.destroy', ['id' => $doctor->doctor_id]) }}" class="dropdown-item edit-doctor-btn">
-                                                    <i class="mdi mdi-pencil-outline font-size-16 align-middle me-2 text-muted"></i>Delete
-                                                </a>
-                                            </li>
-                                        </ul>
                                     </div>
                                 </td>
+
                             </tr>
+                        <!-- Location Details Modal  -->
+                            <div class="modal fade location_details{{ $doctor->doctor_id }}" id="" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-xl">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="myExtraLargeModalLabel"><img src="{{ asset('storage/' . $doctor->image) }}" alt="{{$doctor->first_name}}"
+                                        class="avatar-xs rounded-circle me-2">
+                                    <a href="#javascript: void(0);"
+                                        class="text-body align-middle fw-medium">{{ $doctor->first_name .' '. $doctor->last_name }}</a> Location Details</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <!-- location Information Tab -->
+                                            <!-- Address Information Tab -->
+                                            <div class="tab-pane" id="address-info" role="tabpanel">
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label class="form-label" for="address_line1">Address Line 1 <span class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control"
+                                                                readonly
+                                                                value="{{ $doctor->location->address_line1 }}">
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label class="form-label" for="address_line2">Address Line 2</label>
+                                                            <input type="text" class="form-control"
+                                                                readonly
+                                                                value="{{ $doctor->location->address_line2 }}">
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-4">
+                                                        <div class="mb-3">
+                                                            <label class="form-label" for="city">City <span class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control" readonly
+
+                                                                value="{{ $doctor->location->city }}">
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="mb-3">
+                                                            <label class="form-label" for="district">District <span class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control" readonly
+                                                                value="{{ $doctor->location->district }}">
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="mb-3">
+                                                            <label class="form-label" for="state">State <span class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control"
+                                                                readonly
+                                                                value="{{ $doctor->location->state }}">
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label class="form-label" for="pincode">Pincode <span class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control"
+                                                                readonly
+                                                                value="{{  $doctor->location->pincode  }}">
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label class="form-label" for="country">Country <span class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control"
+                                                                readonly
+                                                                value="{{ old('country', $doctor->location->country ?? 'India') }}">
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="mb-3">
+                                                            <label class="form-label" for="pincode">Google Maps Link <span class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control" id="pincode" readonly
+                                                                value="{{ $doctor->location->google_maps_link ?? 'N/A' }}">
+                                                        </div>
+
+                                                        <!-- Additional location information can go here -->
+
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="card h-100">
+                                                            <div class="card-body">
+                                                                <h4 class="card-title">Street View Panoramas</h4>
+                                                                <p class="card-title-desc">Location on Google Maps</p>
+
+                                                                <div id="panorama" class="gmaps-panaroma" style="height: 300px;">
+                                                                    @if($doctor->location && $doctor->location->google_maps_link)
+                                                                    <iframe
+                                                                        src="{{ $doctor->location->google_maps_link  }}"
+                                                                        width="100%"
+                                                                        height="100%"
+                                                                        style="border:0;"
+                                                                        allowfullscreen=""
+                                                                        loading="lazy"
+                                                                        referrerpolicy="no-referrer-when-downgrade">
+                                                                    </iframe>
+                                                                    @else
+                                                                    <div class="text-center py-4">
+                                                                        <i class="fas fa-map-marker-alt fa-3x text-muted"></i>
+                                                                        <p class="mt-2">No location data available</p>
+                                                                    </div>
+                                                                    @endif
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-light waves-effect" data-bs-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal-dialog -->
+                            </div><!-- /.modal -->
+                           
                             @endforeach
-                        </tbody><!-- end tbody -->
-                    </table><!-- end table -->
-                </div><!-- end table responsive -->
+                        </tbody>
+                    </table>
+                </div>
+
             </div>
         </div>
-    </div>
-</div>
+    </div> <!-- end col -->
+</div> <!-- end row -->
 
-<!-- Pagination -->
-<div class="col-sm-auto ms-auto">
-    <div class="row align-items-center mb-4 gy-3">
-        <div class="col-md-5">
-            <p class="mb-0 text-muted">
-                Showing <b>{{ $doctors->firstItem() }}</b> to
-                <b>{{ $doctors->lastItem() }}</b> of
-                <b>{{ $doctors->total() }}</b> results
-            </p>
-        </div>
-        <div class="col-sm-auto ms-auto">
-            <nav aria-label="...">
-                <ul class="pagination mb-0">
-                    {{-- Previous Page Link --}}
-                    <li class="page-item {{ $doctors->onFirstPage() ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $doctors->previousPageUrl() }}" tabindex="-1" aria-disabled="{{ $doctors->onFirstPage() ? 'true' : 'false' }}">
-                            Previous
-                        </a>
-                    </li>
+@endsection
 
-                    {{-- Pagination Elements --}}
-                    @foreach ($doctors->getUrlRange(1, $doctors->lastPage()) as $page => $url)
-                    <li class="page-item {{ $doctors->currentPage() == $page ? 'active' : '' }}" aria-current="{{ $doctors->currentPage() == $page ? 'page' : '' }}">
-                        <a class="page-link" href="{{ $url }}">{{ $page }}</a>
-                    </li>
-                    @endforeach
+@section('js-content')
+<style>
+    /* Custom styling for the DataTable */
+    .dataTables_wrapper {
+        padding-top: 10px;
+        position: relative;
+    }
 
-                    {{-- Next Page Link --}}
-                    <li class="page-item {{ !$doctors->hasMorePages() ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $doctors->nextPageUrl() }}" aria-disabled="{{ !$doctors->hasMorePages() ? 'true' : 'false' }}">
-                            Next
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </div>
-</div>
+    /* Search box styling */
+    .dataTables_filter {
+        float: right;
+        margin-bottom: 15px;
+    }
 
-<!-- Add User Modal -->
-<!-- <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addUserModalLabel">Add New User</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form action="{{ route('admin.doctors.store') }}" method="get" enctype="multipart/form-data">
-                @csrf
-                <div class="modal-body">
-                    <input type="hidden" id="edit_doctor_id" name="id">
-                    <div class="mb-3">
-                        <label for="edit_first_name" class="form-label">First Name</label>
-                        <input type="text" class="form-control" id="edit_first_name" name="first_name" required>
-                        @error('first_name')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    <div class="mb-3">
-                        <label for="edit_last_name" class="form-label">Last Name</label>
-                        <input type="text" class="form-control" id="edit_last_name" name="last_name" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="edit_email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="edit_email" name="email" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="edit_phone" class="form-label">Phone</label>
-                        <input type="text" class="form-control" id="edit_phone" name="phone">
-                    </div>
-                    <div class="mb-3">
-                        <label for="edit_experience_years" class="form-label">Experience (Years)</label>
-                        <input type="number" class="form-control" id="edit_experience_years" name="experience_years">
-                    </div>
-                    <div class="mb-3">
-                        <label for="edit_home_town" class="form-label">Home Town</label>
-                        <input type="text" class="form-control" id="edit_home_town" name="home_town">
-                    </div>
-                    <div class="mb-3">
-                        <label for="edit_organization_type" class="form-label">Organization Type</label>
-                        <select class="form-select" id="edit_organization_type" name="organization_type" required>
-                            <option value="">Select Organization Type</option>
-                            <option value="government">Government</option>
-                            <option value="private">Private</option>
-                            <option value="public">Public</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="edit_status" class="form-label">Status</label>
-                        <select class="form-select" id="edit_status" name="status">
-                            <option value="1">Active</option>
-                            <option value="0">Inactive</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="edit_user_image" class="form-label">Profile Image</label>
-                        <input type="file" class="form-control" id="edit_user_image" name="image">
-                        <div class="mt-2" id="current_image_container"></div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save User</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div> -->
+    .dataTables_filter input {
+        margin-left: 10px;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+        padding: 5px 10px;
+    }
 
+    /* Pagination styling */
+    .dataTables_paginate {
+        float: right;
+        margin-top: 15px;
+    }
+
+    .paginate_button {
+        padding: 5px 10px;
+        margin-left: 5px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .paginate_button.current {
+        background: #727cf5;
+        color: white;
+        border-color: #727cf5;
+    }
+
+    .paginate_button:hover {
+        background: #f1f1f1;
+    }
+
+    /* Scrollbar styling */
+    .dataTables_scrollBody {
+        overflow-x: auto !important;
+    }
+
+    .dataTables_scrollBody::-webkit-scrollbar {
+        height: 8px;
+    }
+
+    .dataTables_scrollBody::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    .dataTables_scrollBody::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 4px;
+    }
+
+    .dataTables_scrollBody::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+    /* Info text styling */
+    .dataTables_info {
+        padding-top: 15px;
+        float: left;
+    }
+
+    /* Length menu styling */
+    .dataTables_length {
+        float: left;
+        margin-bottom: 15px;
+    }
+
+    .dataTables_length select {
+        border-radius: 4px;
+        border: 1px solid #ddd;
+        padding: 5px;
+    }
+</style>
+
+
+<script>
+    $(document).ready(function() {
+        // Initialize with error handling and default sorting
+        initDataTable();
+
+        function initDataTable() {
+            var table = $('#datatable').DataTable({
+                destroy: true, // Allows reinitialization
+                retrieve: true, // Prevents errors if already initialized
+                scrollX: true,
+                responsive: true,
+                dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                pagingType: "simple_numbers",
+                order: [
+                    [4, 'desc']
+                ],
+                lengthMenu: [
+                    [10, 25, 50, 100, -1],
+                    [10, 25, 50, 100, "All"]
+                ],
+                pageLength: 10,
+                order: [
+                    [0, 'desc']
+                ], // Sort by 5th column (Start date) in descending order
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search...",
+                    lengthMenu: "Show _MENU_ entries",
+                    info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                    infoEmpty: "Showing 0 to 0 of 0 entries",
+                    infoFiltered: "(filtered from _MAX_ total entries)",
+                    paginate: {
+                        first: "First",
+                        last: "Last",
+                        next: "Next",
+                        previous: "Previous"
+                    }
+                }
+            });
+
+            // Suppress DataTables warnings in console
+            $.fn.dataTable.ext.errMode = 'none';
+
+            return table;
+        }
+    });
+</script>
 @endsection

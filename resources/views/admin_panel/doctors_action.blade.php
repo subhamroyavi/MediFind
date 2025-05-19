@@ -7,21 +7,24 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title mb-4">
+
                     <a href="{{ route('admin.doctors.index') }}">Doctors / </a>
                     @isset($doctor->doctor_id)
-                    Edit Doctor
+                    Edit Doctor / <img src="{{ asset('storage/' . $doctor->image) }}" alt="{{$doctor->first_name}}"
+                                        class="avatar-xs rounded-circle me-2">
+                                    <a href="#javascript: void(0);"
+                                        class="text-body align-middle fw-medium">{{ $doctor->first_name .' '. $doctor->last_name }}</a>
+
                     @else
                     Doctor Registration Form
                     @endisset
                 </h4>
 
-                <form action="{{ isset($doctor->doctor_id) ? route('admin.doctor.update', $doctor->doctor_id) : route('admin.doctors.store') }}"
+                <form action="{{ isset($doctor->doctor_id) ? route('admin.doctors.update', $doctor->doctor_id) : route('admin.doctors.store') }}"
                     method="POST"
                     enctype="multipart/form-data">
                     @csrf
-                    @isset($doctor->doctor_id)
-                    @method('PUT')
-                    @endisset
+                   
 
                     <div class="row mb-4">
                         <div class="col-12">
@@ -86,18 +89,18 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="mb-3">
-                                        <label class="form-label" for="image">Profile Image</label>
-                                        <input type="file" class="form-control @error('image') is-invalid @enderror"
-                                            name="image" accept="image/*">
-                                        @error('image')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                        @if(isset($doctor->image))
-                                        <div class="mt-2">
-                                            <img src="{{ asset('storage/'.$doctor->image) }}" width="100" alt="Current Image">
-                                        </div>
-                                        @endif
-                                    </div>
+    <label class="form-label" for="image">Profile Image</label>
+    <input type="file" class="form-control @error('image') is-invalid @enderror"
+           name="image" accept="image/*">
+    @error('image')
+        <div class="invalid-feedback">{{ htmlspecialchars($message) }}</div>
+    @enderror
+    @if(isset($doctor->image))
+        <div class="mt-2">
+            <img src="{{ asset('storage/'.$doctor->image) }}" width="100" alt="Current Image">
+        </div>
+    @endif
+</div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="mb-3">
