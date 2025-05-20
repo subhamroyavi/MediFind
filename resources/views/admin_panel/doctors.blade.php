@@ -34,7 +34,7 @@
                                 <th>Email</th>
                                 <th>Specialist</th>
                                 <th>Organization</th>
-                                <th>Location</th>
+                                <th>locations</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -52,7 +52,7 @@
                                 <td>{{ $doctor->email }}</td>
                                 <td>{{ $doctor->specialization }}</td>
                                 <td>{{ $doctor->organization_type }}</td>
-                                <td><span class="badge bg-info" type="button" data-bs-toggle="modal" data-bs-target=".location_details{{ $doctor->doctor_id }}">{{ $doctor->location ? $doctor->location->city . ', ' . $doctor->location->state : 'N/A' }}</span>
+                                <td><span class="badge bg-info" type="button" data-bs-toggle="modal" data-bs-target=".locations_details{{ $doctor->doctor_id }}">{{ $doctor->locations ? $doctor->locations->city . ', ' . $doctor->locations->state : 'N/A' }}</span>
 
                                 <td><span class="badge {{ $doctor->status == 1 ? 'badge-soft-success' : 'badge-soft-danger' }}  p-2">{{ $doctor->status == 1 ? 'Active' : 'Deactive' }}</span></td>
 
@@ -75,20 +75,20 @@
                                 </td>
 
                             </tr>
-                            <!-- Location Details Modal  -->
-                            <div class="modal fade location_details{{ $doctor->doctor_id }}" id="" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+                            <!-- locations Details Modal  -->
+                            <div class="modal fade locations_details{{ $doctor->doctor_id }}" id="" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-xl">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="myExtraLargeModalLabel"><img src="{{ asset('storage/' . $doctor->image) }}" alt="{{$doctor->first_name}}"
                                                     class="avatar-xs rounded-circle me-2">
                                                 <a href="#javascript: void(0);"
-                                                    class="text-body align-middle fw-medium">{{ $doctor->first_name .' '. $doctor->last_name }}</a> Location Details
+                                                    class="text-body align-middle fw-medium">{{ $doctor->first_name .' '. $doctor->last_name }}</a> locations Details
                                             </h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <!-- location Information Tab -->
+                                            <!-- locations Information Tab -->
                                             <!-- Address Information Tab -->
                                             <div class="tab-pane" id="address-info" role="tabpanel">
                                                 <div class="row">
@@ -97,7 +97,7 @@
                                                             <label class="form-label" for="address_line1">Address Line 1 <span class="text-danger">*</span></label>
                                                             <input type="text" class="form-control"
                                                                 readonly
-                                                                value="{{ $doctor->location->address_line1 }}">
+                                                                value="{{ $doctor->locations->address_line1 }}">
 
                                                         </div>
                                                     </div>
@@ -106,7 +106,7 @@
                                                             <label class="form-label" for="address_line2">Address Line 2</label>
                                                             <input type="text" class="form-control"
                                                                 readonly
-                                                                value="{{ $doctor->location->address_line2 }}">
+                                                                value="{{ $doctor->locations->address_line2 }}">
 
                                                         </div>
                                                     </div>
@@ -118,7 +118,7 @@
                                                             <label class="form-label" for="city">City <span class="text-danger">*</span></label>
                                                             <input type="text" class="form-control" readonly
 
-                                                                value="{{ $doctor->location->city }}">
+                                                                value="{{ $doctor->locations->city }}">
 
                                                         </div>
                                                     </div>
@@ -126,7 +126,7 @@
                                                         <div class="mb-3">
                                                             <label class="form-label" for="district">District <span class="text-danger">*</span></label>
                                                             <input type="text" class="form-control" readonly
-                                                                value="{{ $doctor->location->district }}">
+                                                                value="{{ $doctor->locations->district }}">
 
                                                         </div>
                                                     </div>
@@ -135,7 +135,7 @@
                                                             <label class="form-label" for="state">State <span class="text-danger">*</span></label>
                                                             <input type="text" class="form-control"
                                                                 readonly
-                                                                value="{{ $doctor->location->state }}">
+                                                                value="{{ $doctor->locations->state }}">
 
                                                         </div>
                                                     </div>
@@ -147,7 +147,7 @@
                                                             <label class="form-label" for="pincode">Pincode <span class="text-danger">*</span></label>
                                                             <input type="text" class="form-control"
                                                                 readonly
-                                                                value="{{  $doctor->location->pincode  }}">
+                                                                value="{{  $doctor->locations->pincode  }}">
 
                                                         </div>
                                                     </div>
@@ -156,7 +156,7 @@
                                                             <label class="form-label" for="country">Country <span class="text-danger">*</span></label>
                                                             <input type="text" class="form-control"
                                                                 readonly
-                                                                value="{{ old('country', $doctor->location->country ?? 'India') }}">
+                                                                value="{{ old('country', $doctor->locations->country ?? 'India') }}">
 
                                                         </div>
                                                     </div>
@@ -166,10 +166,10 @@
                                                         <div class="mb-3">
                                                             <label class="form-label" for="pincode">Google Maps Link <span class="text-danger">*</span></label>
                                                             <input type="text" class="form-control" id="pincode" readonly
-                                                                value="{{ $doctor->location->google_maps_link ?? 'N/A' }}">
+                                                                value="{{ $doctor->locations->google_maps_link ?? 'N/A' }}">
                                                         </div>
 
-                                                        <!-- Additional location information can go here -->
+                                                        <!-- Additional locations information can go here -->
 
                                                     </div>
                                                 </div>
@@ -178,12 +178,12 @@
                                                         <div class="card h-100">
                                                             <div class="card-body">
                                                                 <h4 class="card-title">Street View Panoramas</h4>
-                                                                <p class="card-title-desc">Location on Google Maps</p>
+                                                                <p class="card-title-desc">locations on Google Maps</p>
 
                                                                 <div id="panorama" class="gmaps-panaroma" style="height: 300px;">
-                                                                    @if($doctor->location && $doctor->location->google_maps_link)
+                                                                    @if($doctor->locations && $doctor->locations->google_maps_link)
                                                                     <iframe
-                                                                        src="{{ $doctor->location->google_maps_link  }}"
+                                                                        src="{{ $doctor->locations->google_maps_link  }}"
                                                                         width="100%"
                                                                         height="100%"
                                                                         style="border:0;"
@@ -194,7 +194,7 @@
                                                                     @else
                                                                     <div class="text-center py-4">
                                                                         <i class="fas fa-map-marker-alt fa-3x text-muted"></i>
-                                                                        <p class="mt-2">No location data available</p>
+                                                                        <p class="mt-2">No locations data available</p>
                                                                     </div>
                                                                     @endif
                                                                 </div>

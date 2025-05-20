@@ -19,6 +19,6 @@ class Education extends Model
         'date',
         'country',
     ];
-    // id	doctor_id	course_name	university	date	country	created_at	updated_at	
-
+  
+	// education_id	doctor_id	course_name	university	date	country
 }

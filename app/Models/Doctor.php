@@ -29,17 +29,17 @@ class Doctor extends Model
         'image'
     ];
 
-    public function location()
+    public function locations()
     {
         return $this->hasOne(Location::class, 'entity_id');
     }
 
-    public function education()
+    public function educations()
     {
         return $this->hasMany(Education::class, 'doctor_id');
     }
 
-    public function experience()
+    public function experiences()
     {
         return $this->hasMany(Experience::class, 'doctor_id');
     }

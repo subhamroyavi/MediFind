@@ -88,7 +88,7 @@
 
                             <div class="row">
 
-                                <div class="col-lg-6">
+                               <div class="col-lg-6">
                                     <div class="mb-3">
                                         <label class="form-label" for="image">Profile Image</label>
                                         <input type="file" class="form-control @error('image') is-invalid @enderror"
@@ -242,7 +242,7 @@
                                                 <input type="text" class="form-control @error('educations.'.$index.'.year') is-invalid @enderror"
                                                     name="educations[{{ $index }}][year]"
                                                     placeholder="YYYY"
-                                                    value="{{ old('educations.'.$index.'.year', $education->year) }}">
+                                                    value="{{ old('educations.'.$index.'.year', $education->date) }}">
                                                 @error('educations.'.$index.'.year')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
@@ -368,7 +368,7 @@
                                                 <input type="text" class="form-control @error('experiences.'.$index.'.start_year') is-invalid @enderror"
                                                     name="experiences[{{ $index }}][start_year]"
                                                     placeholder="YYYY"
-                                                    value="{{ old('experiences.'.$index.'.start_year', $experience->start_year) }}">
+                                                    value="{{ old('experiences.'.$index.'.start_year', $experience->start_date) }}">
                                                 @error('experiences.'.$index.'.start_year')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
@@ -380,7 +380,7 @@
                                                 <input type="text" class="form-control @error('experiences.'.$index.'.end_year') is-invalid @enderror"
                                                     name="experiences[{{ $index }}][end_year]"
                                                     placeholder="YYYY"
-                                                    value="{{ old('experiences.'.$index.'.end_year', $experience->end_year) }}">
+                                                    value="{{ old('experiences.'.$index.'.end_year', $experience->end_date) }}">
                                                 @error('experiences.'.$index.'.end_year')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
@@ -497,7 +497,7 @@
                                         <label class="form-label" for="address_line1">Address Line 1 <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control @error('address_line1') is-invalid @enderror"
                                             id="address_line1" name="address_line1"
-                                            value="{{ old('address_line1', $doctor->location->address_line1 ?? '') }}">
+                                            value="{{ old('address_line1', $doctor->locations->address_line1 ?? '') }}">
                                         @error('address_line1')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -508,7 +508,7 @@
                                         <label class="form-label" for="address_line2">Address Line 2</label>
                                         <input type="text" class="form-control @error('address_line2') is-invalid @enderror"
                                             id="address_line2" name="address_line2"
-                                            value="{{ old('address_line2', $doctor->location->address_line2 ?? '') }}">
+                                            value="{{ old('address_line2', $doctor->locations->address_line2 ?? '') }}">
                                         @error('address_line2')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -522,7 +522,7 @@
                                         <label class="form-label" for="city">City <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control @error('city') is-invalid @enderror"
                                             id="city" name="city"
-                                            value="{{ old('city', $doctor->location->city ?? '') }}">
+                                            value="{{ old('city', $doctor->locations->city ?? '') }}">
                                         @error('city')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -533,7 +533,7 @@
                                         <label class="form-label" for="district">District <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control @error('district') is-invalid @enderror"
                                             id="district" name="district"
-                                            value="{{ old('district', $doctor->location->district ?? '') }}">
+                                            value="{{ old('district', $doctor->locations->district ?? '') }}">
                                         @error('district')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -544,7 +544,7 @@
                                         <label class="form-label" for="state">State <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control @error('state') is-invalid @enderror"
                                             id="state" name="state"
-                                            value="{{ old('state', $doctor->location->state ?? '') }}">
+                                            value="{{ old('state', $doctor->locations->state ?? '') }}">
                                         @error('state')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -558,7 +558,7 @@
                                         <label class="form-label" for="pincode">Pincode <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control @error('pincode') is-invalid @enderror"
                                             id="pincode" name="pincode"
-                                            value="{{ old('pincode', $doctor->location->pincode ?? '') }}">
+                                            value="{{ old('pincode', $doctor->locations->pincode ?? '') }}">
                                         @error('pincode')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -569,7 +569,7 @@
                                         <label class="form-label" for="country">Country <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control @error('country') is-invalid @enderror"
                                             id="country" name="country"
-                                            value="{{ old('country', $doctor->location->country ?? '') }}">
+                                            value="{{ old('country', $doctor->locations->country ?? '') }}">
                                         @error('country')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -583,7 +583,7 @@
                                         <label class="form-label" for="google_maps_link">Google Maps Link</label>
                                         <input type="url" class="form-control @error('google_maps_link') is-invalid @enderror"
                                             id="google_maps_link" name="google_maps_link"
-                                            value="{{ old('google_maps_link', $doctor->location->google_maps_link ?? '') }}">
+                                            value="{{ old('google_maps_link', $doctor->locations->google_maps_link ?? '') }}">
                                         @error('google_maps_link')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -593,7 +593,7 @@
 
                             <!-- Hidden fields for location relationship -->
                             @if(isset($doctor->location))
-                            <input type="hidden" name="location_id" value="{{ $doctor->location->location_id }}">
+                            <input type="hidden" name="location_id" value="{{ $doctor->locations->location_id }}">
                             @endif
                             <input type="hidden" name="entity_type" value="doctor">
                             <input type="hidden" name="entity_id" value="{{ $doctor->doctor_id ?? '' }}">

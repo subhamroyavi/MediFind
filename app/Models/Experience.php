@@ -15,7 +15,7 @@ class Experience extends Model
     protected $fillable = [
         'doctor_id',
         'position',
-        'hospital_name', // Added this as you're using new_hospital_name in form
+        'hospital_name', 
         'start_date',
         'end_date',
         'status',
@@ -26,3 +26,13 @@ class Experience extends Model
         return $this->belongsTo(Doctor::class, 'doctor_id');
     }
 }
+//  "doctor_id" => 70
+    // "position" => "Cardiology"
+    // "hospital_name" => "Tufan Gang Hospital"
+    // "start_date" => "2015"
+    // "end_date" => "2020"
+    // "status" => "1"
+
+	// id	doctor_id	position	hospital_name	start_date	end_date	status	created_at	updated_at	
+
+  
