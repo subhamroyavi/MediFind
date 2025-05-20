@@ -9,7 +9,7 @@ class Experience extends Model
 {
     use HasFactory;
     protected $table = 'professional_experience';
-    protected $primaryKey = 'location_id';
+    protected $primaryKey = 'experience_id';
     public $timestamps = false;
 
     protected $fillable = [

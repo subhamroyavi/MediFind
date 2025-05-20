@@ -53,15 +53,15 @@ class AdminDoctorController extends Controller
             'educations' => 'required|array|min:1',
             'educations.*.course_name' => 'required|string|max:255',
             'educations.*.university' => 'required|string|max:255',
-            'educations.*.year' => 'nullable|string|size:4',
+            'educations.*.year' => 'required|string|size:4',
             'educations.*.country' => 'nullable|string|max:255',
 
             // Experience (array validation)
             'experiences' => 'required|array|min:1',
             'experiences.*.position' => 'required|string|max:255',
-            'experiences.*.new_hospital_name' => 'nullable|string|max:255',
-            'experiences.*.start_year' => 'nullable|string|size:4',
-            'experiences.*.end_year' => 'nullable|string|size:4',
+            'experiences.*.new_hospital_name' => 'required|string|max:255',
+            'experiences.*.start_year' => 'required|string|size:4',
+            'experiences.*.end_year' => 'required|string|size:4',
             'experiences.*.status' => 'required|boolean',
 
             // Location
@@ -120,6 +120,7 @@ class AdminDoctorController extends Controller
                     'country' => $education['country'] ?? null,
                 ];
             })->toArray();
+            // dd($educationsData);
 
             foreach ($educationsData as $education) {
                 Education::create($education);
@@ -173,15 +174,13 @@ class AdminDoctorController extends Controller
         // dd($doctor);
         return view('admin_panel.doctors_action', compact('doctor'));
     }
-
     public function update(Request $request, $id)
     {
-        // foreach ($request->educations as $education) {
-        //     $educations = Education::findOrFail($education['education_id']);
-        //     dd($educations);
+        // dd($request->all());
+        // foreach ($request['experiences'] as $experience) {
+        //     $exp = Experience::where('experience_id', $experience['id'])->get();
+        //     // dd($exp);
         // }
-
-
         $validated = $request->validate([
             // Basic Info
             'first_name' => 'required|string|max:255',
@@ -196,14 +195,15 @@ class AdminDoctorController extends Controller
             'organization_type' => 'required|in:government,private,public',
             'status' => 'required|boolean',
 
-            // Education (array validation)
+            // Education
             'educations' => 'required|array|min:1',
+            'educations.*.education_id' => 'nullable|integer',
             'educations.*.course_name' => 'required|string|max:255',
             'educations.*.university' => 'required|string|max:255',
             'educations.*.year' => 'nullable|string|size:4',
             'educations.*.country' => 'nullable|string|max:255',
 
-            // Experience (array validation)
+            // Experience
             'experiences' => 'required|array|min:1',
             'experiences.*.position' => 'required|string|max:255',
             'experiences.*.new_hospital_name' => 'nullable|string|max:255',
@@ -227,12 +227,12 @@ class AdminDoctorController extends Controller
             $image = $request->file('image');
             $filename = 'doctor_' . time() . '.' . $image->getClientOriginalExtension();
             $path = $image->storeAs('public/doctors', $filename);
-            $validated['image'] = 'doctors/' . $filename; // update relative path
+            $validated['image'] = 'doctors/' . $filename;
         }
 
         try {
-            // Update doctor record
-            $doctor = Doctor::findOrFail($id)->update([
+            $doctor = Doctor::findOrFail($id);
+            $doctor->update([
                 'first_name' => $validated['first_name'],
                 'last_name' => $validated['last_name'],
                 'phone' => $validated['phone'],
@@ -241,20 +241,13 @@ class AdminDoctorController extends Controller
                 'specialization' => $validated['specialization'],
                 'organization_type' => $validated['organization_type'],
                 'status' => $validated['status'],
-                'image' => $validated['image'],
+                'image' => $validated['image'] ?? $doctor->image,
             ]);
 
-            // dd($doctor);
-
-            // Find related location
-            $location = Location::where('entity_type', 'doctor')
-                ->where('entity_id', $id)
-                ->first();
-
-            if ($location) {
-                // Update the associated location
-                $location->update([
-
+            // Location update or create
+            $location = Location::updateOrCreate(
+                ['entity_type' => 'doctor', 'entity_id' => $id],
+                [
                     'address_line1' => $validated['address_line1'],
                     'address_line2' => $validated['address_line2'],
                     'city' => $validated['city'],
@@ -263,61 +256,59 @@ class AdminDoctorController extends Controller
                     'pincode' => $validated['pincode'],
                     'country' => $validated['country'],
                     'google_maps_link' => $validated['google_maps_link'] ?? null,
-                ]);
-            } else {
-                // Handle case where location doesn't exist (maybe create new one?)
-                Location::create([
-                    'entity_type' => 'doctor',
-                    'entity_id' => $doctor->doctor_id,
-                    'address_line1' => $validated['address_line1'],
-                    'address_line2' => $validated['address_line2'],
-                    'city' => $validated['city'],
-                    'district' => $validated['district'],
-                    'state' => $validated['state'],
-                    'pincode' => $validated['pincode'],
-                    'country' => $validated['country'],
-                    'google_maps_link' => $validated['google_maps_link'] ?? null,
-                ]);
-            }
+                ]
+            );
 
-            foreach ($request->educations as $education) {
-                if (isset($education['education_id'])) {
-                    // Update existing record
-                    $educations = Education::findOrFail($education['education_id']);
-                    if ($educations) {
-                        $educations->update([
-                            'course_name' => $education['course_name'],
-                            'university' => $education['university'],
-                            'date' => $education['year'],
-                            'country' => $education['country'],
-                        ]);
-                    }
+            // Education update/create
+            foreach ($validated['educations'] as $education) {
+                if (!empty($education['education_id'])) {
+                    Education::where('education_id', $education['education_id'])->update([
+                        'course_name' => $education['course_name'],
+                        'university' => $education['university'],
+                        'date' => $education['year'] ?? null,
+                        'country' => $education['country'] ?? null,
+                    ]);
                 } else {
-                    // Create new record
                     Education::create([
                         'doctor_id' => $doctor->id,
-                        // 'course_name' => $education['course_name'],
-                        // 'university' => $education['university'],
-                        // 'date' => $education['year'],
-                        // 'country' => $education['country'],
-                        'course_name' => $education->course_name,
-                        'university' => $education->university,
-                        'date' => $education->year,
-                        'country' => $education->country,
+                        'course_name' => $education['course_name'],
+                        'university' => $education['university'],
+                        'date' => $education['year'],
+                        'country' => $education['country'],
                     ]);
                 }
             }
 
+
+            foreach ($validated['experiences'] as $experience) {
+                if (!empty($experience['experience_id'])) {
+                    Experience::where('experience_id', $experience['experience_id'])->update([
+                        'position' => $experience['position'],
+                        'hospital_name' => $experience['new_hospital_name'] ?? null,
+                        'start_date' => $experience['start_year'] ?? null,
+                        'end_date' => $experience['end_year'] ?? null,
+                        'status' => $experience['status'],
+                    ]);
+                }
+            }
+
+            // (Optional) Experience update can be added here if needed.
+
             return redirect()->route('admin.doctors.index')
-                ->with('success', 'Doctor Update successfully!');
+                ->with('success', 'Doctor updated successfully!');
         } catch (\Exception $e) {
-            return back()->withInput()->with('error', 'Error creating doctor: ' . $e->getMessage());
+            return back()->withInput()->with('error', 'Error updating doctor: ' . $e->getMessage());
         }
     }
 
     // public function update(Request $request, $id)
     // {
-    //     dd($request->all());
+    //     // foreach ($request->educations as $education) {
+    //     //     $educations = Education::findOrFail($education['education_id']);
+    //     //     dd($educations);
+    //     // }
+
+
     //     $validated = $request->validate([
     //         // Basic Info
     //         'first_name' => 'required|string|max:255',
@@ -358,22 +349,17 @@ class AdminDoctorController extends Controller
     //         'google_maps_link' => 'nullable|url',
     //     ]);
 
-    //     DB::beginTransaction();
+    //     // Handle image upload
+    //     if ($request->hasFile('image')) {
+    //         $image = $request->file('image');
+    //         $filename = 'doctor_' . time() . '.' . $image->getClientOriginalExtension();
+    //         $path = $image->storeAs('public/doctors', $filename);
+    //         $validated['image'] = 'doctors/' . $filename; // update relative path
+    //     }
 
     //     try {
-    //         $doctor = Doctor::findOrFail($id);
-
-    //         // Handle image upload
-    //         if ($request->hasFile('image')) {
-    //             $image = $request->file('image');
-    //             $filename = 'ambulance_' . time() . '_' . $image->getClientOriginalName();
-    //             $path = $image->storeAs('public/ambulances', $filename);
-    //             $validated['image'] = 'ambulances/' . $filename;
-    //         }
-
-
     //         // Update doctor record
-    //         $doctor->update([
+    //         $doctor = Doctor::findOrFail($id)->update([
     //             'first_name' => $validated['first_name'],
     //             'last_name' => $validated['last_name'],
     //             'phone' => $validated['phone'],
@@ -382,68 +368,89 @@ class AdminDoctorController extends Controller
     //             'specialization' => $validated['specialization'],
     //             'organization_type' => $validated['organization_type'],
     //             'status' => $validated['status'],
-    //             'image' => $validated['image'] ?? $doctor->image,
+    //             'image' => $validated['image'],
     //         ]);
 
-    //         // Update or create location
-    //         $locationData = [
-    //             'address_line1' => $validated['address_line1'],
-    //             'address_line2' => $validated['address_line2'],
-    //             'city' => $validated['city'],
-    //             'district' => $validated['district'],
-    //             'state' => $validated['state'],
-    //             'pincode' => $validated['pincode'],
-    //             'country' => $validated['country'],
-    //             'google_maps_link' => $validated['google_maps_link'] ?? null,
-    //         ];
+    //         // dd($doctor);
 
-    //         $doctor->location()->updateOrCreate(
-    //             ['entity_type' => 'doctor', 'entity_id' => $doctor->id],
-    //             $locationData
-    //         );
+    //         // Find related location
+    //         $location = Location::where('entity_type', 'doctor')
+    //             ->where('entity_id', $id)
+    //             ->first();
 
-    //         // Handle educations - delete existing and create new
-    //         $doctor->educations()->delete();
+    //         if ($location) {
+    //             // Update the associated location
+    //             $location->update([
+
+    //                 'address_line1' => $validated['address_line1'],
+    //                 'address_line2' => $validated['address_line2'],
+    //                 'city' => $validated['city'],
+    //                 'district' => $validated['district'],
+    //                 'state' => $validated['state'],
+    //                 'pincode' => $validated['pincode'],
+    //                 'country' => $validated['country'],
+    //                 'google_maps_link' => $validated['google_maps_link'] ?? null,
+    //             ]);
+    //         } else {
+    //             // Handle case where location doesn't exist (maybe create new one?)
+    //             Location::create([
+    //                 'entity_type' => 'doctor',
+    //                 'entity_id' => $doctor->doctor_id,
+    //                 'address_line1' => $validated['address_line1'],
+    //                 'address_line2' => $validated['address_line2'],
+    //                 'city' => $validated['city'],
+    //                 'district' => $validated['district'],
+    //                 'state' => $validated['state'],
+    //                 'pincode' => $validated['pincode'],
+    //                 'country' => $validated['country'],
+    //                 'google_maps_link' => $validated['google_maps_link'] ?? null,
+    //             ]);
+    //         }
+
     //         $educationsData = collect($validated['educations'])->map(function ($education) use ($doctor) {
     //             return [
-    //                 'doctor_id' => $doctor->id,
+    //                 'education_id' => $education['education_id'] ?? null, // Make sure this matches your form field name
+    //                 'doctor_id' => $doctor->doctor_id,
     //                 'course_name' => $education['course_name'],
     //                 'university' => $education['university'],
     //                 'date' => $education['year'] ?? null,
     //                 'country' => $education['country'] ?? null,
-    //                 'created_at' => now(),
-    //                 'updated_at' => now(),
     //             ];
     //         })->toArray();
 
-    //         $doctor->educations()->insert($educationsData);
+    //         dd($educationsData);
 
-    //         // Handle experiences - delete existing and create new
-    //         $doctor->experiences()->delete();
-    //         $experiencesData = collect($validated['experiences'])->map(function ($experience) use ($doctor) {
-    //             return [
-    //                 'doctor_id' => $doctor->id,
-    //                 'position' => $experience['position'],
-    //                 'hospital_name' => $experience['new_hospital_name'] ?? null,
-    //                 'start_year' => $experience['start_year'] ?? null,
-    //                 'end_year' => $experience['end_year'] ?? null,
-    //                 'status' => $experience['status'],
-    //                 'created_at' => now(),
-    //                 'updated_at' => now(),
-    //             ];
-    //         })->toArray();
-
-    //         $doctor->experiences()->insert($experiencesData);
-
-    //         DB::commit();
+    //         foreach ($educationsData as $education) {
+    //             if (!empty($education['education_id'])) {
+    //                 // Update existing record
+    //                 Education::where('education_id', $education['education_id'])
+    //                     ->update([
+    //                         'course_name' => $education['course_name'],
+    //                         'university' => $education['university'],
+    //                         'date' => $education['date'],
+    //                         'country' => $education['country'],
+    //                     ]);
+    //             } else {
+    //                 // Create new record
+    //                 Education::create([
+    //                     'doctor_id' => $id,
+    //                     'course_name' => $education['course_name'],
+    //                     'university' => $education['university'],
+    //                     'date' => $education['date'],
+    //                     'country' => $education['country'],
+    //                 ]);
+    //             }
+    //         }
 
     //         return redirect()->route('admin.doctors.index')
-    //             ->with('success', 'Doctor updated successfully!');
+    //             ->with('success', 'Doctor Update successfully!');
     //     } catch (\Exception $e) {
-    //         DB::rollBack();
-    //         return back()->withInput()->with('error', 'Error updating doctor: ' . $e->getMessage());
+    //         return back()->withInput()->with('error', 'Error creating doctor: ' . $e->getMessage());
     //     }
     // }
+
+
+
 
     public function destroy($id)
     {

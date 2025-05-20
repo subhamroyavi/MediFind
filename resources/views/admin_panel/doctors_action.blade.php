@@ -402,7 +402,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <input type="hidden" name="experiences[{{ $index }}][id]" value="{{ $experience->id }}">
+                                    <input type="hidden" name="experiences[{{ $index }}][experience_id]" value="{{ $experience->experience_id }}">
                                     <button type="button" class="btn btn-sm btn-danger remove-experience">Remove</button>
                                 </div>
                                 @endforeach
