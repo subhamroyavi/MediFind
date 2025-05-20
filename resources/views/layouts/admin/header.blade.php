@@ -221,7 +221,7 @@
 
                         <li class="menu-title">Pages</li>
                         <li>
-                            <a href="{{route('admin.services')}}" class="waves-effect">
+                            <a href="{{-- route('admin.services') --}}" class="waves-effect">
                                 <i class="fas fa-stethoscope"></i><span class="badge rounded-pill bg-success float-end">3</span>
                                 <span>Servies</span>
                             </a>

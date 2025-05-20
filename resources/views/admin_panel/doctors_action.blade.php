@@ -260,7 +260,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <input type="hidden" name="educations[{{ $index }}][id]" value="{{ $education->id }}">
+                                    <input type="hidden" name="educations[{{ $index }}][education_id]" value="{{ $education->education_id }}">
                                     <button type="button" class="btn btn-sm btn-danger remove-education">Remove</button>
                                 </div>
                                 @endforeach

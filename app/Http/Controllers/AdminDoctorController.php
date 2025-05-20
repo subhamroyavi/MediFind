@@ -111,7 +111,6 @@ class AdminDoctorController extends Controller
                 'google_maps_link' => $validated['google_maps_link'] ?? null,
             ]);
 
-            //     $doctor->education()->createMany($educationsData);
             $educationsData = collect($validated['educations'])->map(function ($education) use ($doctor) {
                 return [
                     'doctor_id' => $doctor->doctor_id,
@@ -125,6 +124,18 @@ class AdminDoctorController extends Controller
             foreach ($educationsData as $education) {
                 Education::create($education);
             }
+
+            // if (!isset($doctor->educations)) {
+            //     foreach ($validated['educations'] as $education) {
+            //         Education::create([
+            //             'doctor_id' => $doctor->id,
+            //             'course_name' => $education['course_name'],
+            //             'university' => $education['university'],
+            //             'date' => $education['year'],
+            //             'country' => $education['country'],
+            //         ]);
+            //     }
+            // }
 
             // Create experience records - optimized
             $experiencesData = collect($validated['experiences'])->map(function ($experience) use ($doctor) {
@@ -141,6 +152,9 @@ class AdminDoctorController extends Controller
             foreach ($experiencesData as $experience) {
                 Experience::create($experience);
             }
+
+
+
 
             DB::commit(); // Commit transaction if all operations succeed
 
@@ -162,7 +176,11 @@ class AdminDoctorController extends Controller
 
     public function update(Request $request, $id)
     {
-        // dd($request->all());
+        // foreach ($request->educations as $education) {
+        //     $educations = Education::findOrFail($education['education_id']);
+        //     dd($educations);
+        // }
+
 
         $validated = $request->validate([
             // Basic Info
@@ -261,8 +279,34 @@ class AdminDoctorController extends Controller
                     'google_maps_link' => $validated['google_maps_link'] ?? null,
                 ]);
             }
-            $educations = Education::where('doctor_id', $id)->get();
-            dd($educations);
+
+            foreach ($request->educations as $education) {
+                if (isset($education['education_id'])) {
+                    // Update existing record
+                    $educations = Education::findOrFail($education['education_id']);
+                    if ($educations) {
+                        $educations->update([
+                            'course_name' => $education['course_name'],
+                            'university' => $education['university'],
+                            'date' => $education['year'],
+                            'country' => $education['country'],
+                        ]);
+                    }
+                } else {
+                    // Create new record
+                    Education::create([
+                        'doctor_id' => $doctor->id,
+                        // 'course_name' => $education['course_name'],
+                        // 'university' => $education['university'],
+                        // 'date' => $education['year'],
+                        // 'country' => $education['country'],
+                        'course_name' => $education->course_name,
+                        'university' => $education->university,
+                        'date' => $education->year,
+                        'country' => $education->country,
+                    ]);
+                }
+            }
 
             return redirect()->route('admin.doctors.index')
                 ->with('success', 'Doctor Update successfully!');
