@@ -34,13 +34,12 @@ class Doctor extends Model
         return $this->hasOne(Location::class, 'entity_id');
     }
 
-    public function educations()
-    {
-        return $this->hasMany(Education::class, 'doctor_id');
-    }
+    public function educations() {
+    return $this->hasMany(Education::class, 'doctor_id')->orderBy('date', 'DESC');
+}
 
     public function experiences()
     {
-        return $this->hasMany(Experience::class, 'doctor_id');
+        return $this->hasMany(Experience::class, 'doctor_id')->orderBy('end_date', 'DESC');
     }
 }

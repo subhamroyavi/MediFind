@@ -25,7 +25,8 @@
             <div class="card-body">
                 <!-- Add wrapper div with horizontal scroll -->
                 <div class="table-responsive" style="overflow-x: auto;">
-                    <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                   <!-- table dt-responsive nowrap w-100 -->
+                        <table id="datatable" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                         <thead>
                             <tr>
                                 <th>Id</th>

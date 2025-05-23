@@ -35,6 +35,8 @@ class AdminDoctorController extends Controller
 
     public function store(Request $request)
     {
+
+        // dd($request->all());
         $validated = $request->validate([
             // Basic Info
             'first_name' => 'required|string|max:255',
@@ -176,11 +178,16 @@ class AdminDoctorController extends Controller
     }
     public function update(Request $request, $id)
     {
-        // dd($request->all());
-        // foreach ($request['experiences'] as $experience) {
-        //     $exp = Experience::where('experience_id', $experience['id'])->get();
-        //     // dd($exp);
+        //        foreach ($request->educations as $education) {
+        //     dd(
+        //         'Course: ' . $education['course_name'],
+        //         'University: ' . $education['university'],
+        //         'Year: ' . $education['year'],
+        //         'Country: ' . $education['country'],
+        //         'education_id: ' . $education['education_id']
+        //     );
         // }
+
         $validated = $request->validate([
             // Basic Info
             'first_name' => 'required|string|max:255',
@@ -200,15 +207,17 @@ class AdminDoctorController extends Controller
             'educations.*.education_id' => 'nullable|integer',
             'educations.*.course_name' => 'required|string|max:255',
             'educations.*.university' => 'required|string|max:255',
-            'educations.*.year' => 'nullable|string|size:4',
-            'educations.*.country' => 'nullable|string|max:255',
+            'educations.*.year' => 'required|string|size:4',
+            'educations.*.country' => 'required|string|max:255',
 
             // Experience
             'experiences' => 'required|array|min:1',
+            'experiences.*.experience_id' => 'nullable|integer',
+
             'experiences.*.position' => 'required|string|max:255',
-            'experiences.*.new_hospital_name' => 'nullable|string|max:255',
-            'experiences.*.start_year' => 'nullable|string|size:4',
-            'experiences.*.end_year' => 'nullable|string|size:4',
+            'experiences.*.new_hospital_name' => 'required|string|max:255',
+            'experiences.*.start_year' => 'required|string|size:4',
+            'experiences.*.end_year' => 'required|string|size:4',
             'experiences.*.status' => 'required|boolean',
 
             // Location
@@ -260,6 +269,7 @@ class AdminDoctorController extends Controller
             );
 
             // Education update/create
+            // if($validated['']){}
             foreach ($validated['educations'] as $education) {
                 if (!empty($education['education_id'])) {
                     Education::where('education_id', $education['education_id'])->update([
@@ -269,13 +279,27 @@ class AdminDoctorController extends Controller
                         'country' => $education['country'] ?? null,
                     ]);
                 } else {
-                    Education::create([
-                        'doctor_id' => $doctor->id,
-                        'course_name' => $education['course_name'],
-                        'university' => $education['university'],
-                        'date' => $education['year'],
-                        'country' => $education['country'],
-                    ]);
+                    // Education::create([
+                    //     'doctor_id' => $id,
+                    //     'course_name' => $education['course_name'],
+                    //     'university' => $education['university'],
+                    //     'date' => $education['year'],
+                    //     'country' => $education['country'],
+                    // ]);
+                    $educationsData = collect($validated['educations'])->map(function ($education) use ($doctor) {
+                        return [
+                            'doctor_id' => $doctor->doctor_id,
+                            'course_name' => $education['course_name'],
+                            'university' => $education['university'],
+                            'date' => $education['year'] ?? null,
+                            'country' => $education['country'] ?? null,
+                        ];
+                    })->toArray();
+                    // dd($educationsData);
+
+                    foreach ($educationsData as $education) {
+                        Education::create($education);
+                    }
                 }
             }
 

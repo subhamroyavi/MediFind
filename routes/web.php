@@ -35,12 +35,14 @@ use App\Http\Controllers\AdminAmbulanceController;
 Route::get('/', [IndexController::class, 'index'])->name('index');
 
 Route::get('user_panel/hospitals', [HospitalController::class, 'index'])->name('hospitals.view');
-Route::get('user_panel/hospital-details', [HospitalController::class, 'hospital_details'])->name('hospitals.details');
+Route::get('user_panel/hospital-details/', [HospitalController::class, 'hospital_details'])->name('hospitals.details');
+// Route::get('user_panel/hospitals-search', [HospitalController::class, 'hospital_details'])->name('hospitals-search');
 
-Route::get('user_panel/doctors', [DoctorController::class, 'index'])->name('doctors');
-Route::get('/doctor-details', [DoctorController::class, 'doctor_details'])->name('doctors.details');
+Route::get('medifind/doctors', [DoctorController::class, 'index'])->name('doctors');
+Route::get('medifind/doctor-details/{id}', [DoctorController::class, 'doctor_details'])->name('doctor-details');
 
-Route::get('/ambulances', [AmbulanceController::class, 'index'])->name('ambulances.view');
+Route::get('medifind/ambulances', [AmbulanceController::class, 'index'])->name('ambulances.view');
+Route::get('medifind/ambulance-search', [AmbulanceController::class, 'search'])->name('ambulance-search');
 
 Route::get('/about', [AboutController::class, 'about_index'])->name('about.view');
 Route::get('/emergency', [EmergencyController::class, 'emergency_index'])->name('emergency.view');

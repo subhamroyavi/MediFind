@@ -28,7 +28,8 @@ class AdminAmbulanceController extends Controller
                 ->paginate(5)
                 ->withQueryString();
         } else {
-            $ambulances = Ambulance::with('location')->orderBy('created_at', 'DESC')->paginate(5);
+            // $ambulances = Ambulance::with('location')->orderBy('created_at', 'DESC')->paginate(5);
+            $ambulances = Ambulance::with(['location'])->orderBy('created_at', 'DESC')->get();
         }
         return view('admin_panel.ambulance', compact('ambulances'));
     }

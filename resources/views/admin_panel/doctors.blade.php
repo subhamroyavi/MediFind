@@ -25,7 +25,8 @@
             <div class="card-body">
                 <!-- Add wrapper div with horizontal scroll -->
                 <div class="table-responsive" style="overflow-x: auto;">
-                    <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+
+                    <table id="datatable" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                         <thead>
                             <tr>
                                 <th>Id</th>
@@ -77,6 +78,7 @@
                             </tr>
                             <!-- locations Details Modal  -->
                             <div class="modal fade locations_details{{ $doctor->doctor_id }}" id="" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+
                                 <div class="modal-dialog modal-xl">
                                     <div class="modal-content">
                                         <div class="modal-header">

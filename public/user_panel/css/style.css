@@ -1194,6 +1194,7 @@ footer {
 }
 
 .content-section {
+    margin-top: 4rem;
     background-color: white;
     border-radius: var(--border-radius);
     padding: 2rem;

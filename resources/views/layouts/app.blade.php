@@ -6,6 +6,8 @@
 
 @endsection
 
+@section('js')
 
+@yield('js-content')
 
-   
+@endsection

@@ -11,23 +11,29 @@
             <span>/</span>
             <a href="doctors.html">Doctors</a>
             <span>/</span>
-            <a href="{{ route('doctors.details')}}">Dr. Sarah Johnson</a>
+            <a href="">Dr. {{ $doctorData->first_name.' '.$doctorData->last_name }}</a>
         </div>
 
         <!-- Doctor Header -->
         <div class="detail-header">
             <div>
-                <h1>Dr. Sarah Johnson</h1>
+                <h1>Dr. {{ $doctorData->first_name.' '.$doctorData->last_name }}</h1>
                 <p class="specialty"
-                    style="font-size: 1.25rem; color: var(--primary-color); margin-bottom: 0.5rem;">Cardiologist</p>
+                    style="font-size: 1.25rem; color: var(--primary-color); margin-bottom: 0.5rem;">{{ $doctorData->specialization }}</p>
                 <div class="meta-info">
                     <div class="meta-item">
                         <i class="fas fa-hospital"></i>
-                        <span>City General Hospital</span>
+                        @isset($doctor->hospital)
+                        <span class="badge bg-primary">
+                            {{ $doctor->hospital->name  }}
+                        </span>
+                        @else
+                        <span class="text-muted">Hospital not specified</span>
+                        @endisset
                     </div>
                     <div class="meta-item">
                         <i class="fas fa-map-marker-alt"></i>
-                        <span>123 Healthcare Ave, Downtown</span>
+                        <span>{{ $doctorData->locations->city.','. $doctorData->locations->district.','. $doctorData->locations->state }}</span>
                     </div>
                     <div class="meta-item">
                         <i class="fas fa-star"></i>
@@ -35,14 +41,14 @@
                     </div>
                 </div>
             </div>
-            <div class="detail-actions">
+            <!-- <div class="detail-actions">
                 <button class="btn btn-primary">
                     <i class="fas fa-calendar-alt"></i> Book Appointment
                 </button>
                 <button class="btn btn-secondary">
                     <i class="fas fa-directions"></i> Directions
                 </button>
-            </div>
+            </div> -->
         </div>
 
         <!-- Doctor Profile -->
@@ -50,43 +56,48 @@
             <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem;">
                 <div>
                     <div class="doctor-image" style="border-radius: var(--border-radius); overflow: hidden;">
-                        <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Dr. Sarah Johnson"
+                        <img src="{{ asset('storage/' . $doctorData->image) }}" alt="Dr. Sarah Johnson"
                             style="width: 100%;">
                     </div>
                     <div style="margin-top: 1.5rem;">
                         <h3>Contact Information</h3>
                         <div style="margin-top: 1rem;">
                             <p><i class="fas fa-phone-alt"
-                                    style="color: var(--primary-color); margin-right: 0.5rem;"></i> (555) 123-4567
+                                    style="color: var(--primary-color); margin-right: 0.5rem;"></i> {{ $doctorData->phone }}
                             </p>
                             <p><i class="fas fa-envelope"
                                     style="color: var(--primary-color); margin-right: 0.5rem;"></i>
-                                sjohnson@citygeneral.org</p>
+                                {{ $doctorData->email }}
+                            </p>
                             <p><i class="fas fa-hospital"
-                                    style="color: var(--primary-color); margin-right: 0.5rem;"></i> City General
-                                Hospital</p>
+                                    style="color: var(--primary-color); margin-right: 0.5rem;"></i> @isset($doctor->hospital)
+                                <span class="badge bg-primary">
+                                    {{ $doctor->hospital->name  }}
+                                </span>
+                                @else
+                                <span class="text-muted">Hospital not specified</span>
+                                @endisset
+                            </p>
                         </div>
                     </div>
                 </div>
                 <div>
-                    <h2>About Dr. Johnson</h2>
-                    <p>Dr. Sarah Johnson is a board-certified cardiologist with over 15 years of experience in
-                        diagnosing and treating heart conditions. She specializes in interventional cardiology and
-                        has performed thousands of successful procedures.</p>
+                    <h2>About Dr. {{ $doctorData->first_name }}</h2>
+                    <p>{{ $doctorData->small_description }}</p>
 
                     <h3 style="margin-top: 1.5rem;">Education</h3>
                     <ul style="list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1.5rem;">
-                        <li>MD, Harvard Medical School</li>
-                        <li>Residency in Internal Medicine, Massachusetts General Hospital</li>
-                        <li>Fellowship in Cardiology, Johns Hopkins Hospital</li>
+                        @foreach ($doctorData->educations as $education)
+
+                        <li>{{ $education->course_name.'-'.$education->university  }}</li>
+                        @endforeach
+
                     </ul>
 
                     <h3>Specialties</h3>
                     <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem;">
-                        <span class="specialty-tag">Interventional Cardiology</span>
-                        <span class="specialty-tag">Coronary Artery Disease</span>
-                        <span class="specialty-tag">Heart Failure</span>
-                        <span class="specialty-tag">Cardiac Imaging</span>
+                        <span class="specialty-tag">{{ $doctorData->specialization }}</span>
+
                     </div>
 
                     <h3>Languages Spoken</h3>
@@ -112,30 +123,20 @@
                 <h2>Professional Experience</h2>
 
                 <div style="margin-top: 2rem;">
-                    <h3>Current Position</h3>
-                    <div
-                        style="background-color: var(--primary-light); padding: 1.5rem; border-radius: var(--border-radius); margin-bottom: 1.5rem;">
-                        <h4 style="color: var(--primary-color); margin-bottom: 0.5rem;">Chief of Cardiology</h4>
-                        <p style="font-weight: 500;">City General Hospital</p>
-                        <p>2015 - Present</p>
-                    </div>
-
-                    <h3>Previous Positions</h3>
-                    <div
-                        style="background-color: var(--primary-light); padding: 1.5rem; border-radius: var(--border-radius); margin-bottom: 1rem;">
-                        <h4 style="color: var(--primary-color); margin-bottom: 0.5rem;">Cardiologist</h4>
-                        <p style="font-weight: 500;">Regional Heart Center</p>
-                        <p>2010 - 2015</p>
-                    </div>
+                    <h3>Positions</h3>
+                    @foreach ($doctorData->experiences as $experience)
 
                     <div
                         style="background-color: var(--primary-light); padding: 1.5rem; border-radius: var(--border-radius); margin-bottom: 1.5rem;">
-                        <h4 style="color: var(--primary-color); margin-bottom: 0.5rem;">Cardiology Fellow</h4>
-                        <p style="font-weight: 500;">Johns Hopkins Hospital</p>
-                        <p>2007 - 2010</p>
+                        <h4 style="color: var(--primary-color); margin-bottom: 0.5rem;">{{ $experience->position }}</h4>
+                        <p style="font-weight: 500;">{{ $experience->hospital_name }}</p>
+                        <p>{{ $experience->start_date.'-'.$experience->end_date }}</p>
                     </div>
 
-                    <h3>Certifications</h3>
+                    @endforeach
+
+
+                    <!-- <h3>Certifications</h3>
                     <ul style="list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1.5rem;">
                         <li>American Board of Internal Medicine - Cardiovascular Disease</li>
                         <li>American Board of Internal Medicine - Interventional Cardiology</li>
@@ -147,7 +148,7 @@
                         <li>American College of Cardiology (Fellow)</li>
                         <li>American Heart Association</li>
                         <li>Society for Cardiovascular Angiography and Interventions</li>
-                    </ul>
+                    </ul> -->
                 </div>
             </div>
 
