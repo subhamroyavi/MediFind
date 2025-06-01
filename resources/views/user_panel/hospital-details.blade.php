@@ -114,27 +114,27 @@
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
                         <div class="service-card" style="background-color: var(--primary-light); padding: 1.5rem; border-radius: var(--border-radius);">
                             <h3 style="color: var(--primary-color); margin-bottom: 0.75rem;">Cardiology</h3>
-                            <p>Comprehensive heart care including diagnostic testing, interventional procedures, and cardiac rehabilitation.</p>
+                            <!-- <p>Comprehensive heart care including diagnostic testing, interventional procedures, and cardiac rehabilitation.</p> -->
                         </div>
                         <div class="service-card" style="background-color: var(--primary-light); padding: 1.5rem; border-radius: var(--border-radius);">
                             <h3 style="color: var(--primary-color); margin-bottom: 0.75rem;">Neurology</h3>
-                            <p>Specialized care for disorders of the nervous system, including stroke treatment and epilepsy management.</p>
+                            <!-- <p>Specialized care for disorders of the nervous system, including stroke treatment and epilepsy management.</p> -->
                         </div>
                         <div class="service-card" style="background-color: var(--primary-light); padding: 1.5rem; border-radius: var(--border-radius);">
                             <h3 style="color: var(--primary-color); margin-bottom: 0.75rem;">Emergency Medicine</h3>
-                            <p>24/7 emergency care with board-certified emergency physicians and trauma specialists.</p>
+                            <!-- <p>24/7 emergency care with board-certified emergency physicians and trauma specialists.</p> -->
                         </div>
                         <div class="service-card" style="background-color: var(--primary-light); padding: 1.5rem; border-radius: var(--border-radius);">
                             <h3 style="color: var(--primary-color); margin-bottom: 0.75rem;">Orthopedics</h3>
-                            <p>Treatment for musculoskeletal conditions including joint replacement and sports medicine.</p>
+                            <!-- <p>Treatment for musculoskeletal conditions including joint replacement and sports medicine.</p> -->
                         </div>
                         <div class="service-card" style="background-color: var(--primary-light); padding: 1.5rem; border-radius: var(--border-radius);">
                             <h3 style="color: var(--primary-color); margin-bottom: 0.75rem;">Maternity Care</h3>
-                            <p>Comprehensive prenatal, delivery, and postnatal care in our modern maternity ward.</p>
+                            <!-- <p>Comprehensive prenatal, delivery, and postnatal care in our modern maternity ward.</p> -->
                         </div>
                         <div class="service-card" style="background-color: var(--primary-light); padding: 1.5rem; border-radius: var(--border-radius);">
                             <h3 style="color: var(--primary-color); margin-bottom: 0.75rem;">Oncology</h3>
-                            <p>Cancer diagnosis, treatment, and supportive care with the latest therapies and technologies.</p>
+                            <!-- <p>Cancer diagnosis, treatment, and supportive care with the latest therapies and technologies.</p> -->
                         </div>
                     </div>
                 </div>

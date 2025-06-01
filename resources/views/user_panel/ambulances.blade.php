@@ -21,6 +21,7 @@
                 </button>
             </div>
         </div>
+
         <div class="hospital-grid d-none" id="ambulances-container">
             @foreach ($ambulances as $ambulance)
             <div class="card">
@@ -145,49 +146,46 @@
 </style>
 
 <script>
-    $(document).ready(function() {
-        //it is running but show the result not good//
-        let debounceTimer;
-        $('#searchStr').on('keyup', function() {
-            clearTimeout(debounceTimer);
-            debounceTimer = setTimeout(() => {
-                let searchStr = $(this).val().trim();
-                if (searchStr.length === 0) {
-                    $('#ambulances-container').addClass('d-none').html(''); // hide and clear
-                    return;
-                }
+    let debounceTimer;
+    $('#searchStr').on('keyup', function() {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            let searchStr = $(this).val().trim();
+            if (searchStr.length === 0) {
+                $('#ambulances-container').addClass('d-none').html(''); // hide and clear
+                return;
+            }
 
-                $.ajax({
-                    url: "{{ route('ambulance-search') }}",
-                    method: 'GET',
-                    data: {
-                        searchStr
-                    },
-                    beforeSend: function() {
+            $.ajax({
+                url: "{{ route('ambulance-search') }}",
+                method: 'GET',
+                data: {
+                    searchStr
+                },
+                beforeSend: function() {
+                    $('#ambulances-container')
+                        .removeClass('d-none')
+                        .html('<div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Searching...</div>');
+                },
+                success: function(response) {
+                    if (response.status === 'success') {
                         $('#ambulances-container')
                             .removeClass('d-none')
-                            .html('<div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Searching...</div>');
-                    },
-                    success: function(response) {
-                        if (response.status === 'success') {
-                            $('#ambulances-container')
-                                .removeClass('d-none')
-                                .html(response.html);
-                        } else if (response.status === 'nothing_found') {
-                            $('#ambulances-container')
-                                .removeClass('d-none')
-                                .html('<div class="no-results">No ambulances found matching your search</div>');
-                        }
-                    },
-                    error: function() {
+                            .html(response.html);
+                    } else if (response.status === 'nothing_found') {
                         $('#ambulances-container')
                             .removeClass('d-none')
-                            .html('<div class="error-message">Something went wrong. Please try again later.</div>');
+                            .html('<div class="no-results">No ambulances found matching your search</div>');
                     }
-                });
-            }, 300);
-        });
-    })
+                },
+                error: function() {
+                    $('#ambulances-container')
+                        .removeClass('d-none')
+                        .html('<div class="error-message">Something went wrong. Please try again later.</div>');
+                }
+            });
+        }, 300);
+    });
 </script>
 
 @endsection

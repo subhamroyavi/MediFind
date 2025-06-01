@@ -77,6 +77,8 @@ class AdminDoctorController extends Controller
             'google_maps_link' => 'nullable|url',
         ]);
 
+        // dd($validated['experiences']);
+
         // Handle image upload
         if ($request->hasFile('image')) {
             $image = $request->file('image');

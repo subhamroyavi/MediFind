@@ -122,14 +122,20 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="mb-3">
-                                        <label class="form-label" for="contacts">Primary</label>
+                                        <label class="form-label" for="status">Status</label>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                name="contacts"
-                                                value="1">
+                                            <input class="form-check-input" type="checkbox" role="switch" name="status"
+                                                value="1"
+                                                {{ old('status', $hospital->status ?? 0) == 1 ? 'checked' : '' }}>
+
                                         </div>
+                                        @error('status')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
+
+
                             </div>
 
                             <div class="row mt-3">
@@ -145,23 +151,11 @@
                                 @if(isset($hospital->facilities) && count($hospital->facilities) > 0)
                                 @foreach($hospital->facilities as $index => $facility)
                                 <div class="facility-entry mb-4 border p-3">
-                                    <div class="row">
-                                        <div class="col-lg-6">
-                                            <div class="mb-3">
-                                                <label class="form-label" for="facilities[{{ $index }}][facility_name]">Facility Name <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control @error('facilities.'.$index.'.facility_name') is-invalid @enderror"
-                                                    name="facilities[{{ $index }}][facility_name]"
-                                                    value="{{ old('facilities.'.$index.'.facility_name', $facility->facility_name) }}">
-                                                @error('facilities.'.$index.'.facility_name')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div>
+
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="mb-3">
-                                                <label class="form-label" for="facilities[{{ $index }}][description]">Description</label>
+                                                <label class="form-label" for="facilities[{{ $index }}][description]">Facility Description</label>
                                                 <textarea class="form-control @error('facilities.'.$index.'.description') is-invalid @enderror"
                                                     name="facilities[{{ $index }}][description]" rows="2">{{ old('facilities.'.$index.'.description', $facility->description) }}</textarea>
                                                 @error('facilities.'.$index.'.description')
@@ -176,23 +170,11 @@
                                 @endforeach
                                 @else
                                 <div class="facility-entry mb-4 border p-3">
-                                    <div class="row">
-                                        <div class="col-lg-6">
-                                            <div class="mb-3">
-                                                <label class="form-label" for="facilities[0][facility_name]">Facility Name <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control @error('facilities.0.facility_name') is-invalid @enderror"
-                                                    name="facilities[0][facility_name]"
-                                                    value="{{ old('facilities.0.facility_name') }}">
-                                                @error('facilities.0.facility_name')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div>
+
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="mb-3">
-                                                <label class="form-label" for="facilities[0][description]">Description</label>
+                                                <label class="form-label" for="facilities[0][description]">Facility Description</label>
                                                 <textarea class="form-control @error('facilities.0.description') is-invalid @enderror"
                                                     name="facilities[0][description]" rows="2">{{ old('facilities.0.description') }}</textarea>
                                                 @error('facilities.0.description')
@@ -236,18 +218,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="mb-3">
-                                                <label class="form-label" for="services[{{ $index }}][description]">Description</label>
-                                                <textarea class="form-control @error('services.'.$index.'.description') is-invalid @enderror"
-                                                    name="services[{{ $index }}][description]" rows="2">{{ old('services.'.$index.'.description', $service->description) }}</textarea>
-                                                @error('services.'.$index.'.description')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div>
+
                                     <input type="hidden" name="services[{{ $index }}][service_id]" value="{{ $service->service_id }}">
                                     <button type="button" class="btn btn-sm btn-danger remove-service">Remove</button>
                                 </div>
@@ -267,18 +238,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="mb-3">
-                                                <label class="form-label" for="services[0][description]">Description</label>
-                                                <textarea class="form-control @error('services.0.description') is-invalid @enderror"
-                                                    name="services[0][description]" rows="2">{{ old('services.0.description') }}</textarea>
-                                                @error('services.0.description')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div>
+
                                     <button type="button" class="btn btn-sm btn-danger remove-service">Remove</button>
                                 </div>
                                 @endif
@@ -415,56 +375,129 @@
 
                         <!-- Opening Hours Tab -->
                         <div class="tab-pane" id="opening-hours" role="tabpanel">
-                            <div class="row">
-                                @php
-                                $days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-                                $existingDays = isset($hospital->openingDays) ? $hospital->openingDays->pluck('opening_day_id')->toArray() : [];
-                                @endphp
-
-                                @foreach($days as $dayIndex => $day)
-                                <div class="col-lg-6">
-                                    <div class="card mb-3">
-                                        <div class="card-header">
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input day-toggle" type="checkbox" role="switch"
-                                                    id="day_{{ $dayIndex }}"
-                                                    name="opening_days[{{ $dayIndex }}][status]"
-                                                    value="1" {{ in_array($dayIndex+1, $existingDays) ? 'checked' : '' }}>
-                                                <label class="form-check-label" for="day_{{ $dayIndex }}">{{ $day }}</label>
+                            <div id="opening-hours-container">
+                                @if(isset($hospital->openingDays) && count($hospital->openingDays) > 0)
+                                @foreach($hospital->openingDays as $index => $day)
+                                <div class="opening-day-entry mb-4 border p-3">
+                                    <div class="row">
+                                        <div class="col-lg-3">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="opening_days[{{ $index }}][day]">Day <span class="text-danger">*</span></label>
+                                                <select class="form-select @error('opening_days.'.$index.'.day') is-invalid @enderror"
+                                                    name="opening_days[{{ $index }}][day]">
+                                                    <option value="Monday" {{ old('opening_days.'.$index.'.day', $day->day) == 'Monday' ? 'selected' : '' }}>Monday</option>
+                                                    <option value="Tuesday" {{ old('opening_days.'.$index.'.day', $day->day) == 'Tuesday' ? 'selected' : '' }}>Tuesday</option>
+                                                    <option value="Wednesday" {{ old('opening_days.'.$index.'.day', $day->day) == 'Wednesday' ? 'selected' : '' }}>Wednesday</option>
+                                                    <option value="Thursday" {{ old('opening_days.'.$index.'.day', $day->day) == 'Thursday' ? 'selected' : '' }}>Thursday</option>
+                                                    <option value="Friday" {{ old('opening_days.'.$index.'.day', $day->day) == 'Friday' ? 'selected' : '' }}>Friday</option>
+                                                    <option value="Saturday" {{ old('opening_days.'.$index.'.day', $day->day) == 'Saturday' ? 'selected' : '' }}>Saturday</option>
+                                                    <option value="Sunday" {{ old('opening_days.'.$index.'.day', $day->day) == 'Sunday' ? 'selected' : '' }}>Sunday</option>
+                                                </select>
+                                                @error('opening_days.'.$index.'.day')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
                                             </div>
                                         </div>
-                                        <div class="card-body day-fields" style="">
-                                            <input type="hidden" name="opening_days[{{ $dayIndex }}][opening_day_id]" value="{{ $dayIndex+1 }}">
-
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="mb-3">
-                                                        <label class="form-label" for="opening_days[{{ $dayIndex }}][opening_time]">Opening Time</label>
-                                                        <input type="time" class="form-control @error('opening_days.'.$dayIndex.'.opening_time') is-invalid @enderror"
-                                                            name="opening_days[{{ $dayIndex }}][opening_time]"
-                                                            value="{{ old('opening_days.'.$dayIndex.'.opening_time', isset($hospital->openingDays[$dayIndex]) ? $hospital->openingDays[$dayIndex]->opening_time : '') }}">
-                                                        @error('opening_days.'.$dayIndex.'.opening_time')
-                                                        <div class="invalid-feedback">{{ $message }}</div>
-                                                        @enderror
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="mb-3">
-                                                        <label class="form-label" for="opening_days[{{ $dayIndex }}][closing_time]">Closing Time</label>
-                                                        <input type="time" class="form-control @error('opening_days.'.$dayIndex.'.closing_time') is-invalid @enderror"
-                                                            name="opening_days[{{ $dayIndex }}][closing_time]"
-                                                            value="{{ old('opening_days.'.$dayIndex.'.closing_time', isset($hospital->openingDays[$dayIndex]) ? $hospital->openingDays[$dayIndex]->closing_time : '') }}">
-                                                        @error('opening_days.'.$dayIndex.'.closing_time')
-                                                        <div class="invalid-feedback">{{ $message }}</div>
-                                                        @enderror
-                                                    </div>
+                                        <div class="col-lg-3">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="opening_days[{{ $index }}][opening_time]">Opening Time</label>
+                                                <input type="time" class="form-control @error('opening_days.'.$index.'.opening_time') is-invalid @enderror"
+                                                    name="opening_days[{{ $index }}][opening_time]"
+                                                    value="{{ old('opening_days.'.$index.'.opening_time', $day->opening_time) }}">
+                                                @error('opening_days.'.$index.'.opening_time')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="opening_days[{{ $index }}][closing_time]">Closing Time</label>
+                                                <input type="time" class="form-control @error('opening_days.'.$index.'.closing_time') is-invalid @enderror"
+                                                    name="opening_days[{{ $index }}][closing_time]"
+                                                    value="{{ old('opening_days.'.$index.'.closing_time', $day->closing_time) }}">
+                                                @error('opening_days.'.$index.'.closing_time')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="opening_days[{{ $index }}][status]">Open</label>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" role="switch"
+                                                        name="opening_days[{{ $index }}][status]"
+                                                        value="1" {{ old('opening_days.'.$index.'.status', $day->status) ? 'checked' : '' }}>
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div class="col-lg-1 d-flex align-items-end">
+                                            <button type="button" class="btn btn-sm btn-danger remove-opening-day">Remove</button>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="opening_days[{{ $index }}][opening_day_id]" value="{{ $day->opening_day_id }}">
+                                </div>
+                                @endforeach
+                                @else
+                                <div class="opening-day-entry mb-4 border p-3">
+                                    <div class="row">
+                                        <div class="col-lg-3">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="opening_days[0][day]">Day <span class="text-danger">*</span></label>
+                                                <select class="form-select @error('opening_days.0.day') is-invalid @enderror"
+                                                    name="opening_days[0][day]">
+                                                    <option value="Monday" {{ old('opening_days.0.day') == 'Monday' ? 'selected' : '' }}>Monday</option>
+                                                    <option value="Tuesday" {{ old('opening_days.0.day') == 'Tuesday' ? 'selected' : '' }}>Tuesday</option>
+                                                    <option value="Wednesday" {{ old('opening_days.0.day') == 'Wednesday' ? 'selected' : '' }}>Wednesday</option>
+                                                    <option value="Thursday" {{ old('opening_days.0.day') == 'Thursday' ? 'selected' : '' }}>Thursday</option>
+                                                    <option value="Friday" {{ old('opening_days.0.day') == 'Friday' ? 'selected' : '' }}>Friday</option>
+                                                    <option value="Saturday" {{ old('opening_days.0.day') == 'Saturday' ? 'selected' : '' }}>Saturday</option>
+                                                    <option value="Sunday" {{ old('opening_days.0.day') == 'Sunday' ? 'selected' : '' }}>Sunday</option>
+                                                </select>
+                                                @error('opening_days.0.day')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="opening_days[0][opening_time]">Opening Time</label>
+                                                <input type="time" class="form-control @error('opening_days.0.opening_time') is-invalid @enderror"
+                                                    name="opening_days[0][opening_time]"
+                                                    value="{{ old('opening_days.0.opening_time') }}">
+                                                @error('opening_days.0.opening_time')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="opening_days[0][closing_time]">Closing Time</label>
+                                                <input type="time" class="form-control @error('opening_days.0.closing_time') is-invalid @enderror"
+                                                    name="opening_days[0][closing_time]"
+                                                    value="{{ old('opening_days.0.closing_time') }}">
+                                                @error('opening_days.0.closing_time')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="opening_days[0][status]">Open</label>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" role="switch"
+                                                        name="opening_days[0][status]"
+                                                        value="1" {{ old('opening_days.0.status') ? 'checked' : '' }}>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-1 d-flex align-items-end">
+                                            <button type="button" class="btn btn-sm btn-danger remove-opening-day">Remove</button>
                                         </div>
                                     </div>
                                 </div>
-                                @endforeach
+                                @endif
                             </div>
+                            <button type="button" id="add-opening-day" class="btn btn-sm btn-primary mb-3">Add Opening Day</button>
 
                             <div class="row mt-3">
                                 <div class="col-6">
@@ -475,7 +508,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <!-- Location Information Tab -->
                         <div class="tab-pane" id="location-info" role="tabpanel">
                             <div class="row">
@@ -784,6 +816,62 @@
 
             // Add to container
             container.appendChild(newEntry);
+        });
+
+        //openning enrty
+        // Initialize opening day index
+        let openingDayIndex = document.querySelectorAll('.opening-day-entry').length;
+
+        // Add opening day entry
+        document.getElementById('add-opening-day').addEventListener('click', function() {
+            let container = document.getElementById('opening-hours-container');
+            let template = container.querySelector('.opening-day-entry:last-child').cloneNode(true);
+            let newEntry = document.createElement('div');
+            newEntry.className = 'opening-day-entry mb-4 border p-3';
+
+            // Get the current highest index
+            let currentHighestIndex = 0;
+            container.querySelectorAll('.opening-day-entry').forEach(entry => {
+                const inputs = entry.querySelectorAll('[name^="opening_days["]');
+                if (inputs.length > 0) {
+                    const matches = inputs[0].name.match(/opening_days\[(\d+)\]/);
+                    if (matches && matches[1]) {
+                        const index = parseInt(matches[1]);
+                        if (index > currentHighestIndex) {
+                            currentHighestIndex = index;
+                        }
+                    }
+                }
+            });
+
+            const newIndex = currentHighestIndex + 1;
+
+            // Replace all indices with the new index
+            let html = template.innerHTML.replace(/opening_days\[\d+\]/g, `opening_days[${newIndex}]`);
+            newEntry.innerHTML = html;
+
+            // Clear all input values
+            newEntry.querySelectorAll('input').forEach(input => {
+                if (input.type !== 'hidden' && !input.name.includes('[opening_day_id]')) {
+                    input.value = '';
+                    if (input.type === 'checkbox') {
+                        input.checked = false;
+                    }
+                }
+            });
+
+            // Reset select to first option
+            newEntry.querySelector('select').selectedIndex = 0;
+
+            // Add to container
+            container.appendChild(newEntry);
+        });
+
+        // Remove opening day entry
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.classList.contains('remove-opening-day')) {
+                e.target.closest('.opening-day-entry').remove();
+            }
         });
 
         // Delegated event listeners for remove buttons

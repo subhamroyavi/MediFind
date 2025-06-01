@@ -109,7 +109,7 @@ Route::middleware(['check-login'])->group(function () {
 
 
      // Hospital Routes
-    Route::get('hospitals', [AdminHospitalController::class, 'index'])->name('admin.hospitals');
+    Route::get('hospitals', [AdminHospitalController::class, 'index'])->name('admin.hospital');
     Route::get('hospitals/create', [AdminHospitalController::class, 'create'])->name('admin.hospital.create');
     Route::post('hospitals/store', [AdminHospitalController::class, 'store'])->name('admin.hospital.store');
     Route::get('hospitals/edit/{id}', [AdminHospitalController::class, 'edit'])->name('admin.hospital.edit');
