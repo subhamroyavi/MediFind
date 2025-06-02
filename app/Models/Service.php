@@ -11,7 +11,7 @@ class Service extends Model
     protected $table = 'hospital_services';
     protected $primaryKey = 'service_id';
     public $timestamps = false;
-    // protected $guarded = [];
+
     protected $fillable = [
         'hospital_id',
         'service_name'

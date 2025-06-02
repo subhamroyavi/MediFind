@@ -19,25 +19,25 @@ class Hospital extends Model
         'status',
         'image'
     ];
+// contacts facilities services openingDays location
 
+    public function contacts() {
+        return $this->hasMany(Contact::class, 'hospital_id', 'hospital_id');
+    }
 
-    // public function contacts() {
-    //     return $this->hasMany(Contact::class);
-    // }
+    public function facilities() {
+        return $this->hasMany(Facility::class, 'hospital_id', 'hospital_id');
+    }
 
-    // public function facilities() {
-    //     return $this->hasMany(Facility::class);
-    // }
+    public function services() {
+        return $this->hasMany(Service::class, 'hospital_id', 'hospital_id');
+    }
 
-    // public function services() {
-    //     return $this->hasMany(Service::class);
-    // }
+    public function openingDays() {
+        return $this->hasMany(OpeningDay::class, 'hospital_id', 'hospital_id');
+    }
 
-    // public function openingDays() {
-    //     return $this->hasMany(OpeningDay::class);
-    // }
-
-    // public function location() {
-    //     return $this->hasOne(Location::class);
-    // }
+    public function location() {
+        return $this->hasOne(Location::class, 'entity_id', 'hospital_id');
+    }
 }

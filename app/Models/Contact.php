@@ -9,7 +9,7 @@ class Contact extends Model
 {
     use HasFactory;
     protected $table = 'hospital_contacts';
-    protected $primaryKey = 'facility_id';
+    protected $primaryKey = 'contact_id';
     public $timestamps = false;
 
     protected $fillable = [
@@ -20,7 +20,6 @@ class Contact extends Model
         'website_link',
        
     ];
-    	// contact_id	hospital_id	contact_type	value	website_link	is_primary	created_at	updated_at	
-
+// contact_id	hospital_id	contact_type	value	website_link	is_primary	created_at	updated_at
 }
 

@@ -7,6 +7,7 @@ use App\Models\Service;
 use App\Models\Facility;
 use App\Models\Hospital;
 use App\Models\Location;
+use App\Models\OpeningDay;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -79,7 +80,7 @@ class AdminHospitalController extends Controller
         ]);
 
 
-        // dd($validated['facilities']);
+        // dd($validated['opening_days']);
 
         DB::beginTransaction();
 
@@ -106,6 +107,33 @@ class AdminHospitalController extends Controller
                 'image' => $validated['image'],
             ]);
 
+            // Save opening days
+            if ($request->has('opening_days')) {
+                foreach ($validated['opening_days'] as $dayData) {
+                    $openingDay = new OpeningDay([
+                        'hospital_id' => $hospital->hospital_id,
+                        'opening_day' => $dayData['day'],
+                        'opening_time' => $dayData['opening_time'],
+                        'closing_time' => $dayData['closing_time'],
+                        'status' => isset($dayData['status']) ? 1 : 0,
+                    ]);
+                    $openingDay->save();
+                }
+            }
+  
+            // Save contacts
+            if ($request->has('contacts')) {
+                foreach ($validated['contacts'] as $contactData) {
+                    $contact = new Contact([
+                        'hospital_id' => $hospital->hospital_id,
+                        'contact_type' => $contactData['contact_type'],
+                        'value' => $contactData['value'],
+                        'is_primary' => isset($contactData['is_primary']) ? 1 : 0,
+                        'website_link' => $validated['website_link'],
+                    ]);
+                    $contact->save();
+                }
+            }
 
             // Save services
             if ($request->has('services')) {
@@ -114,7 +142,7 @@ class AdminHospitalController extends Controller
                         'hospital_id' => $hospital->hospital_id,
                         'service_name' => $serviceData['service_name'],
                     ]);
-                    $hospital->services()->save($service);
+                    $service->save();
                 }
             }
 
@@ -145,44 +173,9 @@ class AdminHospitalController extends Controller
             ]);
             $location->save();
 
-
-
-            // Save contacts
-            // if ($request->has('contacts')) {
-            //     foreach ($validated['contacts'] as $contactData) {
-            //         $contact = new Contact([
-            //             'hospital_id' => $hospital->hospital_id,
-            //             'contact_type' => $contactData['contact_type'],
-            //             'value' => $contactData['value'],
-            //             'is_primary' => isset($contactData['is_primary']) ? 1 : 0,
-            //             'website_link' => $contactData['website_link'],
-            //         ]);
-            //         $hospital->contacts()->save($contact);
-            //     }
-            // }
-
-            // hospital_id	contact_type	value	website_link	is_primary	created_at	updated_at	
-
-
-
-            // // Save opening days
-            // if ($request->has('opening_days')) {
-            //     foreach ($request->opening_days as $dayData) {
-            //         $openingDay = new OpeningDay([
-            //             'day' => $dayData['day'],
-            //             'opening_time' => $dayData['opening_time'],
-            //             'closing_time' => $dayData['closing_time'],
-            //             'status' => isset($dayData['status']) ? 1 : 0,
-            //         ]);
-            //         $hospital->openingDays()->save($openingDay);
-            //     }
-            // }
-
-
-
             DB::commit();
 
-            return redirect()->route('hospitals.index')
+            return redirect()->route('admin.hospital')
                 ->with('success', 'Hospital created successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
@@ -197,38 +190,11 @@ class AdminHospitalController extends Controller
         }
     }
 
-    // public function store(Request $request){
-
-    //     dd($request->all());
-    //     $validated = $request->validate([
-    //         'hospital_name' => 'required|string|max:255',
-    //         'description' => 'required|string',
-    //         'organization_type' => 'required|in:government,private,public',
-    //         'status' => 'required|boolean',
-    //         'image' => 'required|mimes:jpeg,png,jpg|max:2048'
-    //     ]);
-
-    //     // Process file upload
-    //     if (!$request->hasFile('image')) {
-    //         dd('No file uploaded!', $request->all());
-    //     } else {
-
-    //         $image = $request->file('image');
-    //         $filename = 'Hospital_' . time() . '_' . $image->getClientOriginalName();
-    //         $path = $image->storeAs('public/Hospitals', $filename);
-    //         $validated['image'] = 'Hospitals/' . $filename;
-    //     }
-
-    //     Hospital::create($validated);
-
-    //     return redirect()->route('admin.hospitals')
-    //         ->with('success', 'Hospital created successfully!');
-    // }
-
     public function edit($id)
     {
 
-        $hospital = Hospital::findOrFail($id);
+        $hospital = Hospital::with(['facilities', 'services', 'openingDays', 'location'])->findOrFail($id);
+        // dd($hospital);
         //  return view('admin_panel.hospitalAction', compact('hospital'));
         return view('admin_panel.hospital_action', compact('hospital'));
     }

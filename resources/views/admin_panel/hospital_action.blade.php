@@ -516,7 +516,7 @@
                                         <label class="form-label" for="address_line1">Address Line 1 <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control @error('address_line1') is-invalid @enderror"
                                             id="address_line1" name="address_line1"
-                                            value="{{ old('address_line1', $hospital->locations->address_line1 ?? '') }}">
+                                            value="{{ old('address_line1', $hospital->location->address_line1 ?? '') }}">
                                         @error('address_line1')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -527,7 +527,7 @@
                                         <label class="form-label" for="address_line2">Address Line 2</label>
                                         <input type="text" class="form-control @error('address_line2') is-invalid @enderror"
                                             id="address_line2" name="address_line2"
-                                            value="{{ old('address_line2', $hospital->locations->address_line2 ?? '') }}">
+                                            value="{{ old('address_line2', $hospital->location->address_line2 ?? '') }}">
                                         @error('address_line2')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -541,7 +541,7 @@
                                         <label class="form-label" for="city">City <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control @error('city') is-invalid @enderror"
                                             id="city" name="city"
-                                            value="{{ old('city', $hospital->locations->city ?? '') }}">
+                                            value="{{ old('city', $hospital->location->city ?? '') }}">
                                         @error('city')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -552,7 +552,7 @@
                                         <label class="form-label" for="district">District <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control @error('district') is-invalid @enderror"
                                             id="district" name="district"
-                                            value="{{ old('district', $hospital->locations->district ?? '') }}">
+                                            value="{{ old('district', $hospital->location->district ?? '') }}">
                                         @error('district')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -563,7 +563,7 @@
                                         <label class="form-label" for="state">State <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control @error('state') is-invalid @enderror"
                                             id="state" name="state"
-                                            value="{{ old('state', $hospital->locations->state ?? '') }}">
+                                            value="{{ old('state', $hospital->location->state ?? '') }}">
                                         @error('state')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -577,7 +577,7 @@
                                         <label class="form-label" for="pincode">Pincode <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control @error('pincode') is-invalid @enderror"
                                             id="pincode" name="pincode"
-                                            value="{{ old('pincode', $hospital->locations->pincode ?? '') }}">
+                                            value="{{ old('pincode', $hospital->location->pincode ?? '') }}">
                                         @error('pincode')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -588,7 +588,7 @@
                                         <label class="form-label" for="country">Country <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control @error('country') is-invalid @enderror"
                                             id="country" name="country"
-                                            value="{{ old('country', $hospital->locations->country ?? '') }}">
+                                            value="{{ old('country', $hospital->location->country ?? '') }}">
                                         @error('country')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -602,7 +602,7 @@
                                         <label class="form-label" for="google_maps_link">Google Maps Link</label>
                                         <input type="url" class="form-control @error('google_maps_link') is-invalid @enderror"
                                             id="google_maps_link" name="google_maps_link"
-                                            value="{{ old('google_maps_link', $hospital->locations->google_maps_link ?? '') }}">
+                                            value="{{ old('google_maps_link', $hospital->location->google_maps_link ?? '') }}">
                                         @error('google_maps_link')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -611,8 +611,8 @@
                             </div>
 
                             <!-- Hidden fields for location relationship -->
-                            @if(isset($hospital->locations))
-                            <input type="hidden" name="location_id" value="{{ $hospital->locations->location_id }}">
+                            @if(isset($hospital->location))
+                            <input type="hidden" name="location_id" value="{{ $hospital->location->location_id }}">
                             @endif
                             <input type="hidden" name="entity_type" value="hospital">
                             <input type="hidden" name="entity_id" value="{{ $hospital->hospital_id ?? '' }}">
