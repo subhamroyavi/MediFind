@@ -35,7 +35,7 @@ use App\Http\Controllers\AdminAmbulanceController;
 Route::get('/', [IndexController::class, 'index'])->name('index');
 
 Route::get('user_panel/hospitals', [HospitalController::class, 'index'])->name('hospitals.view');
-Route::get('user_panel/hospital-details/', [HospitalController::class, 'hospital_details'])->name('hospitals.details');
+Route::get('user_panel/hospital-details/{id}', [HospitalController::class, 'hospital_details'])->name('hospitals.details');
 // Route::get('user_panel/hospitals-search', [HospitalController::class, 'hospital_details'])->name('hospitals-search');
 
 Route::get('medifind/doctors', [DoctorController::class, 'index'])->name('doctors');

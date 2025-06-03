@@ -3,13 +3,18 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Contact;
 use App\Models\Service;
+use App\Models\Facility;
+use App\Models\Hospital;
 use App\Models\Location;
 use App\Models\Ambulance;
+use App\Models\OpeningDay;
 use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class UserSeeder extends Seeder
@@ -20,57 +25,75 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create();
-        $organizationTypes = ['government', 'private', 'ngo'];
-        $serviceTypes = ['basic', 'advanced', 'critical'];
-        $cities = ['Mumbai', 'Delhi', 'Bangalore', 'Hyderabad', 'Chennai'];
-        $states = ['Maharashtra', 'Delhi', 'Karnataka', 'Telangana', 'Tamil Nadu'];
-        $vehicleModels = ['Tata Winger', 'Force Traveller', 'Mahindra Supro', 'Toyota HiAce'];
 
-        for ($i = 1; $i <= 20; $i++) {
-            // Create ambulance data with validation rules in mind
-            $ambulanceData = [
-                'first_name' => 'Driver',
-                'last_name' => '#' . $i,
-                'email' => 'ambulance' . $i . '@example.com',
-                'phone' => '9' . mt_rand(100000000, 999999999),
-                'license_number' => 'LIC' . mt_rand(10000, 99999),
-                'vehicle_number' => 'MH-' . $faker->unique()->numerify('##-####'),
-                'vehicle_model' => $vehicleModels[array_rand($vehicleModels)],
-                'organization_type' => $organizationTypes[array_rand($organizationTypes)],
-                'service_type' => $serviceTypes[array_rand($serviceTypes)],
-                'insurance_number' => 'INS' . mt_rand(10000, 99999),
-                'status' => mt_rand(0, 1),
-                // Image is nullable, so we can skip it or add random images if needed
-            ];
-
-            // Create location data
-            $locationData = [
-                'address_line1' => mt_rand(1, 999) . ' ' . $faker->streetName,
-                'address_line2' => 'Area ' . chr(mt_rand(65, 90)),
-                'city' => $cities[array_rand($cities)],
-                'district' => 'District ' . mt_rand(1, 20),
-                'state' => $states[array_rand($states)],
-                'pincode' => $faker->postcode,
-                'country' => 'India',
-                'google_maps_link' => 'https://maps.google.com/?q=' . $faker->latitude . ',' . $faker->longitude,
-            ];
+        for ($i = 0; $i < 20; $i++) {
+            DB::beginTransaction();
 
             try {
-                // Create the ambulance
-                $ambulance = Ambulance::create($ambulanceData);
+                $hospital = Hospital::create([
+                    'hospital_name' => $faker->company . ' Hospital',
+                    'organization_type' => $faker->randomElement(['Government', 'Private', 'NGO']),
+                    'description' => $faker->paragraph,
+                    'status' => $faker->boolean,
+                    'image' => null, // No image in seeder
+                ]);
 
-                // Create the associated location
-                Location::create(array_merge(
-                    $locationData,
-                    [
-                        'entity_type' => 'ambulance',
-                        'entity_id' => $ambulance->ambulance_id,
-                    ]
-                ));
+                // Create contacts
+                for ($j = 0; $j < 2; $j++) {
+                    Contact::create([
+                        'hospital_id' => $hospital->hospital_id,
+                        'contact_type' => $faker->randomElement(['phone', 'email', 'fax']),
+                        'value' => $faker->phoneNumber,
+                        'is_primary' => $j === 0,
+                        'website_link' => $faker->url,
+                    ]);
+                }
+
+                // Create services
+                for ($j = 0; $j < 3; $j++) {
+                    Service::create([
+                        'hospital_id' => $hospital->hospital_id,
+                        'service_name' => $faker->randomElement(['X-Ray', 'Surgery', 'ICU', 'Maternity', 'OPD']),
+                    ]);
+                }
+
+                // Create facilities
+                for ($j = 0; $j < 3; $j++) {
+                    Facility::create([
+                        'hospital_id' => $hospital->hospital_id,
+                        'description' => $faker->sentence,
+                    ]);
+                }
+
+                // Create opening days
+                foreach (['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] as $day) {
+                    OpeningDay::create([
+                        'hospital_id' => $hospital->hospital_id,
+                        'opening_day' => $day,
+                        'opening_time' => '09:00',
+                        'closing_time' => '17:00',
+                        'status' => true,
+                    ]);
+                }
+
+                // Create location
+                Location::create([
+                    'entity_type' => 'hospital',
+                    'entity_id' => $hospital->hospital_id,
+                    'address_line1' => $faker->streetAddress,
+                    'address_line2' => $faker->secondaryAddress,
+                    'city' => $faker->city,
+                    'district' => $faker->city,
+                    'state' => $faker->state,
+                    'pincode' => $faker->postcode,
+                    'country' => $faker->country,
+                    'google_maps_link' => $faker->url,
+                ]);
+
+                DB::commit();
             } catch (\Exception $e) {
-                // Log or handle the error
-                logger()->error('Error creating ambulance: ' . $e->getMessage());
-                continue; // Skip to next iteration if there's an error
+                DB::rollBack();
+                dump('Seeder error: ' . $e->getMessage());
             }
         }
     }

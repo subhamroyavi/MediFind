@@ -14,8 +14,7 @@
     <!-- App favicon -->
     <!-- <link rel="shortcut icon" href="{{asset('admin_panel/assets/images/favicon.ico')}}"> -->
 
-    <!-- Layout Js -->
-    <script src="{{asset('admin_panel/assets/js/layout.js')}}"></script>
+    
     <!-- Bootstrap Css -->
     <link href="{{asset('admin_panel/assets/css/bootstrap.min.css')}}" id="bootstrap-style" rel="stylesheet" type="text/css" />
     <!-- Icons Css -->
@@ -353,6 +352,9 @@
     <!-- Right bar overlay-->
     <div class="rightbar-overlay"></div>
 
+    <!-- Layout Js -->
+    <script src="{{asset('admin_panel/assets/js/layout.js')}}"></script>
+
     <!-- JAVASCRIPT -->
     <script src="{{asset('admin_panel/assets/libs/jquery/jquery.min.js')}}"></script>
     <script src="{{asset('admin_panel/assets/libs/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
@@ -414,6 +416,7 @@
     <!-- DataTables JS -->
     <!-- <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script> -->
+
     </head>
 </body>
 

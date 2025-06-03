@@ -4,72 +4,56 @@
 
 <!-- Main Content -->
 <main class="section">
-        <div class="container">
-            <!-- Breadcrumb Navigation -->
-            <div class="breadcrumb">
-                <a href="index.html">Home</a>
-                <span>/</span>
-                <a href="hospitals.html">Hospitals</a>
-                <span>/</span>
-                <a href="hospital-detail.html">City General Hospital</a>
-            </div>
+    <div class="container">
+        <!-- Breadcrumb Navigation -->
+        <div class="breadcrumb">
+            <a href="index.html">Home</a>
+            <span>/</span>
+            <a href="hospitals.html">Hospitals</a>
+            <span>/</span>
+            <a href="">{{ $hospital->hospital_name }}</a>
+        </div>
 
-            <!-- Hospital Header -->
-            <div class="detail-header">
-                <div>
-                    <h1>City General Hospital</h1>
-                    <div class="meta-info">
-                        <div class="meta-item">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>123 Healthcare Ave, Downtown</span>
-                        </div>
-                        <div class="meta-item">
-                            <i class="fas fa-phone-alt"></i>
-                            <span>Main: (555) 123-4567</span>
-                        </div>
-                        <div class="meta-item">
+
+
+        <!-- Hospital Header -->
+        <div class="detail-header">
+            <div>
+                <h1>{{ $hospital->hospital_name }}</h1>
+                <div class="meta-info">
+                    <div class="meta-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>{{ $hospital->location->city.', '. $hospital->location->state}}</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>Main: {{ $hospital->contacts->where('is_primary', 1)->first()?->value 
+                                                ?? 'N/A'  }}</span>
+                    </div>
+                    <!-- <div class="meta-item">
                             <i class="fas fa-star"></i>
                             <span>4.8 (342 reviews)</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="detail-actions">
-                    <button class="btn btn-primary">
-                        <i class="fas fa-phone-alt"></i> Emergency
-                    </button>
-                    <button class="btn btn-secondary">
-                        <i class="fas fa-directions"></i> Directions
-                    </button>
+                        </div> -->
                 </div>
             </div>
-
-            <!-- Hospital Gallery -->
-            <div class="content-section">
-                <div class="main-image-container">
-                    <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" 
-                         alt="City General Hospital" 
-                         class="main-image"
-                         style="width: 100%; border-radius: var(--border-radius); margin-bottom: 1rem;">
-                </div>
-                <div class="gallery-thumbnails" style="display: flex; gap: 0.5rem; overflow-x: auto; padding-bottom: 1rem;">
-                    <img src="https://images.unsplash.com/photo-1576091160399-112ba8a25d7d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" 
-                         alt="Hospital Entrance" 
-                         class="gallery-thumbnail active"
-                         style="width: 100px; height: 75px; object-fit: cover; border-radius: 5px; cursor: pointer; border: 2px solid var(--primary-color);"
-                         data-full="https://images.unsplash.com/photo-1576091160399-112ba8a25d7d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80">
-                    <img src="https://images.unsplash.com/photo-1581595219315-a187dd40c322?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" 
-                         alt="Hospital Lobby" 
-                         class="gallery-thumbnail"
-                         style="width: 100px; height: 75px; object-fit: cover; border-radius: 5px; cursor: pointer;"
-                         data-full="https://images.unsplash.com/photo-1581595219315-a187dd40c322?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80">
-                    <img src="https://images.unsplash.com/photo-1584267385494-9fdd9a71ad75?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" 
-                         alt="Hospital Room" 
-                         class="gallery-thumbnail"
-                         style="width: 100px; height: 75px; object-fit: cover; border-radius: 5px; cursor: pointer;"
-                         data-full="https://images.unsplash.com/photo-1584267385494-9fdd9a71ad75?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80">
-                </div>
+            <div class="detail-actions">
+                <button class="btn btn-primary">
+                    <i class="fas fa-phone-alt"></i> Emergency
+                </button>
+                <button class="btn btn-secondary">
+                    <i class="fas fa-directions"></i> Directions
+                </button>
             </div>
+        </div>
 
+        <!-- Hospital Gallery -->
+        <div class="content-section">
+            <div class="main-image-container">
+                <img src="{{ asset('storage/' . $hospital->image) }}"
+                    alt="{{ $hospital->hospital_name }}"
+                    class="main-image"
+                    style="width: 100%; height: 400px; object-fit: cover; border-radius: var(--border-radius); margin-bottom: 1rem;">
+            </div>
             <!-- Hospital Details Tabs -->
             <div class="content-section">
                 <div class="tabs" style="display: flex; border-bottom: 1px solid var(--border-color); margin-bottom: 1.5rem;">
@@ -81,27 +65,26 @@
 
                 <!-- Overview Tab -->
                 <div id="overview" class="tab-content active">
-                    <h2>About City General Hospital</h2>
-                    <p>City General Hospital is a leading healthcare provider in the downtown area, offering comprehensive medical services with state-of-the-art facilities. Established in 1985, we have been serving the community with excellence in patient care for over 35 years.</p>
-                    
+                    <h2>About {{ $hospital->hospital_name }}</h2>
+                    <p>{{ $hospital->description }}</p>
+
                     <h3>Our Mission</h3>
                     <p>To provide exceptional healthcare services through advanced technology, compassionate care, and a commitment to improving the health and well-being of our community.</p>
-                    
+
                     <h3>Facilities</h3>
                     <ul style="list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1.5rem;">
-                        <li>24/7 Emergency Department</li>
-                        <li>Advanced Cardiac Care Unit</li>
-                        <li>Neuroscience Center</li>
-                        <li>Modern Operating Theaters</li>
-                        <li>On-site Pharmacy</li>
-                        <li>Diagnostic Imaging Center</li>
+                        @foreach ($hospital->facilities as $facility)
+
+                        <li>{{ $facility->description }}</li>
+                        @endforeach
+
                     </ul>
-                    
+
                     <h3>Location Map</h3>
                     <div class="map-container">
                         <!-- In a real application, this would be an embedded Google Map -->
                         <div style="width: 100%; height: 100%; background-color: #eee; display: flex; align-items: center; justify-content: center;">
-                            <p>Map would be displayed here</p>
+                            <p>{{ $hospital->location->google_maps_link }}</p>
                         </div>
                     </div>
                 </div>
@@ -110,32 +93,15 @@
                 <div id="services" class="tab-content" style="display: none;">
                     <h2>Our Services</h2>
                     <p>City General Hospital offers a wide range of medical services across various specialties:</p>
-                    
+
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+                        @foreach ($hospital->services as $service)
+
                         <div class="service-card" style="background-color: var(--primary-light); padding: 1.5rem; border-radius: var(--border-radius);">
-                            <h3 style="color: var(--primary-color); margin-bottom: 0.75rem;">Cardiology</h3>
+                            <h3 style="color: var(--primary-color); margin-bottom: 0.75rem;">{{ $service->service_name }}</h3>
                             <!-- <p>Comprehensive heart care including diagnostic testing, interventional procedures, and cardiac rehabilitation.</p> -->
                         </div>
-                        <div class="service-card" style="background-color: var(--primary-light); padding: 1.5rem; border-radius: var(--border-radius);">
-                            <h3 style="color: var(--primary-color); margin-bottom: 0.75rem;">Neurology</h3>
-                            <!-- <p>Specialized care for disorders of the nervous system, including stroke treatment and epilepsy management.</p> -->
-                        </div>
-                        <div class="service-card" style="background-color: var(--primary-light); padding: 1.5rem; border-radius: var(--border-radius);">
-                            <h3 style="color: var(--primary-color); margin-bottom: 0.75rem;">Emergency Medicine</h3>
-                            <!-- <p>24/7 emergency care with board-certified emergency physicians and trauma specialists.</p> -->
-                        </div>
-                        <div class="service-card" style="background-color: var(--primary-light); padding: 1.5rem; border-radius: var(--border-radius);">
-                            <h3 style="color: var(--primary-color); margin-bottom: 0.75rem;">Orthopedics</h3>
-                            <!-- <p>Treatment for musculoskeletal conditions including joint replacement and sports medicine.</p> -->
-                        </div>
-                        <div class="service-card" style="background-color: var(--primary-light); padding: 1.5rem; border-radius: var(--border-radius);">
-                            <h3 style="color: var(--primary-color); margin-bottom: 0.75rem;">Maternity Care</h3>
-                            <!-- <p>Comprehensive prenatal, delivery, and postnatal care in our modern maternity ward.</p> -->
-                        </div>
-                        <div class="service-card" style="background-color: var(--primary-light); padding: 1.5rem; border-radius: var(--border-radius);">
-                            <h3 style="color: var(--primary-color); margin-bottom: 0.75rem;">Oncology</h3>
-                            <!-- <p>Cancer diagnosis, treatment, and supportive care with the latest therapies and technologies.</p> -->
-                        </div>
+                        @endforeach
                     </div>
                 </div>
 
@@ -143,7 +109,7 @@
                 <div id="doctors" class="tab-content" style="display: none;">
                     <h2>Our Doctors</h2>
                     <p>Meet our team of highly qualified medical professionals:</p>
-                    
+
                     <div class="doctor-grid" style="margin-top: 2rem;">
                         <!-- Doctor cards would be loaded here -->
                         <!-- Doctor Card 1 -->
@@ -166,7 +132,7 @@
                                 </div>
                                 <div class="doctor-cta">
                                     <a href="doctor-detail.html" class="view-profile">View Profile</a>
-                                    <button class="book-appointment">Book Appointment</button>
+
                                 </div>
                             </div>
                         </div>
@@ -221,7 +187,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="text-center" style="margin-top: 2rem;">
                         <a href="doctors.html" class="btn btn-secondary">View All Doctors</a>
                     </div>
@@ -231,7 +197,7 @@
                 <div id="reviews" class="tab-content" style="display: none;">
                     <h2>Patient Reviews</h2>
                     <p>What our patients say about their experience at City General Hospital:</p>
-                    
+
                     <div style="margin-top: 2rem;">
                         <!-- Review Card 1 -->
                         <div class="review-card">
@@ -257,7 +223,7 @@
                                 <p>I had an excellent experience at City General Hospital. The staff was attentive and professional, and the facilities were clean and modern. Dr. Johnson was incredibly knowledgeable and took the time to explain everything to me. Highly recommend!</p>
                             </div>
                         </div>
-                        
+
                         <!-- Review Card 2 -->
                         <div class="review-card">
                             <div class="review-header">
@@ -282,7 +248,7 @@
                                 <p>The emergency department handled my situation quickly and efficiently. The nurses were compassionate and the doctor was thorough in his examination. The only reason I'm not giving 5 stars is because the wait time could be improved.</p>
                             </div>
                         </div>
-                        
+
                         <!-- Review Card 3 -->
                         <div class="review-card">
                             <div class="review-header">
@@ -308,7 +274,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Add Review Button -->
                     <div class="text-center" style="margin-top: 2rem;">
                         <button class="btn btn-primary">Add Your Review</button>
@@ -319,30 +285,30 @@
             <!-- Contact Information -->
             <div class="content-section">
                 <h2>Contact Information</h2>
-                
+
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 1.5rem;">
                     <div>
                         <h3>Address</h3>
-                        <p>123 Healthcare Avenue<br>Downtown, Cityville 12345</p>
+                        <p>{{ $hospital->location->city.', '.$hospital->location->district }}<br>{{ $hospital->location->state.', '.$hospital->location->country }}</p>
                     </div>
                     <div>
-                        <h3>Phone Numbers</h3>
-                        <p>Main: (555) 123-4567<br>
-                        Emergency: (555) 123-9999<br>
-                        Appointments: (555) 123-8888</p>
+                        <h3>Phone Numbers </h3>
+
+                        @foreach ($hospital->contacts as $contact)
+                        <p>{{ $contact->contact_type.': '. $contact->value}}<br></p>
+                        @endforeach
                     </div>
                     <div>
                         <h3>Hours</h3>
-                        <p>24/7 Emergency Department<br>
-                        Outpatient Services: Mon-Fri 8am-8pm<br>
-                        Specialty Clinics: By Appointment</p>
+
+                        @foreach ($hospital->openingDays as $day)
+                        <p>{{ $day->opening_day.'-'. date('h:i A', strtotime($day->opening_time)).' to '.date('h:i A', strtotime($day->closing_time)) }}<br></p>
+                        @endforeach
                     </div>
                 </div>
             </div>
         </div>
-    </main>
+</main>
 
 
 @endsection
-
-    

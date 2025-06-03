@@ -18,9 +18,7 @@
 
                 <form action="{{ isset($hospital->hospital_id) ? route('admin.hospital.update', $hospital->hospital_id) : route('admin.hospital.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    @isset($hospital->hospital_id)
-                    @method('PUT')
-                    @endisset
+                
 
                     <div class="row mb-4">
                         <div class="col-12">

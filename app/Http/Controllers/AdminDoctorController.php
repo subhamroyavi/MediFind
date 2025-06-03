@@ -17,7 +17,9 @@ class AdminDoctorController extends Controller
 {
     public function index()
     {
-        $doctors = Doctor::with(['locations', 'experiences', 'educations'])->orderBy('created_at', 'DESC')->get();
+        $doctors = Doctor::with(['locations', 'experiences', 'educations'])
+            ->orderBy('created_at', 'DESC')
+            ->get();
         // dd($doctors);
 
         return view('admin_panel.doctors', compact('doctors'));

@@ -26,121 +26,70 @@
 
         <!-- Search Results -->
         <div class="hospital-grid" id="hospitalResults">
-            <!-- Hospital cards will be loaded here -->
-            <!-- Cards from index.html would be repeated here -->
+            @foreach ($hospitals as $hospital)
             <!-- Hospital Card 1 -->
             <div class="hospital-card">
-                <div class="hospital-image"
-                    style="background-image: url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');">
+                <div class="hospital-image">
+                    <img src="{{ asset('storage/' . $hospital->image) }}" alt="Hospital">
                     <span class="rating-badge">
-                        4.8 <i class="fas fa-star"></i>
+                        @if ($hospital->organization_type == 'government')
+                        Govt.
+                        @elseif ($hospital->organization_type == 'private')
+                        Pvt.
+                        @else
+                        Public
+                        @endif
                     </span>
                 </div>
+
                 <div class="hospital-content">
-                    <h3><a href="{{ route('hospitals.details')}}">City General Hospital</a></h3>
+                    <h3><a href="{{ route('hospitals.details', $hospital->hospital_id) }}">{{ $hospital->hospital_name }}</a></h3>
                     <div class="location">
                         <i class="fas fa-map-marker-alt"></i>
-                        <span>123 Healthcare Ave, Downtown</span>
+                        <span>{{ $hospital->location ? $hospital->location->city . ', ' . $hospital->location->state : 'N/A' }}</span>
                     </div>
                     <div class="specialties">
                         <h4>Top Specialties:</h4>
                         <div class="specialties-list">
-                            <span class="specialty-tag">Cardiology</span>
-                            <span class="specialty-tag">Neurology</span>
-                            <span class="specialty-tag">Emergency Care</span>
+                            @foreach ($hospital->services as $service)
+                            <span class="specialty-tag">{{ $service->service_name }}</span>
+                            @endforeach
+
                         </div>
                     </div>
                     <div class="hospital-cta">
                         <div class="emergency-number">
                             <i class="fas fa-phone-alt"></i>
-                            <span>Emergency: 555-1234</span>
+                            <span>{{
+                                                $hospital->contacts->where('contact_type', 'phone')->first()?->value 
+                                                ?? 'N/A' 
+                                                }}
+                            </span>
                         </div>
-                        <button class="view-details"><a href="{{ route('hospitals.details')}}">View Details</a></button>
+
+                        <div class="hospital-cta">
+                            <a href="{{ route('hospitals.details', $hospital->hospital_id) }}"
+                                class="view-profile" id="profile"
+                                data-id="{{$hospital->hospital_id }}">
+                                View Profile
+                            </a>
+
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Hospital Card 2 -->
-            <div class="hospital-card">
-                <div class="hospital-image"
-                    style="background-image: url('https://images.unsplash.com/photo-1581595219315-a187dd40c322?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');">
-                    <span class="rating-badge">
-                        4.6 <i class="fas fa-star"></i>
-                    </span>
-                </div>
-                <div class="hospital-content">
-                    <h3><a href="{{ route('hospitals.details')}}">City General Hospital</a></h3>
-                    <div class="location">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span>123 Healthcare Ave, Downtown</span>
-                    </div>
-                    <div class="specialties">
-                        <h4>Top Specialties:</h4>
-                        <div class="specialties-list">
-                            <span class="specialty-tag">Cardiology</span>
-                            <span class="specialty-tag">Neurology</span>
-                            <span class="specialty-tag">Emergency Care</span>
-                        </div>
-                    </div>
-                    <div class="hospital-cta">
-                        <div class="emergency-number">
-                            <i class="fas fa-phone-alt"></i>
-                            <span>Emergency: 555-1234</span>
-                        </div>
-                        <button class="view-details"><a href="{{ route('hospitals.details')}}">View Details</a></button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Hospital Card 3 -->
-            <div class="hospital-card">
-                <div class="hospital-image"
-                    style="background-image: url('https://images.unsplash.com/photo-1530026186672-2cd00ffc50fe?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');">
-                    <span class="rating-badge">
-                        4.9 <i class="fas fa-star"></i>
-                    </span>
-                </div>
-                <div class="hospital-content">
-                    <h3><a href="{{ route('hospitals.details')}}">City General Hospital</a></h3>
-                    <div class="location">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span>123 Healthcare Ave, Downtown</span>
-                    </div>
-                    <div class="specialties">
-                        <h4>Top Specialties:</h4>
-                        <div class="specialties-list">
-                            <span class="specialty-tag">Cardiology</span>
-                            <span class="specialty-tag">Neurology</span>
-                            <span class="specialty-tag">Emergency Care</span>
-                        </div>
-                    </div>
-                    <div class="hospital-cta">
-                        <div class="emergency-number">
-                            <i class="fas fa-phone-alt"></i>
-                            <span>Emergency: 555-1234</span>
-                        </div>
-                        <button class="view-details"><a href="{{ route('hospitals.details')}}">View Details</a></button>
-                    </div>
-                </div>
-            </div>
-
+            @endforeach
             <!-- Additional hospital cards would be loaded here -->
         </div>
 
-        <!-- Load More Button -->
-        <div class="text-center">
-            <button class="btn btn-primary" id="loadMoreHospitals">Load More Hospitals</button>
-        </div>
-
         <!-- Pagination (alternative to load more) -->
-        <div class="pagination">
-            <a href="#" class="page-link"><i class="fas fa-chevron-left"></i></a>
-            <a href="#" class="page-link active">1</a>
-            <a href="#" class="page-link">2</a>
-            <a href="#" class="page-link">3</a>
-            <a href="#" class="page-link">4</a>
-            <a href="#" class="page-link"><i class="fas fa-chevron-right"></i></a>
+        @if($hospitals->hasPages())
+        <div class="pagination-wrapper">
+            {{ $hospitals->links('vendor.pagination.custom') }}
         </div>
+        @endif
+   
     </div>
 </main>
 
