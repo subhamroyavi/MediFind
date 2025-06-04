@@ -7,11 +7,11 @@
     <div class="container">
         <!-- Breadcrumb Navigation -->
         <div class="breadcrumb">
-            <a href="index.html">Home</a>
+            <a href="{{ route('index') }}">Home</a>
             <span>/</span>
-            <a href="hospitals.html">Hospitals</a>
+            <a href="{{ route('hospitals.view') }}">Hospitals</a>
             <span>/</span>
-            <a href="">{{ $hospital->hospital_name }}</a>
+            <a href="{{ url()->current() }}">{{ $hospital->hospital_name }}</a>
         </div>
 
 
@@ -295,7 +295,7 @@
                         <h3>Phone Numbers </h3>
 
                         @foreach ($hospital->contacts as $contact)
-                        <p>{{ $contact->contact_type.': '. $contact->value}}<br></p>
+                        <p>{{ $contact->contact_type.': '. $contact->value }}<br></p>
                         @endforeach
                     </div>
                     <div>

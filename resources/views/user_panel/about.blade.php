@@ -175,8 +175,8 @@
             <h2>Ready to Find Quality Healthcare?</h2>
             <p>Start your search for top-rated hospitals and doctors in your area today.</p>
             <div class="cta-buttons">
-                <a href="hospitals.html" class="cta-btn primary">Find Hospitals</a>
-                <a href="doctors.html" class="cta-btn secondary">Find Doctors</a>
+                <a href="{{ route('hospitals.view') }}" class="cta-btn primary">Find Hospitals</a>
+                <a href="{{ route('doctors') }}" class="cta-btn secondary">Find Doctors</a>
             </div>
         </div>
     </div>

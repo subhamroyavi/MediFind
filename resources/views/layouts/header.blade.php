@@ -10,6 +10,9 @@
     <link rel="stylesheet" href="{{asset('user_panel/css//mobile-menu.css')}}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+      @yield('header')
+  
+
 </head>
 
 <body>
@@ -108,8 +111,8 @@
     <script src="{{asset('user_panel/js/main.css')}}"></script>
     <script src="{{asset('user_panel/js/mobile.menu.js')}}"></script>
     <script src="{{asset('user_panel/js/tap.js')}}"></script>
-    
-       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 
     @yield('js')
 

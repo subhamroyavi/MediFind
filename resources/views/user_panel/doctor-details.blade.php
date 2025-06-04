@@ -7,11 +7,11 @@
     <div class="container">
         <!-- Breadcrumb Navigation -->
         <div class="breadcrumb">
-            <a href="index.html">Home</a>
+            <a href="{{ route('index') }}">Home</a>
+                <span>/</span>
+                <a href="{{ route('doctors') }}">Doctor</a>
             <span>/</span>
-            <a href="doctors.html">Doctors</a>
-            <span>/</span>
-            <a href="">Dr. {{ $doctorData->first_name.' '.$doctorData->last_name }}</a>
+            <a href="{{ url()->current() }}">Dr. {{ $doctorData->first_name.' '.$doctorData->last_name }}</a>
         </div>
 
         <!-- Doctor Header -->

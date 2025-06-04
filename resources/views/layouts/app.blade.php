@@ -1,5 +1,11 @@
 @extends('layouts.header')
 
+@section('header')
+
+@yield('header-link')
+
+@endsection
+
 @section('content')
 
 @yield('main-content')

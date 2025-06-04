@@ -399,6 +399,11 @@ header {
     box-shadow: var(--shadow-sm);
     border: 1px solid var(--border-color);
     transition: var(--transition);
+
+    display: flex;
+    flex-direction: column; /* 🔑 Make it a vertical flex container */
+    height: 100%;           /* Optional if cards are in grid */
+    padding: 1rem; 
 }
 
 .hospital-card:hover {
@@ -415,7 +420,20 @@ header {
     background-size: cover;
     background-position: center;
     position: relative;
+
+    width: 100%;
+    overflow: hidden;
 }
+
+
+.hospital-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;  /* ✅ maintains aspect ratio, center crops */
+    object-position: center;
+    display: block;
+}
+
 
 .rating-badge {
     position: absolute;
@@ -494,11 +512,14 @@ header {
 .hospital-cta {
     display: flex;
     justify-content: space-between;
-    margin-top: 1.5rem;
+    /* margin-top: 1.5rem; */
+    margin-top: auto;
     align-items: center;
     flex-wrap: wrap;
     gap: 1rem;
 }
+
+
 
 .emergency-number {
     display: flex;
