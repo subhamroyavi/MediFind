@@ -175,7 +175,7 @@
                                                             <label class="form-label" for="address_line1">Address Line 1 <span class="text-danger">*</span></label>
                                                             <input type="text" class="form-control"
                                                                 readonly
-                                                                value="{{ $ambulance->location->address_line1 }}">
+                                                                value="{{ $ambulance->location->address_line1 ?? '' }}">
 
                                                         </div>
                                                     </div>
@@ -184,7 +184,7 @@
                                                             <label class="form-label" for="address_line2">Address Line 2</label>
                                                             <input type="text" class="form-control"
                                                                 readonly
-                                                                value="{{ $ambulance->location->address_line2 }}">
+                                                                value="{{ $ambulance->location->address_line2 ?? '' }}">
 
                                                         </div>
                                                     </div>
@@ -196,7 +196,7 @@
                                                             <label class="form-label" for="city">City <span class="text-danger">*</span></label>
                                                             <input type="text" class="form-control" readonly
 
-                                                                value="{{ $ambulance->location->city }}">
+                                                                value="{{ $ambulance->location->city ?? '' }}">
 
                                                         </div>
                                                     </div>
@@ -204,7 +204,7 @@
                                                         <div class="mb-3">
                                                             <label class="form-label" for="district">District <span class="text-danger">*</span></label>
                                                             <input type="text" class="form-control" readonly
-                                                                value="{{ $ambulance->location->district }}">
+                                                                value="{{ $ambulance->location->district ?? '' }}">
 
                                                         </div>
                                                     </div>
@@ -213,7 +213,7 @@
                                                             <label class="form-label" for="state">State <span class="text-danger">*</span></label>
                                                             <input type="text" class="form-control"
                                                                 readonly
-                                                                value="{{ $ambulance->location->state }}">
+                                                                value="{{ $ambulance->location->state ?? '' }}">
 
                                                         </div>
                                                     </div>
@@ -225,7 +225,7 @@
                                                             <label class="form-label" for="pincode">Pincode <span class="text-danger">*</span></label>
                                                             <input type="text" class="form-control"
                                                                 readonly
-                                                                value="{{  $ambulance->location->pincode  }}">
+                                                                value="{{  $ambulance->location->pincode  ?? '' }}">
 
                                                         </div>
                                                     </div>
@@ -261,7 +261,7 @@
                                                                 <div id="panorama" class="gmaps-panaroma" style="height: 300px;">
                                                                     @if($ambulance->location && $ambulance->location->google_maps_link)
                                                                     <iframe
-                                                                        src="{{ $ambulance->location->google_maps_link  }}"
+                                                                        src="{{ $ambulance->location->google_maps_link  ?? '' }}"
                                                                         width="100%"
                                                                         height="100%"
                                                                         style="border:0;"

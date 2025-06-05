@@ -7,13 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ambulance extends Model
 {
-     use HasFactory;
+    use HasFactory;
     protected $primaryKey = 'ambulance_id';
     protected $table = 'ambulances';
     public $timestamps = false;
 
     protected $fillable = [
-         'first_name',
+        'first_name',
         'last_name',
         'email',
         'phone',
@@ -27,9 +27,9 @@ class Ambulance extends Model
         'image',
     ];
 
-   public function location()
+    public function location()
     {
-        return $this->hasOne(Location::class, 'entity_id');
+        return $this->hasOne(Location::class, 'entity_id', 'ambulance_id')
+            ->where('entity_type', 'ambulance');
     }
-    							
 }

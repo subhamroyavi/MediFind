@@ -8,22 +8,25 @@
         <div class="section-title">
             <h2>Find Ambulances Near You</h2>
             <div class="breadcrumb">
-                <a href="">Home</a>
+                <a href="{{ route('index') }}">Home</a>
                 <span>/</span>
-                <a href="#">Ambulances</a>
+                <a href="{{ url()->current() }}">Ambulances</a>
             </div>
 
-            <div class="search-container">
-                <input type="text" class="search-input" id="searchStr" name="searchStr"
-                    placeholder="Search ambulances by name, email, or phone...">
-                <button class="search-btn" id="searchBtn">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
+            <form action="{{ url()->current() }}" method="GET" class="search-form">
+                <div class="search-container">
+                    <input type="text" class="search-input" name="search" placeholder="Search hospitals, treatments, or doctors..."
+                        aria-label="Search">
+                    <button type="submit" class="search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </form>
         </div>
 
         <div class="hospital-grid d-none" id="ambulances-container">
             @foreach ($ambulances as $ambulance)
+            
             <div class="card">
 
                 <div class="hospital-card" id="hospital-card">
@@ -40,7 +43,7 @@
                         </span>
                     </div>
                     <div class="hospital-content">
-                        <h3><a href="#">{{ $ambulance->first_name }} {{ $ambulance->last_name }}</a></h3>
+                        <h3><a href=""><i class="fas fa-car"></i> {{ $ambulance->first_name }} {{ $ambulance->last_name }}</a></h3>
                         <div class="location">
                             <i class="fas fa-map-marker-alt"></i>
                             <span>{{ $ambulance->location->city }}, {{ $ambulance->location->district }}</span>
@@ -68,18 +71,179 @@
                             </div>
                             <div class="detail-actions">
                                 <button class="btn btn-primary">
-                                    <i class="fas fa-phone-alt"></i> Call
+                                    <a href="tel:{{ $ambulance->phone }}">
+                                        <i class="fas fa-phone-alt"></i> Call
+                                    </a>
                                 </button>
-                                <button class="btn btn-secondary">
+                               <a href="{{ $ambulance->location->google_maps_link }}"
+                                    class="btn btn-secondary" target="_blank">
                                     <i class="fas fa-directions"></i> Directions
-                                </button>
+                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
             @endforeach
+            <div class="card">
+
+                <div class="hospital-card" id="hospital-card">
+                    <div class="doctor-image">
+                        <img src="https://imgs.search.brave.com/obmiklJbtS8EmN9E7KTtDRiehq9UG-scqLjeD0qFP9c/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvMTQ4/NzQ1MDc2MC9waG90/by9mZW1hbGUtYW1i/dWxhbmNlLWRyaXZl/ci1iZWhpbmQtdGhl/LXdoZWVsLmpwZz9z/PTYxMng2MTImdz0w/Jms9MjAmYz1HQ21a/emFiYXNMNlBwVXB6/T0lLY1Uwa01vMTZ5/UjRDSlQ5Qk9fWVdr/a21BPQ" alt="ambulance">
+                        <span class="rating-badge">
+
+                            Public
+                        </span>
+                    </div>
+                    <div class="hospital-content">
+                        <h3><a href=""><i class="fas fa-car"></i> John Sen</a></h3>
+                        <div class="location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Coochbehar, Coochbehar</span>
+                        </div>
+                        <div class="location">
+                            <i class="fa-solid fa-id-card"></i>
+                            <span>MH-01-AB-1234</span>
+                        </div>
+                        <div class="location">
+                            <i class="fa-solid fa-truck-medical"></i>
+                            <span>Toyota Corolla LE 2022</span>
+                        </div>
+                        <div class="specialties">
+                            <h4>Services:</h4>
+                            <div class="specialties-list">
+                                <span class="specialty-tag">Critical Care</span>
+                                <span class="specialty-tag">ICU</span>
+                                <span class="specialty-tag">Long Distance</span>
+                            </div>
+                        </div>
+                        <div class="hospital-cta">
+                            <div class="emergency-number">
+                                <i class="fas fa-phone-alt"></i>
+                                <span>+91 9641857774</span>
+                            </div>
+                            <div class="detail-actions">
+                                <button class="btn btn-primary">
+                                    <a href="tel:+91 8881857574">
+                                        <i class="fas fa-phone-alt"></i> Call
+                                    </a>
+                                </button>
+                               <a href="https://www.google.com/maps/dir/?api=1&destination=Latitude,Longitude"
+                                    class="btn btn-secondary"
+                                    target="_blank">
+                                    <i class="fas fa-directions"></i> Directions
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+
+                <div class="hospital-card" id="hospital-card">
+                    <div class="doctor-image">
+                        <img src="https://imgs.search.brave.com/obmiklJbtS8EmN9E7KTtDRiehq9UG-scqLjeD0qFP9c/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvMTQ4/NzQ1MDc2MC9waG90/by9mZW1hbGUtYW1i/dWxhbmNlLWRyaXZl/ci1iZWhpbmQtdGhl/LXdoZWVsLmpwZz9z/PTYxMng2MTImdz0w/Jms9MjAmYz1HQ21a/emFiYXNMNlBwVXB6/T0lLY1Uwa01vMTZ5/UjRDSlQ5Qk9fWVdr/a21BPQ" alt="ambulance">
+                        <span class="rating-badge">
+
+                            Public
+                        </span>
+                    </div>
+                    <div class="hospital-content">
+                        <h3><a href=""><i class="fas fa-car"></i> John Sen</a></h3>
+                        <div class="location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Coochbehar, Coochbehar</span>
+                        </div>
+                        <div class="location">
+                            <i class="fa-solid fa-id-card"></i>
+                            <span>MH-01-AB-1234</span>
+                        </div>
+                        <div class="location">
+                            <i class="fa-solid fa-truck-medical"></i>
+                            <span>Toyota Corolla LE 2022</span>
+                        </div>
+                        <div class="specialties">
+                            <h4>Services:</h4>
+                            <div class="specialties-list">
+                                <span class="specialty-tag">Critical Care</span>
+                                <span class="specialty-tag">ICU</span>
+                                <span class="specialty-tag">Long Distance</span>
+                            </div>
+                        </div>
+                        <div class="hospital-cta">
+                            <div class="emergency-number">
+                                <i class="fas fa-phone-alt"></i>
+                                <span>+91 9641857774</span>
+                            </div>
+                            <div class="detail-actions">
+                                <button class="btn btn-primary">
+                                    <a href="tel:+91 8881857574">
+                                        <i class="fas fa-phone-alt"></i> Call
+                                    </a>
+                                </button>
+                             
+                                <a href="https://www.google.com/maps/dir/?api=1&destination=Latitude,Longitude"
+                                    class="btn btn-secondary"
+                                    target="_blank">
+                                    <i class="fas fa-directions"></i> Directions
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+
+                <div class="hospital-card" id="hospital-card">
+                    <div class="doctor-image">
+                        <img src="https://imgs.search.brave.com/tlAhFu3Hgj6WGan3KCsEX0yiXeteAm-VhYRMrWBFec8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTM0/NjcxNzczL3Bob3Rv/L3BhcmFtZWRpYy1p/bi1hbWJ1bGFuY2Ut/dGFsa2luZy1vbi1y/YWRpby5qcGc_cz02/MTJ4NjEyJnc9MCZr/PTIwJmM9TGVtMlVt/b3dPZGVmX1JjR2ht/dU1XZkpTZmJSclVt/SXlIZ1NmUnJ5Y0t2/OD0" alt="ambulance">
+                        <span class="rating-badge">
+                            Pvt.
+                        </span>
+                    </div>
+                    <div class="hospital-content">
+                        <h3><a href=""><i class="fas fa-car"></i> Jony Joe Sen</a></h3>
+                        <div class="location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Dinhata, Coochbehar</span>
+                        </div>
+                        <div class="location">
+                            <i class="fa-solid fa-id-card"></i>
+                            <span>MH-01-AB-1204</span>
+                        </div>
+                        <div class="location">
+                            <i class="fa-solid fa-truck-medical"></i>
+                            <span>Toyota Corolla LE 2022</span>
+                        </div>
+                        <div class="specialties">
+                            <h4>Services:</h4>
+                            <div class="specialties-list">
+                                <span class="specialty-tag">Critical Care</span>
+                                <span class="specialty-tag">ICU</span>
+                                <span class="specialty-tag">Long Distance</span>
+                            </div>
+                        </div>
+                        <div class="hospital-cta">
+                            <div class="emergency-number">
+                                <i class="fas fa-phone-alt"></i>
+                                <span>+91 8881857774</span>
+                            </div>
+                            <div class="detail-actions">
+                                <button class="btn btn-primary">
+                                    <a href="tel:+91 8881857774">
+                                        <i class="fas fa-phone-alt"></i> Call
+                                    </a>
+                                </button>
+                                <a href="https://www.google.com/maps/dir/?api=1&destination=Latitude,Longitude"
+                                    class="btn btn-secondary"
+                                    target="_blank">
+                                    <i class="fas fa-directions"></i> Directions
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         @if($ambulances->hasPages())

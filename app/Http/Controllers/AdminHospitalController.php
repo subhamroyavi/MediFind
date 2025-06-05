@@ -327,6 +327,7 @@ class AdminHospitalController extends Controller
 
             return redirect()->route('admin.hospital')
                 ->with('success', 'Hospital updated successfully.');
+                
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withInput()->with('error', 'Error updating hospital: ' . $e->getMessage());

@@ -38,21 +38,32 @@
             </div>
             <div class="detail-actions">
                 <button class="btn btn-primary">
-                    <i class="fas fa-phone-alt"></i> Emergency
+                    <a href="tel: {{ $hospital->contacts->where('contact_type', 'phone')->first()?->value ?? 'N/A' }}">
+                        Call Me
+                    </a>
                 </button>
                 <button class="btn btn-secondary">
+                    <a href="{{ $hospital->location->google_maps_link }}" target="_blank">
                     <i class="fas fa-directions"></i> Directions
+                </a>
                 </button>
+                
             </div>
+
         </div>
 
         <!-- Hospital Gallery -->
         <div class="content-section">
             <div class="main-image-container">
-                <img src="{{ asset('storage/' . $hospital->image) }}"
-                    alt="{{ $hospital->hospital_name }}"
-                    class="main-image"
+                @if (isset($hospital->image))
+                <img src="{{ asset('storage/' . $hospital->image) }}" alt="Hospital" class="main-image"
                     style="width: 100%; height: 400px; object-fit: cover; border-radius: var(--border-radius); margin-bottom: 1rem;">
+
+                @else
+                <div class="hospital-image d-flex align-items-center justify-content-center" style="width: 100%; height: 400px;">
+                    <i class="fas fa-hospital-alt text-primary fs-1"></i>
+                </div>
+                @endif
             </div>
             <!-- Hospital Details Tabs -->
             <div class="content-section">
@@ -80,13 +91,6 @@
 
                     </ul>
 
-                    <h3>Location Map</h3>
-                    <div class="map-container">
-                        <!-- In a real application, this would be an embedded Google Map -->
-                        <div style="width: 100%; height: 100%; background-color: #eee; display: flex; align-items: center; justify-content: center;">
-                            <p>{{ $hospital->location->google_maps_link }}</p>
-                        </div>
-                    </div>
                 </div>
 
                 <!-- Services Tab -->

@@ -15,7 +15,6 @@
                     @endisset
                 </h4>
 
-
                 <form action="{{ isset($ambulance->ambulance_id) ? route('admin.ambulance.update', $ambulance->ambulance_id) : route('admin.ambulance.store') }}"
                     method="POST"
                     enctype="multipart/form-data">
@@ -36,7 +35,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" data-bs-toggle="tab" href="#address-info" role="tab">
+                                    <a class="nav-link" data-bs-toggle="tab" href="#location-info" role="tab">
                                         <span>3. Address Details</span>
                                     </a>
                                 </li>
@@ -226,13 +225,13 @@
                                     <button type="button" class="btn btn-secondary" onclick="switchTab('basic-info')">Previous: Driver Info</button>
                                 </div>
                                 <div class="col-6 text-end">
-                                    <button type="button" class="btn btn-primary" onclick="switchTab('address-info')">Next: Address Details</button>
+                                    <button type="button" class="btn btn-primary" onclick="switchTab('location-info')">Next: Address Details</button>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Address Information Tab -->
-                        <div class="tab-pane" id="address-info" role="tabpanel">
+                        <div class="tab-pane" id="location-info" role="tabpanel">
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="mb-3">
@@ -311,38 +310,47 @@
                                         <label class="form-label" for="country">Country <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control @error('country') is-invalid @enderror"
                                             id="country" name="country"
-                                            value="{{ old('country', $ambulance->location->country ?? 'India') }}">
+                                            value="{{ old('country', $ambulance->location->country ?? '') }}">
                                         @error('country')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="mb-3">
-                                        <label class="form-label" for="pincode">Google Maps Link <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control @error('google_maps_link') is-invalid @enderror"
-                                            id="google_maps_link" name="google_maps_link"
-                                            value="{{ old('google_maps_link', $ambulance->location->google_maps_link ?? '') }}">
-                                        @error('google_maps_link')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
 
-                            </div>
+           <div class="row">
+    <div class="col-12">
+        <div class="mb-3">
+            <label class="form-label" for="google_maps_link">Google Maps Link</label>
+            <textarea 
+                class="form-control @error('google_maps_link') is-invalid @enderror"
+                id="google_maps_link" 
+                name="google_maps_link"
+                rows="3"
+            >{{ old('google_maps_link', $ambulance->location->google_maps_link ?? '') }}</textarea>
+            @error('google_maps_link')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+    </div>
+</div>
+                            <!-- Hidden fields for location relationship -->
+                            @if(isset($ambulance->location))
+                            <input type="hidden" name="location_id" value="{{ $ambulance->location->location_id }}">
+                            @endif
+                            <input type="hidden" name="entity_type" value="ambulance">
+                            <input type="hidden" name="entity_id" value="{{ $ambulance->ambulance_id ?? '' }}">
 
                             <div class="row mt-4">
                                 <div class="col-6">
-                                    <button type="button" class="btn btn-secondary" onclick="switchTab('vehicle-info')">Previous: Vehicle Details</button>
+                                    <button type="button" class="btn btn-secondary" onclick="switchTab('opening-hours')">Previous: Opening Hours</button>
                                 </div>
                                 <div class="col-6 text-end">
                                     <button type="submit" class="btn btn-success">
                                         @isset($ambulance->ambulance_id)
-                                        Update Ambulance
+                                        Update ambulance
                                         @else
-                                        Register Ambulance
+                                        Register ambulance
                                         @endisset
                                     </button>
                                 </div>

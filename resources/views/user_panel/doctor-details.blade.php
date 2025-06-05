@@ -8,8 +8,8 @@
         <!-- Breadcrumb Navigation -->
         <div class="breadcrumb">
             <a href="{{ route('index') }}">Home</a>
-                <span>/</span>
-                <a href="{{ route('doctors') }}">Doctor</a>
+            <span>/</span>
+            <a href="{{ route('doctors') }}">Doctor</a>
             <span>/</span>
             <a href="{{ url()->current() }}">Dr. {{ $doctorData->first_name.' '.$doctorData->last_name }}</a>
         </div>
@@ -35,10 +35,10 @@
                         <i class="fas fa-map-marker-alt"></i>
                         <span>{{ $doctorData->locations->city.','. $doctorData->locations->district.','. $doctorData->locations->state }}</span>
                     </div>
-                    <div class="meta-item">
+                    <!-- <div class="meta-item">
                         <i class="fas fa-star"></i>
                         <span>4.7 (128 reviews)</span>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <!-- <div class="detail-actions">
@@ -70,13 +70,14 @@
                                 {{ $doctorData->email }}
                             </p>
                             <p><i class="fas fa-hospital"
-                                    style="color: var(--primary-color); margin-right: 0.5rem;"></i> @isset($doctor->hospital)
-                                <span class="badge bg-primary">
-                                    {{ $doctor->hospital->name  }}
-                                </span>
-                                @else
-                                <span class="text-muted">Hospital not specified</span>
-                                @endisset
+                                    style="color: var(--primary-color); margin-right: 0.5rem;"></i>
+                              @if($doctorData->experiences->isNotEmpty())
+                            <span class="badge bg-primary">
+                                {{ $doctorData->experiences->first()->hospital_name }}
+                            </span>
+                            @else
+                            <span class="text-muted">Hospital not specified</span>
+                            @endif
                             </p>
                         </div>
                     </div>
@@ -113,8 +114,8 @@
                 <!-- <button class="tab-link active" data-tab="availability" style="padding: 0.75rem 1.5rem; background: none; border: none; border-bottom: 3px solid var(--primary-color); font-weight: 500; cursor: pointer;">Availability</button> -->
                 <button class="tab-link active" data-tab="experience"
                     style="padding: 0.75rem 1.5rem; background: none; border: none; font-weight: 500; cursor: pointer;">Experience</button>
-                <button class="tab-link" data-tab="reviews"
-                    style="padding: 0.75rem 1.5rem; background: none; border: none; font-weight: 500; cursor: pointer;">Reviews</button>
+                <!-- <button class="tab-link" data-tab="reviews"
+                    style="padding: 0.75rem 1.5rem; background: none; border: none; font-weight: 500; cursor: pointer;">Reviews</button> -->
             </div>
 
             <!-- Experience Tab -->

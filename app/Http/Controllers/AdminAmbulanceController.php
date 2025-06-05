@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Ambulance;
 use App\Models\Location;
+use App\Models\Ambulance;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+
 
 class AdminAmbulanceController extends Controller
 {
@@ -112,13 +116,13 @@ class AdminAmbulanceController extends Controller
 
     public function edit($id)
     {
-        $ambulance = Ambulance::findOrFail($id);
+        $ambulance = Ambulance::with(['location'])->findOrFail($id);
+        // dd($ambulance->toArray());
         return view('admin_panel.ambulance_action', compact('ambulance'));
     }
 
     public function update(Request $request, $id)
     {
-        // dd($request->all());
         // Validate ambulance details
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
@@ -133,10 +137,8 @@ class AdminAmbulanceController extends Controller
             'insurance_number' => 'required|string|max:50',
             'status' => 'required|boolean',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
 
-        // Validate location/address details
-        $validated1 = $request->validate([
+            // Validate location/address details
             'address_line1' => 'required|string|max:255',
             'address_line2' => 'nullable|string|max:255',
             'city' => 'required|string|max:100',
@@ -147,44 +149,57 @@ class AdminAmbulanceController extends Controller
             'google_maps_link' => 'required',
         ]);
 
-        // Handle image upload
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $filename = 'ambulance_' . time() . '_' . $image->getClientOriginalName();
-            $path = $image->storeAs('public/ambulances', $filename);
-            $validated['image'] = 'ambulances/' . $filename;
-        }
-
+        DB::beginTransaction();
         try {
             $ambulance = Ambulance::findOrFail($id);
+
+            // Handle image upload
+            if ($request->hasFile('image')) {
+                // Delete old image if exists
+                if ($ambulance->image) {
+                    Storage::delete('public/' . $ambulance->image);
+                }
+
+                $image = $request->file('image');
+                $filename = 'ambulance_' . time() . '_' . $image->getClientOriginalName();
+                $path = $image->storeAs('public/ambulances', $filename);
+                $validated['image'] = 'ambulances/' . $filename;
+            } else {
+                // Keep the existing image if no new image is uploaded
+                $validated['image'] = $ambulance->image;
+            }
+
+            // Update ambulance details
             $ambulance->update($validated);
 
-            // Find related location
-            $location = Location::where('entity_type', 'ambulance')
-                ->where('entity_id', $ambulance->ambulance_id)
-                ->first();
+            // Update or create location using updateOrCreate for cleaner code
+            Location::updateOrCreate(
+                [
+                    'entity_type' => 'ambulance',
+                    'entity_id' => $ambulance->ambulance_id,
+                ],
+                [
+                    'address_line1' => $validated['address_line1'],
+                    'address_line2' => $validated['address_line2'],
+                    'city' => $validated['city'],
+                    'district' => $validated['district'],
+                    'state' => $validated['state'],
+                    'pincode' => $validated['pincode'],
+                    'country' => $validated['country'],
+                    'google_maps_link' => $validated['google_maps_link'],
+                ]
+            );
 
-            if (is_null($location)) {
-                Location::create(array_merge(
-                    $validated1,
-                    [
-                        'entity_type' => 'ambulance',
-                        'entity_id' => $ambulance->ambulance_id,
-                    ]
-                ));
-            } else {
-                if ($location) {
-                    $location->update($validated1);
-                }
-            }
+            DB::commit();
+
+            return redirect()->route('admin.ambulance.index')
+                ->with('success', 'Ambulance updated successfully');
         } catch (\Exception $e) {
-            return back()->withErrors(['error' => $e->getMessage()]);
+            DB::rollBack();
+            return back()->withErrors(['error' => 'Failed to update ambulance: ' . $e->getMessage()])
+                ->withInput();
         }
-
-        return redirect()->route('admin.ambulance.index')
-            ->with('success', 'Ambulance updated successfully');
     }
-
     public function destroy($id)
     {
         // Ambulance::findOrFail($id)->delete($id);
