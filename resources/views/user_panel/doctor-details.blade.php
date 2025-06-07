@@ -71,13 +71,13 @@
                             </p>
                             <p><i class="fas fa-hospital"
                                     style="color: var(--primary-color); margin-right: 0.5rem;"></i>
-                              @if($doctorData->experiences->isNotEmpty())
-                            <span class="badge bg-primary">
-                                {{ $doctorData->experiences->first()->hospital_name }}
-                            </span>
-                            @else
-                            <span class="text-muted">Hospital not specified</span>
-                            @endif
+                                @if($doctorData->experiences->isNotEmpty())
+                                <span class="badge bg-primary">
+                                    {{ $doctorData->experiences->first()->hospital_name }}
+                                </span>
+                                @else
+                                <span class="text-muted">Hospital not specified</span>
+                                @endif
                             </p>
                         </div>
                     </div>
@@ -88,15 +88,17 @@
 
                     <h3 style="margin-top: 1.5rem;">Education</h3>
                     <ul style="list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1.5rem;">
-                        @foreach ($doctorData->educations as $education)
-
-                        <li>{{ $education->course_name.'-'.$education->university  }}</li>
-                        @endforeach
+                        @forelse($doctorData->educations ?? [] as $education)
+                        <li>{{ $education->course_name }} - {{ $education->university }}</li>
+                        @empty
+                        <li>Not mentioned.</li>
+                        @endforelse
 
                     </ul>
 
                     <h3>Specialties</h3>
                     <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem;">
+
                         <span class="specialty-tag">{{ $doctorData->specialization }}</span>
 
                     </div>
@@ -125,17 +127,17 @@
 
                 <div style="margin-top: 2rem;">
                     <h3>Positions</h3>
-                    @foreach ($doctorData->experiences as $experience)
-
+                    @forelse($doctorData->experiences ?? [] as $experience)
                     <div
                         style="background-color: var(--primary-light); padding: 1.5rem; border-radius: var(--border-radius); margin-bottom: 1.5rem;">
                         <h4 style="color: var(--primary-color); margin-bottom: 0.5rem;">{{ $experience->position }}</h4>
                         <p style="font-weight: 500;">{{ $experience->hospital_name }}</p>
                         <p>{{ $experience->start_date.'-'.$experience->end_date }}</p>
                     </div>
-
-                    @endforeach
-
+                    @empty
+                    <div style="background-color: var(--primary-light); padding: 1.5rem; border-radius: var(--border-radius); margin-bottom: 1.5rem;">
+                    <h4 style="color: var(--primary-color); margin-bottom: 0.5rem;">Not mentioned.</h4>
+                    @endforelse
 
                     <!-- <h3>Certifications</h3>
                     <ul style="list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1.5rem;">

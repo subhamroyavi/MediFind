@@ -17,7 +17,7 @@
 
             <form action="{{ url()->current() }}" method="GET" class="search-form">
                 <div class="search-container">
-                    <input type="text" class="search-input" name="search" placeholder="Search hospitals, treatments, or doctors..."
+                    <input type="text" class="search-input" name="search" placeholder="Search only one word for hospitals..."
                         aria-label="Search">
                     <button type="submit" class="search-btn">
                         <i class="fas fa-search"></i>

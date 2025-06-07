@@ -18,7 +18,7 @@
 
             <form action="{{ url()->current() }}" method="GET" class="search-form">
                 <div class="search-container">
-                    <input type="text" class="search-input" name="search" placeholder="Search doctors..."
+                    <input type="text" class="search-input" name="search" placeholder="Search only one word for doctors..."
                         aria-label="Search">
                     <button type="submit" class="search-btn">
                         <i class="fas fa-search"></i>
@@ -32,119 +32,263 @@
             @foreach ($doctors as $doctor)
 
             <!-- Doctor Card 1 -->
-            <div class="doctor-card">
-                <div class="doctor-image">
-                    <img src="{{ asset('storage/' . $doctor->image) }}" alt="Dr. Sarah Johnson">
-                </div>
-                <div class="doctor-content">
-                    <h3>
-                        <i class="fas fa-user-md"></i>
-                        <a href="{{ route('doctor-details', ['id' => $doctor->doctor_id]) }}"
-                            id="profile"
-                            data-id="{{ $doctor->doctor_id }}"> Dr. {{ $doctor->first_name.' '.$doctor->last_name }}</a>
-                    </h3>
-                    <p class=" specialty"><i class="fas fa-stethoscope" style="color: var(--primary-color); margin-right: 0.5rem;"></i> {{ $doctor->specialization }}</p>
-                    <div class="hospital">
-                        <i class="fas fa-hospital"></i>
-                        <div class="doctor-hospital">
-                            @if($doctor->experiences->isNotEmpty())
-                            <span class="badge bg-primary">
-                                {{ $doctor->experiences->first()->hospital_name }}
-                            </span>
+
+            <div class="hospital-card">
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="hospital-image d-flex align-items-center justify-content-center" style="height: 200px;">
+
+                            @if (isset($doctor->image))
+                            <img src="{{ asset('storage/' . $doctor->image) }}" alt="do$doctor">
                             @else
-                            <span class="text-muted">Hospital not specified</span>
+                            <i class="fas fa-hospital-alt text-primary fs-1"></i>
                             @endif
                         </div>
-                    </div>
+                        <div class="card-body">
+                            <h3 class="h5 text-primary"><i class="fas fa-user-md"></i>
+                                <a href="{{ route('doctor-details', ['id' => $doctor->doctor_id]) }}"
+                                    id="profile"
+                                    data-id="{{ $doctor->doctor_id }}"> Dr. {{ $doctor->first_name.' '.$doctor->last_name }}</a>
+                            </h3>
+                            <div class="location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>{{ $doctor->locations ? $doctor->locations->city . ', ' . $doctor->locations->state : 'N/A' }}</span>
 
-                    <div class="doctor-cta">
-                        <a href="{{ route('doctor-details', ['id' => $doctor->doctor_id]) }}"
-                            class="view-profile" id="profile"
-                            data-id="{{ $doctor->doctor_id }}">
-                            View Profile
-                        </a>
-                        <!-- <button class="book-appointment">Book Appointment</button> -->
+                            </div>
+                            <div class="location">
+                                <i class="fas fa-stethoscope"></i>
+                                <span>{{ $doctor->specialization }}</span>
+                                <!-- <i class="fas fa-stethoscope" style="color: var(--primary-color); margin-right: 0.5rem;"></i>  -->
+                            </div>
+                            <div class="location">
+                                <i class="fas fa-hospital"></i>
+                                @if($doctor->experiences->isNotEmpty())
+                                <span class="badge bg-primary">
+                                    {{ $doctor->experiences->first()->hospital_name }}
+                                </span>
+                                @else
+                                <span class="text-muted">Hospital not specified</span>
+                                @endif
+                            </div>
+                            <!-- <div class="mb-3">
+                                <h4 class="h6">Top Specialties:</h4>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span class="specialty-tag badge rounded-pill">Orthopedics</span>
+                                        <span class="specialty-tag badge rounded-pill">Oncology</span>
+                                        <span class="specialty-tag badge rounded-pill">Pediatrics</span>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <!-- <div class="mb-3">
+                                <h4 class="h6">Featured Doctors:</h4>
+                                <div class="d-flex align-items-center mb-1">
+                                    <i class="fas fa-user-md text-primary me-2"></i>
+                                    <span>Dr. James Wilson - Orthopedics</span>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-user-md text-primary me-2"></i>
+                                    <span>Dr. Emily Rodriguez - Oncology</span>
+                                </div>
+                            </div> -->
+
+                            <div class="hospital-cta">
+                                <!-- <a href="tel: +91 44161414"
+                                    class="view-profile" id="profile">
+                                    Call Me
+                                </a> -->
+                                <a href="{{ route('doctor-details', ['id' => $doctor->doctor_id]) }}"
+                                    class="view-profile" id="profile"
+                                    data-id="{{ $doctor->doctor_id }}">
+                                    View Profile
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+
             @endforeach
-            <!-- Doctor Card 1 -->
-            <div class="doctor-card">
-                <div class="doctor-image">
-                    <img src="https://imgs.search.brave.com/ngA-0Nd5G8L0e8YmiBiiizFmzI5aLDT05NP-UpDrQ-4/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvMTgw/NjYwODU0NC9waG90/by9wb3J0cmFpdC1v/Zi1hLWZlbWFsZS1k/b2N0b3ItYXQtdGhl/LXdvcmtwbGFjZS5q/cGc_cz02MTJ4NjEy/Jnc9MCZrPTIwJmM9/TUFSa3R0bGZKMUpv/QXhLZmZybVh4Yklf/cklQSlRLV2FLVHJG/djFxd0NaYz0" alt="Dr. Ronita Roy">
-                </div>
-                <div class="doctor-content">
-                    <h3>
-                        <i class="fas fa-user-md"></i>
-                        <a href="" id="profile"> Dr. Ronita Roy</a>
-                    </h3>
-                    <p class=" specialty"><i class="fas fa-stethoscope" style="color: var(--primary-color); margin-right: 0.5rem;"></i> {{ $doctor->specialization }}</p>
-                    <div class="hospital">
-                        <i class="fas fa-hospital"></i>
-                        <div class="doctor-hospital">
-                            <span class="text-muted"> Bosco, Prosacco and Nitzsche Hospital</span>
+            <div class="hospital-card">
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="hospital-image d-flex align-items-center justify-content-center" style="height: 200px;">
+                            <img src="https://imgs.search.brave.com/5YEFlSaPsVszFQ-7sAe_edF-k-bUp6jJMYncmx4d0cU/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTM3/MzI1OTYzMy9waG90/by9wb3J0cmFpdC1v/Zi1zdWNjZXNzZnVs/LW51cnNlLXdpdGgt/dGVhbS5qcGc_cz02/MTJ4NjEyJnc9MCZr/PTIwJmM9QXZQTjZJ/ckljbXZrZXo5MXRJ/eUtLbnRfZU5heTlK/azBHeU04YVZWNTR2/VT0" alt="doctor">
                         </div>
-                    </div>
+                        <div class="card-body">
+                            <h3 class="h5 text-primary"><i class="fas fa-user-md"></i>
+                                <a href="" id="profile"> Dr. Jhony Josef</a>
+                            </h3>
+                            <div class="location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span> Kamakhya, Assam</span>
 
-                    <div class="doctor-cta">
-                        <a class="view-profile" id="profile">
-                            View Profile
-                        </a>
-                        <!-- <button class="book-appointment">Book Appointment</button> -->
+                            </div>
+                            <div class="location">
+                                <i class="fas fa-stethoscope"></i>
+                                <span>Pediatrician</span>
+                                <!-- <i class="fas fa-stethoscope" style="color: var(--primary-color); margin-right: 0.5rem;"></i>  -->
+                            </div>
+                            <div class="location">
+                                <i class="fas fa-hospital"></i>
+
+                                <span class="text-muted">Massachusetts General Hospital</span>
+                            </div>
+                            <!-- <div class="mb-3">
+                                <h4 class="h6">Top Specialties:</h4>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span class="specialty-tag badge rounded-pill">Orthopedics</span>
+                                        <span class="specialty-tag badge rounded-pill">Oncology</span>
+                                        <span class="specialty-tag badge rounded-pill">Pediatrics</span>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <!-- <div class="mb-3">
+                                <h4 class="h6">Featured Doctors:</h4>
+                                <div class="d-flex align-items-center mb-1">
+                                    <i class="fas fa-user-md text-primary me-2"></i>
+                                    <span>Dr. James Wilson - Orthopedics</span>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-user-md text-primary me-2"></i>
+                                    <span>Dr. Emily Rodriguez - Oncology</span>
+                                </div>
+                            </div> -->
+
+                            <div class="hospital-cta">
+                                <!-- <a href="tel: +91 44161414"
+                                    class="view-profile" id="profile">
+                                    Call Me
+                                </a> -->
+                                <a href=""
+                                    class="view-profile" id="profile">
+                                    View Profile
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <!-- Doctor Card 2 -->
-            <div class="doctor-card">
-                <div class="doctor-image">
-                    <img src="https://imgs.search.brave.com/U7F5YMVEGZ2c0XSYh4qzFb8WGlcoq-L-x_KkUJ3J9ks/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTE0/OTUxMTIzNi9waG90/by95b3Utd29udC1u/ZWVkLWEtc2Vjb25k/LW9waW5pb24td2l0/aC1oZXItZXhwZXJ0/aXNlLmpwZz9zPTYx/Mng2MTImdz0wJms9/MjAmYz1DMUVEaEtk/bm5neWdnYXZLemNK/U1Qwa0ZheGFwc3hm/RlBxOWVIZUpJZ0tN/PQ" alt="Dr.  Sita sen">
-                </div>
-                <div class="doctor-content">
-                    <h3>
-                        <i class="fas fa-user-md"></i>
-                        <a href="" id="profile"> Dr.  Sita sen</a>
-                    </h3>
-                    <p class=" specialty"><i class="fas fa-stethoscope" style="color: var(--primary-color); margin-right: 0.5rem;"></i> Hematologist</p>
-                    <div class="hospital">
-                        <i class="fas fa-hospital"></i>
-                        <div class="doctor-hospital">
-                            <span class="text-muted"> Bosco, Prosacco and Nitzsche Hospital</span>
+            <div class="hospital-card">
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="hospital-image d-flex align-items-center justify-content-center" style="height: 200px;">
+                            <img src="https://imgs.search.brave.com/n4gmt0IAfqIS8UfkwZPV_h3Si0EGJjEwh_9aYI7AZWg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90NC5m/dGNkbi5uZXQvanBn/LzA2LzU4Lzc3LzUx/LzM2MF9GXzY1ODc3/NTE2M19tVGYwcTU1/YjNWakhOVXIxM0li/TzNjYkFKejhLNVdG/Vy5qcGc" alt="doctor">
                         </div>
-                    </div>
+                        <div class="card-body">
+                            <h3 class="h5 text-primary"><i class="fas fa-user-md"></i>
+                                <a href="" id="profile"> Dr. Jhony Josef</a>
+                            </h3>
+                            <div class="location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span> Kamakhya, Assam</span>
 
-                    <div class="doctor-cta">
-                        <a class="view-profile" id="profile">
-                            View Profile
-                        </a>
-                        <!-- <button class="book-appointment">Book Appointment</button> -->
+                            </div>
+                            <div class="location">
+                                <i class="fas fa-stethoscope"></i>
+                                <span>Pediatrician</span>
+                                <!-- <i class="fas fa-stethoscope" style="color: var(--primary-color); margin-right: 0.5rem;"></i>  -->
+                            </div>
+                            <div class="location">
+                                <i class="fas fa-hospital"></i>
+
+                                <span class="text-muted">Massachusetts General Hospital</span>
+                            </div>
+                            <!-- <div class="mb-3">
+                                <h4 class="h6">Top Specialties:</h4>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span class="specialty-tag badge rounded-pill">Orthopedics</span>
+                                        <span class="specialty-tag badge rounded-pill">Oncology</span>
+                                        <span class="specialty-tag badge rounded-pill">Pediatrics</span>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <!-- <div class="mb-3">
+                                <h4 class="h6">Featured Doctors:</h4>
+                                <div class="d-flex align-items-center mb-1">
+                                    <i class="fas fa-user-md text-primary me-2"></i>
+                                    <span>Dr. James Wilson - Orthopedics</span>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-user-md text-primary me-2"></i>
+                                    <span>Dr. Emily Rodriguez - Oncology</span>
+                                </div>
+                            </div> -->
+
+                            <div class="hospital-cta">
+                                <!-- <a href="tel: +91 44161414"
+                                    class="view-profile" id="profile">
+                                    Call Me
+                                </a> -->
+                                <a href=""
+                                    class="view-profile" id="profile">
+                                    View Profile
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-
-             <!-- Doctor Card 2 -->
-            <div class="doctor-card">
-                <div class="doctor-image">
-                    <img src="https://imgs.search.brave.com/RNAiD7PhplALoOf961wVCcPnCJKKTyBd8eOeTaAkM4c/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTQ2/ODY3ODYyOS9waG90/by9wb3J0cmFpdC1o/ZWFsdGhjYXJlLWFu/ZC10YWJsZXQtd2l0/aC1hLWRvY3Rvci13/b21hbi1hdC13b3Jr/LWluLWEtaG9zcGl0/YWwtZm9yLXJlc2Vh/cmNoLW9yLmpwZz9z/PTYxMng2MTImdz0w/Jms9MjAmYz04bVNN/WXM3YTZlSElaMkVG/bS05eDZaMldRSFcz/dU9ydVlYWHpUN0p1/Z1lJPQ" alt="Dr.  Samu Naidu">
-                </div>
-                <div class="doctor-content">
-                    <h3>
-                        <i class="fas fa-user-md"></i>
-                        <a href="" id="profile"> Dr.  Samu Naidu</a>
-                    </h3>
-                    <p class=" specialty"><i class="fas fa-stethoscope" style="color: var(--primary-color); margin-right: 0.5rem;"></i> Pediatrician</p>
-                    <div class="hospital">
-                        <i class="fas fa-hospital"></i>
-                        <div class="doctor-hospital">
-                            <span class="text-muted"> Mosciski Inc Hospital</span>
+            <div class="hospital-card">
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="hospital-image d-flex align-items-center justify-content-center" style="height: 200px;">
+                            <img src="https://imgs.search.brave.com/sORsHeX8ku3bf55znHC8-aXV9CUVrqFbtNhV3nDu-fs/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90NC5m/dGNkbi5uZXQvanBn/LzAzLzIwLzUyLzMx/LzM2MF9GXzMyMDUy/MzE2NF90eDdSZGQ3/STJYRFR2dktmejJv/UnVScEtPUEU1ejBu/aS5qcGc" alt="do$doctor">
                         </div>
-                    </div>
+                        <div class="card-body">
+                            <h3 class="h5 text-primary"><i class="fas fa-user-md"></i>
+                                <a href="" id="profile"> Dr. Jhony Josef</a>
+                            </h3>
+                            <div class="location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span> Kamakhya, Assam</span>
 
-                    <div class="doctor-cta">
-                        <a class="view-profile" id="profile">
-                            View Profile
-                        </a>
-                        <!-- <button class="book-appointment">Book Appointment</button> -->
+                            </div>
+                            <div class="location">
+                                <i class="fas fa-stethoscope"></i>
+                                <span>Pediatrician</span>
+                                <!-- <i class="fas fa-stethoscope" style="color: var(--primary-color); margin-right: 0.5rem;"></i>  -->
+                            </div>
+                            <div class="location">
+                                <i class="fas fa-hospital"></i>
+
+                                <span class="text-muted">Massachusetts General Hospital</span>
+                            </div>
+                            <!-- <div class="mb-3">
+                                <h4 class="h6">Top Specialties:</h4>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span class="specialty-tag badge rounded-pill">Orthopedics</span>
+                                        <span class="specialty-tag badge rounded-pill">Oncology</span>
+                                        <span class="specialty-tag badge rounded-pill">Pediatrics</span>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <!-- <div class="mb-3">
+                                <h4 class="h6">Featured Doctors:</h4>
+                                <div class="d-flex align-items-center mb-1">
+                                    <i class="fas fa-user-md text-primary me-2"></i>
+                                    <span>Dr. James Wilson - Orthopedics</span>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-user-md text-primary me-2"></i>
+                                    <span>Dr. Emily Rodriguez - Oncology</span>
+                                </div>
+                            </div> -->
+
+                            <div class="hospital-cta">
+                                <!-- <a href="tel: +91 44161414"
+                                    class="view-profile" id="profile">
+                                    Call Me
+                                </a> -->
+                                <a href=""
+                                    class="view-profile" id="profile">
+                                    View Profile
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -43,7 +43,7 @@ class AdminDoctorController extends Controller
             // Basic Info
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'phone' => 'required|string|max:20',
             'email' => 'required|email|unique:doctors,email',
             'small_description' => 'required|string|max:255',

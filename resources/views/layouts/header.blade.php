@@ -10,8 +10,9 @@
     <link rel="stylesheet" href="{{asset('user_panel/css//mobile-menu.css')}}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-      @yield('header')
-  
+
+    @yield('header')
+
 
 </head>
 
@@ -38,7 +39,7 @@
                 <div class="auth-buttons">
                     <a href="{{ route('profile')}}" class="btn btn-login">Profile</a>
 
-                    <a href="{{ route('login')}}" class="btn btn-login">Login</a>
+                    <a href="{{ route('login')}}" class="btn btn-login">Login / Sign Up</a>
                     <a href="{{ route('signup')}}" class="btn btn-signup">Sign Up</a>
                 </div>
             </nav>

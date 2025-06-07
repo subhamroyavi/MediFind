@@ -15,7 +15,7 @@
 
             <form action="{{ url()->current() }}" method="GET" class="search-form">
                 <div class="search-container">
-                    <input type="text" class="search-input" name="search" placeholder="Search hospitals, treatments, or doctors..."
+                    <input type="text" class="search-input" name="search" placeholder="Search only one word for Ambulances..."
                         aria-label="Search">
                     <button type="submit" class="search-btn">
                         <i class="fas fa-search"></i>
@@ -26,224 +26,264 @@
 
         <div class="hospital-grid d-none" id="ambulances-container">
             @foreach ($ambulances as $ambulance)
-            
-            <div class="card">
 
-                <div class="hospital-card" id="hospital-card">
-                    <div class="doctor-image">
-                        <img src="{{ asset('storage/' . $ambulance->image) }}" alt="{{ $ambulance->first_name }} {{ $ambulance->last_name }}">
-                        <span class="rating-badge">
-                            @if ($ambulance->organization_type == 'government')
-                            Govt.
-                            @elseif ($ambulance->organization_type == 'Private')
-                            Pvt.
+            <div class="hospital-card">
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="hospital-image d-flex align-items-center justify-content-center" style="height: 200px; position: relative;">
+                            @if(!empty($ambulance->image) && Storage::exists('public/'.$ambulance->image))
+                            <img src="{{ asset('storage/' . $ambulance->image) }}"
+                                alt="Ambulance vehicle"
+                                class="h-100 object-fit-cover w-100">
                             @else
-                            Public
+                            <div class="text-center" aria-hidden="true">
+                                <i class="fa-solid fa-truck-medical text-primary fs-1"></i>
+                                <!-- <span class="visually-hidden">Ambulance placeholder image</span> -->
+                            </div>
                             @endif
-                        </span>
-                    </div>
-                    <div class="hospital-content">
-                        <h3><a href=""><i class="fas fa-car"></i> {{ $ambulance->first_name }} {{ $ambulance->last_name }}</a></h3>
-                        <div class="location">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>{{ $ambulance->location->city }}, {{ $ambulance->location->district }}</span>
+
+                            <span class="rating-badge position-absolute bottom-0 end-0 bg-white px-2 py-1 rounded-start">
+                                @switch($ambulance->organization_type)
+                                @case('government')
+                                Govt.
+                                @break
+                                @case('private')
+                                Pvt.
+                                @break
+                                @default
+                                Public
+                                @endswitch
+                            </span>
                         </div>
-                        <div class="location">
-                            <i class="fa-solid fa-id-card"></i>
-                            <span>{{ $ambulance->vehicle_number }}</span>
-                        </div>
-                        <div class="location">
-                            <i class="fa-solid fa-truck-medical"></i>
-                            <span>{{ $ambulance->vehicle_model }}</span>
-                        </div>
-                        <div class="specialties">
-                            <h4>Services:</h4>
-                            <div class="specialties-list">
-                                <span class="specialty-tag">{{ $ambulance->service_type }}</span>
-                                <span class="specialty-tag">Critical Care</span>
-                                <span class="specialty-tag">Long Distance</span>
+                        <div class="card-body">
+                            <h3 class="h5 text-primary"><a href=""><i class="fas fa-car"></i> {{ $ambulance->first_name }} {{ $ambulance->last_name }}</a></h3>
+                            <div class="location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span> {{ $ambulance->location->city }}, {{ $ambulance->location->district }}</span>
                             </div>
-                        </div>
-                        <div class="hospital-cta">
-                            <div class="emergency-number">
-                                <i class="fas fa-phone-alt"></i>
-                                <span>{{ $ambulance->phone }}</span>
+                            <div class="location">
+                                <i class="fa-solid fa-id-card"></i>
+                                <span>{{ $ambulance->vehicle_number }}</span>
                             </div>
-                            <div class="detail-actions">
-                                <button class="btn btn-primary">
-                                    <a href="tel:{{ $ambulance->phone }}">
-                                        <i class="fas fa-phone-alt"></i> Call
-                                    </a>
-                                </button>
-                               <a href="{{ $ambulance->location->google_maps_link }}"
-                                    class="btn btn-secondary" target="_blank">
-                                    <i class="fas fa-directions"></i> Directions
+                            <div class="location">
+                                <i class="fa-solid fa-truck-medical"></i>
+                                <span>{{ $ambulance->vehicle_model }}</span>
+                            </div>
+                            <div class="mb-3">
+                                <h4 class="h6">Top Specialties:</h4>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span class="specialty-tag badge rounded-pill">{{ $ambulance->service_type }}</span>
+                                        <span class="specialty-tag badge rounded-pill">Oncology</span>
+                                        <span class="specialty-tag badge rounded-pill">Pediatrics</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="mb-3">
+                                <h4 class="h6">Featured Doctors:</h4>
+                                <div class="d-flex align-items-center mb-1">
+                                    <i class="fas fa-user-md text-primary me-2"></i>
+                                    <span>Dr. James Wilson - Orthopedics</span>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-user-md text-primary me-2"></i>
+                                    <span>Dr. Emily Rodriguez - Oncology</span>
+                                </div>
+                            </div> -->
+
+                            <div class="hospital-cta">
+                                <a href="tel: {{ $ambulance->phone }}"
+                                    class="view-profile" id="profile">
+                                    Call Me
                                 </a>
+                               
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             @endforeach
-            <div class="card">
+            <div class="hospital-card">
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="hospital-image d-flex align-items-center justify-content-center" style="height: 200px;">
 
-                <div class="hospital-card" id="hospital-card">
-                    <div class="doctor-image">
-                        <img src="https://imgs.search.brave.com/obmiklJbtS8EmN9E7KTtDRiehq9UG-scqLjeD0qFP9c/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvMTQ4/NzQ1MDc2MC9waG90/by9mZW1hbGUtYW1i/dWxhbmNlLWRyaXZl/ci1iZWhpbmQtdGhl/LXdoZWVsLmpwZz9z/PTYxMng2MTImdz0w/Jms9MjAmYz1HQ21a/emFiYXNMNlBwVXB6/T0lLY1Uwa01vMTZ5/UjRDSlQ5Qk9fWVdr/a21BPQ" alt="ambulance">
-                        <span class="rating-badge">
+                            <img src="https://imgs.search.brave.com/3hMs2scCDmeEBov-oDWRtyQ1Wl1sHf2I8L03TgAfZiE/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvNDc5/MzEzOTU0L3Bob3Rv/L3Jlc2N1ZS10ZWFt/LXByb3ZpZGluZy1m/aXJzdC1haWQuanBn/P3M9NjEyeDYxMiZ3/PTAmaz0yMCZjPWR3/d05wNUg0M3RiRkQz/bG9JZDlOYmgyekNX/RW1FQmFNM2J2VUF6/ZWJSQ0E9" alt="Hospital">
+                            <span class="rating-badge">
+                                Public
+                            </span>
+                        </div>
+                        <div class="card-body">
+                            <h3 class="h5 text-primary"><a href=""><i class="fas fa-car"></i> John Sen</a></h3>
+                            <div class="location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Salt lake, west bengal</span>
+                            </div>
+                            <div class="location">
+                                <i class="fa-solid fa-id-card"></i>
+                                <span>MH-01-AB-1234</span>
+                            </div>
+                            <div class="location">
+                                <i class="fa-solid fa-truck-medical"></i>
+                                <span>Toyota Corolla LE 2022</span>
+                            </div>
+                            <div class="mb-3">
+                                <h4 class="h6">Top Specialties:</h4>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span class="specialty-tag badge rounded-pill">Orthopedics</span>
+                                        <span class="specialty-tag badge rounded-pill">Oncology</span>
+                                        <span class="specialty-tag badge rounded-pill">Pediatrics</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="mb-3">
+                                <h4 class="h6">Featured Doctors:</h4>
+                                <div class="d-flex align-items-center mb-1">
+                                    <i class="fas fa-user-md text-primary me-2"></i>
+                                    <span>Dr. James Wilson - Orthopedics</span>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-user-md text-primary me-2"></i>
+                                    <span>Dr. Emily Rodriguez - Oncology</span>
+                                </div>
+                            </div> -->
 
-                            Public
-                        </span>
-                    </div>
-                    <div class="hospital-content">
-                        <h3><a href=""><i class="fas fa-car"></i> John Sen</a></h3>
-                        <div class="location">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>Coochbehar, Coochbehar</span>
-                        </div>
-                        <div class="location">
-                            <i class="fa-solid fa-id-card"></i>
-                            <span>MH-01-AB-1234</span>
-                        </div>
-                        <div class="location">
-                            <i class="fa-solid fa-truck-medical"></i>
-                            <span>Toyota Corolla LE 2022</span>
-                        </div>
-                        <div class="specialties">
-                            <h4>Services:</h4>
-                            <div class="specialties-list">
-                                <span class="specialty-tag">Critical Care</span>
-                                <span class="specialty-tag">ICU</span>
-                                <span class="specialty-tag">Long Distance</span>
-                            </div>
-                        </div>
-                        <div class="hospital-cta">
-                            <div class="emergency-number">
-                                <i class="fas fa-phone-alt"></i>
-                                <span>+91 9641857774</span>
-                            </div>
-                            <div class="detail-actions">
-                                <button class="btn btn-primary">
-                                    <a href="tel:+91 8881857574">
-                                        <i class="fas fa-phone-alt"></i> Call
-                                    </a>
-                                </button>
-                               <a href="https://www.google.com/maps/dir/?api=1&destination=Latitude,Longitude"
-                                    class="btn btn-secondary"
-                                    target="_blank">
-                                    <i class="fas fa-directions"></i> Directions
+                            <div class="hospital-cta">
+                                <a href="tel: +91 44161414"
+                                    class="view-profile" id="profile">
+                                    Call Me
+                                </a>
+                                <a href=""
+                                    class="view-profile" id="profile">
+                                    View Profile
                                 </a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="card">
+            <div class="hospital-card">
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="hospital-image d-flex align-items-center justify-content-center" style="height: 200px;">
 
-                <div class="hospital-card" id="hospital-card">
-                    <div class="doctor-image">
-                        <img src="https://imgs.search.brave.com/obmiklJbtS8EmN9E7KTtDRiehq9UG-scqLjeD0qFP9c/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvMTQ4/NzQ1MDc2MC9waG90/by9mZW1hbGUtYW1i/dWxhbmNlLWRyaXZl/ci1iZWhpbmQtdGhl/LXdoZWVsLmpwZz9z/PTYxMng2MTImdz0w/Jms9MjAmYz1HQ21a/emFiYXNMNlBwVXB6/T0lLY1Uwa01vMTZ5/UjRDSlQ5Qk9fWVdr/a21BPQ" alt="ambulance">
-                        <span class="rating-badge">
+                            <img src="https://imgs.search.brave.com/lUB1bjxo1gfwsX4etl3PoMfD6VsRfBcXBDpmOCvtNZI/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/cHJlbWl1bS1waG90/by9wb3J0cmFpdC1k/b2N0b3Itd2Vhcmlu/Zy1tYXNrLXN0YW5k/aW5nLWFnYWluc3Qt/YW1idWxhbmNlXzEw/NDg5NDQtMTExMzk4/MDkuanBnP3NlbXQ9/YWlzX2h5YnJpZA" alt="Hospital">
+                            <span class="rating-badge">
+                                Govt.
+                            </span>
+                        </div>
+                        <div class="card-body">
+                            <h3 class="h5 text-primary"><a href=""><i class="fas fa-car"></i> John Sen</a></h3>
+                            <div class="location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Salt lake, west bengal</span>
+                            </div>
+                            <div class="location">
+                                <i class="fa-solid fa-id-card"></i>
+                                <span>MH-01-AB-1234</span>
+                            </div>
+                            <div class="location">
+                                <i class="fa-solid fa-truck-medical"></i>
+                                <span>Toyota Corolla LE 2022</span>
+                            </div>
+                            <div class="mb-3">
+                                <h4 class="h6">Top Specialties:</h4>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span class="specialty-tag badge rounded-pill">Orthopedics</span>
+                                        <span class="specialty-tag badge rounded-pill">Oncology</span>
+                                        <span class="specialty-tag badge rounded-pill">Pediatrics</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="mb-3">
+                                <h4 class="h6">Featured Doctors:</h4>
+                                <div class="d-flex align-items-center mb-1">
+                                    <i class="fas fa-user-md text-primary me-2"></i>
+                                    <span>Dr. James Wilson - Orthopedics</span>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-user-md text-primary me-2"></i>
+                                    <span>Dr. Emily Rodriguez - Oncology</span>
+                                </div>
+                            </div> -->
 
-                            Public
-                        </span>
-                    </div>
-                    <div class="hospital-content">
-                        <h3><a href=""><i class="fas fa-car"></i> John Sen</a></h3>
-                        <div class="location">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>Coochbehar, Coochbehar</span>
-                        </div>
-                        <div class="location">
-                            <i class="fa-solid fa-id-card"></i>
-                            <span>MH-01-AB-1234</span>
-                        </div>
-                        <div class="location">
-                            <i class="fa-solid fa-truck-medical"></i>
-                            <span>Toyota Corolla LE 2022</span>
-                        </div>
-                        <div class="specialties">
-                            <h4>Services:</h4>
-                            <div class="specialties-list">
-                                <span class="specialty-tag">Critical Care</span>
-                                <span class="specialty-tag">ICU</span>
-                                <span class="specialty-tag">Long Distance</span>
-                            </div>
-                        </div>
-                        <div class="hospital-cta">
-                            <div class="emergency-number">
-                                <i class="fas fa-phone-alt"></i>
-                                <span>+91 9641857774</span>
-                            </div>
-                            <div class="detail-actions">
-                                <button class="btn btn-primary">
-                                    <a href="tel:+91 8881857574">
-                                        <i class="fas fa-phone-alt"></i> Call
-                                    </a>
-                                </button>
-                             
-                                <a href="https://www.google.com/maps/dir/?api=1&destination=Latitude,Longitude"
-                                    class="btn btn-secondary"
-                                    target="_blank">
-                                    <i class="fas fa-directions"></i> Directions
+                            <div class="hospital-cta">
+                                <a href="tel: +91 44161414"
+                                    class="view-profile" id="profile">
+                                    Call Me
+                                </a>
+                                <a href=""
+                                    class="view-profile" id="profile">
+                                    View Profile
                                 </a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="card">
+            <div class="hospital-card">
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="hospital-image d-flex align-items-center justify-content-center" style="height: 200px;">
 
-                <div class="hospital-card" id="hospital-card">
-                    <div class="doctor-image">
-                        <img src="https://imgs.search.brave.com/tlAhFu3Hgj6WGan3KCsEX0yiXeteAm-VhYRMrWBFec8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTM0/NjcxNzczL3Bob3Rv/L3BhcmFtZWRpYy1p/bi1hbWJ1bGFuY2Ut/dGFsa2luZy1vbi1y/YWRpby5qcGc_cz02/MTJ4NjEyJnc9MCZr/PTIwJmM9TGVtMlVt/b3dPZGVmX1JjR2ht/dU1XZkpTZmJSclVt/SXlIZ1NmUnJ5Y0t2/OD0" alt="ambulance">
-                        <span class="rating-badge">
-                            Pvt.
-                        </span>
-                    </div>
-                    <div class="hospital-content">
-                        <h3><a href=""><i class="fas fa-car"></i> Jony Joe Sen</a></h3>
-                        <div class="location">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>Dinhata, Coochbehar</span>
+                            <img src="https://imgs.search.brave.com/obmiklJbtS8EmN9E7KTtDRiehq9UG-scqLjeD0qFP9c/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvMTQ4/NzQ1MDc2MC9waG90/by9mZW1hbGUtYW1i/dWxhbmNlLWRyaXZl/ci1iZWhpbmQtdGhl/LXdoZWVsLmpwZz9z/PTYxMng2MTImdz0w/Jms9MjAmYz1HQ21a/emFiYXNMNlBwVXB6/T0lLY1Uwa01vMTZ5/UjRDSlQ5Qk9fWVdr/a21BPQ" alt="Hospital">
+                            <span class="rating-badge">
+                                Public
+                            </span>
                         </div>
-                        <div class="location">
-                            <i class="fa-solid fa-id-card"></i>
-                            <span>MH-01-AB-1204</span>
-                        </div>
-                        <div class="location">
-                            <i class="fa-solid fa-truck-medical"></i>
-                            <span>Toyota Corolla LE 2022</span>
-                        </div>
-                        <div class="specialties">
-                            <h4>Services:</h4>
-                            <div class="specialties-list">
-                                <span class="specialty-tag">Critical Care</span>
-                                <span class="specialty-tag">ICU</span>
-                                <span class="specialty-tag">Long Distance</span>
+                        <div class="card-body">
+                            <h3 class="h5 text-primary"><a href=""><i class="fas fa-car"></i> John Sen</a></h3>
+                            <div class="location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Salt lake, west bengal</span>
                             </div>
-                        </div>
-                        <div class="hospital-cta">
-                            <div class="emergency-number">
-                                <i class="fas fa-phone-alt"></i>
-                                <span>+91 8881857774</span>
+                            <div class="location">
+                                <i class="fa-solid fa-id-card"></i>
+                                <span>MH-01-AB-1234</span>
                             </div>
-                            <div class="detail-actions">
-                                <button class="btn btn-primary">
-                                    <a href="tel:+91 8881857774">
-                                        <i class="fas fa-phone-alt"></i> Call
-                                    </a>
-                                </button>
-                                <a href="https://www.google.com/maps/dir/?api=1&destination=Latitude,Longitude"
-                                    class="btn btn-secondary"
-                                    target="_blank">
-                                    <i class="fas fa-directions"></i> Directions
+                            <div class="location">
+                                <i class="fa-solid fa-truck-medical"></i>
+                                <span>Toyota Corolla LE 2022</span>
+                            </div>
+                            <div class="mb-3">
+                                <h4 class="h6">Top Specialties:</h4>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span class="specialty-tag badge rounded-pill">Orthopedics</span>
+                                        <span class="specialty-tag badge rounded-pill">Oncology</span>
+                                        <span class="specialty-tag badge rounded-pill">Pediatrics</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="mb-3">
+                                <h4 class="h6">Featured Doctors:</h4>
+                                <div class="d-flex align-items-center mb-1">
+                                    <i class="fas fa-user-md text-primary me-2"></i>
+                                    <span>Dr. James Wilson - Orthopedics</span>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-user-md text-primary me-2"></i>
+                                    <span>Dr. Emily Rodriguez - Oncology</span>
+                                </div>
+                            </div> -->
+
+                            <div class="hospital-cta">
+                                <a href="tel: +91 44161414"
+                                    class="view-profile" id="profile">
+                                    Call Me
+                                </a>
+                                <a href=""
+                                    class="view-profile" id="profile">
+                                    View Profile
                                 </a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
 
         @if($ambulances->hasPages())
