@@ -76,53 +76,68 @@
             <!-- Hospital Card 1 -->
             @foreach ($hospitals as $hospital)
             <!-- Hospital Card 1 -->
-
             <div class="hospital-card">
-                <div class="hospital-image">
-                    <img src="{{ asset('storage/' . $hospital->image) }}" alt="Hospital">
-                    <span class="rating-badge">
-                        @if ($hospital->organization_type == 'government')
-                        Govt.
-                        @elseif ($hospital->organization_type == 'private')
-                        Pvt.
-                        @else
-                        Public
-                        @endif
-                    </span>
-                </div>
-
-                <div class="hospital-content">
-                    <h3><i class="fas fa-hospital"></i><a href="{{ route('hospitals.details', $hospital->hospital_id) }}"> {{ $hospital->hospital_name }}</a></h3>
-                    <div class="location">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span>{{ $hospital->location ? $hospital->location->city . ', ' . $hospital->location->state : 'N/A' }}</span>
-                    </div>
-                    <div class="specialties">
-                        <h4>Top Specialties:</h4>
-                        <div class="specialties-list">
-                            @foreach ($hospital->services as $service)
-                            <span class="specialty-tag">{{ $service->service_name }}</span>
-                            @endforeach
-
-                        </div>
-                    </div>
-                    <div class="hospital-cta">
-                        <div class="emergency-number">
-                            <i class="fas fa-phone-alt"></i>
-                            <span>{{
-                                                $hospital->contacts->where('contact_type', 'phone')->first()?->value 
-                                                ?? 'N/A' 
-                                                }}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="hospital-image d-flex align-items-center justify-content-center" style="height: 200px;">
+                            @if (isset($hospital->image))
+                            <img src="{{ asset('storage/' . $hospital->image) }}" alt="Hospital">
+                            @else
+                            <i class="fas fa-hospital-alt text-primary fs-1"></i>
+                            @endif
+                            <span class="rating-badge">
+                                @if ($hospital->organization_type == 'government')
+                                Govt.
+                                @elseif ($hospital->organization_type == 'private')
+                                Pvt.
+                                @else
+                                Public
+                                @endif
                             </span>
                         </div>
-                    </div>
-                    <div class="hospital-cta">
-                        <a href="{{ route('hospitals.details', $hospital->hospital_id) }}"
-                            class="view-profile" id="profile">
-                            View Profile
-                        </a>
-                    </div>
+                        <div class="card-body">
+                            <h3 class="h5 text-primary"><i class="fas fa-hospital"></i><a href="{{ route('hospitals.details', $hospital->hospital_id) }}"> {{ $hospital->hospital_name }}</a></h3>
+                            <div class="location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>{{ $hospital->location ? $hospital->location->city . ', ' . $hospital->location->state : 'N/A' }}</span>
+                            </div>
+                            <div class="mb-3">
+                                <h4 class="h6">Top Specialties:</h4>
+                                <div class="d-flex flex-wrap gap-2">
+                                    @foreach ($hospital->services as $service)
+                                    <span class="specialty-tag">{{ $service->service_name }}</span>
+                                    @endforeach
+                                </div>
+                            </div>
+                            <!-- <div class="mb-3">
+                                <h4 class="h6">Featured Doctors:</h4>
+                                <div class="d-flex align-items-center mb-1">
+                                    <i class="fas fa-user-md text-primary me-2"></i>
+                                    <span>Dr. James Wilson - Orthopedics</span>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-user-md text-primary me-2"></i>
+                                    <span>Dr. Emily Rodriguez - Oncology</span>
+                                </div>
+                            </div> -->
 
+                            <div class="hospital-cta">
+                                <a href="tel: {{
+                                                $hospital->contacts->where('contact_type', 'phone')->first()?->value 
+                                                ?? 'N/A' 
+                                                }}"
+                                    class="view-profile" id="profile">
+                                    Call Me
+                                </a>
+                                <a href="{{ route('hospitals.details', $hospital->hospital_id) }}"
+                                    class="view-profile " id="profile">
+                                    View Profile
+                                </a>
+                                <!-- <button class="btn btn-primary" style="width: 100%;">Request Ambulance</button> -->
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
             </div>
             @endforeach
@@ -142,41 +157,79 @@
         </div>
 
         <div class="doctor-grid">
-            <!-- Doctor Card 1 -->
             @foreach ($doctors as $doctor)
-
             <!-- Doctor Card 1 -->
-            <div class="doctor-card">
-                <div class="doctor-image">
-                    <img src="{{ asset('storage/' . $doctor->image) }}" alt="Dr. Sarah Johnson">
-                </div>
-                <div class="doctor-content">
-                    <h3>
-                        <i class="fas fa-user-md"></i>
-                        <a href="{{ route('doctor-details', ['id' => $doctor->doctor_id]) }}"
-                            id="profile"
-                            data-id="{{ $doctor->doctor_id }}"> Dr. {{ $doctor->first_name.' '.$doctor->last_name }}</a></h3>
-                    <p class=" specialty"><i class="fas fa-stethoscope"></i> {{ $doctor->specialization }}</p>
-                    <div class="hospital">
-                        <i class="fas fa-hospital"></i>
-                        <div class="doctor-hospital">
-                            @isset($doctor->hospital)
-                            <span class="badge bg-primary">
-                                {{ $doctor->hospital->name  }}
-                            </span>
+            <div class="hospital-card">
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="hospital-image d-flex align-items-center justify-content-center" style="height: 200px;">
+
+                            @if (isset($doctor->image))
+                            <img src="{{ asset('storage/' . $doctor->image) }}" alt="do$doctor">
                             @else
-                            <span class="text-muted">Hospital not specified</span>
-                            @endisset
+                            <i class="fas fa-hospital-alt text-primary fs-1"></i>
+                            @endif
                         </div>
-                    </div>
-                  
-                    <div class="doctor-cta">
-                        <a href="{{ route('doctor-details', ['id' => $doctor->doctor_id]) }}"
-                            class="view-profile" id="profile"
-                            data-id="{{ $doctor->doctor_id }}">
-                            View Profile
-                        </a>
-                        <!-- <button class="book-appointment">Book Appointment</button> -->
+                        <div class="card-body">
+                            <h3 class="h5 text-primary"><i class="fas fa-user-md"></i>
+                                <a href="{{ route('doctor-details', ['id' => $doctor->doctor_id]) }}"
+                                    id="profile"
+                                    data-id="{{ $doctor->doctor_id }}"> Dr. {{ $doctor->first_name.' '.$doctor->last_name }}</a>
+                            </h3>
+                            <div class="location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>{{ $doctor->locations ? $doctor->locations->city . ', ' . $doctor->locations->state : 'N/A' }}</span>
+
+                            </div>
+                            <div class="location">
+                                <i class="fas fa-stethoscope"></i>
+                                <span>{{ $doctor->specialization }}</span>
+                                <!-- <i class="fas fa-stethoscope" style="color: var(--primary-color); margin-right: 0.5rem;"></i>  -->
+                            </div>
+                            <div class="location">
+                                <i class="fas fa-hospital"></i>
+                                @if($doctor->experiences->isNotEmpty())
+                                <span class="badge bg-primary">
+                                    {{ $doctor->experiences->first()->hospital_name }}
+                                </span>
+                                @else
+                                <span class="text-muted">Hospital not specified</span>
+                                @endif
+                            </div>
+                            <!-- <div class="mb-3">
+                                <h4 class="h6">Top Specialties:</h4>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span class="specialty-tag badge rounded-pill">Orthopedics</span>
+                                        <span class="specialty-tag badge rounded-pill">Oncology</span>
+                                        <span class="specialty-tag badge rounded-pill">Pediatrics</span>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <!-- <div class="mb-3">
+                                <h4 class="h6">Featured Doctors:</h4>
+                                <div class="d-flex align-items-center mb-1">
+                                    <i class="fas fa-user-md text-primary me-2"></i>
+                                    <span>Dr. James Wilson - Orthopedics</span>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-user-md text-primary me-2"></i>
+                                    <span>Dr. Emily Rodriguez - Oncology</span>
+                                </div>
+                            </div> -->
+
+                            <div class="hospital-cta">
+                                <!-- <a href="tel: +91 44161414"
+                                    class="view-profile" id="profile">
+                                    Call Me
+                                </a> -->
+                                <a href="{{ route('doctor-details', ['id' => $doctor->doctor_id]) }}"
+                                    class="view-profile" id="profile"
+                                    data-id="{{ $doctor->doctor_id }}">
+                                    View Profile
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

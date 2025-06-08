@@ -16,49 +16,49 @@
                 <div class="form-group">
                     <label for="first_name">First Name</label>
                     <input type="text" id="first_name" class="form-control @error('first_name') is-invalid @enderror"
-                        name="first_name" value="{{ old('first_name') }}" required>
+                        name="first_name" value="{{ old('first_name') }}">
                     @error('first_name')
-                    <div class="invalid-feedback">{{ $message }}</div>
+                    <div style="color: red;">{{ $message }}</div>
                     @enderror
                 </div>
 
                 <div class="form-group">
                     <label for="last_name">Last Name</label>
                     <input type="text" id="last_name" class="form-control @error('last_name') is-invalid @enderror"
-                        name="last_name" value="{{ old('last_name') }}" required>
+                        name="last_name" value="{{ old('last_name') }}">
                     @error('last_name')
-                    <div class="invalid-feedback">{{ $message }}</div>
+                    <div style="color: red;">{{ $message }}</div>
                     @enderror
                 </div>
 
                 <div class="form-group">
                     <label for="signupEmail">Email Address</label>
                     <input type="email" id="signupEmail" class="form-control @error('email') is-invalid @enderror"
-                        name="email" value="{{ old('email') }}" required>
+                        name="email" value="{{ old('email') }}">
                     @error('email')
-                    <div class="invalid-feedback">{{ $message }}</div>
+                    <div style="color: red;">{{ $message }}</div>
                     @enderror
                 </div>
 
                 <div class="form-group">
                     <label for="phone">Phone no.</label>
                     <input type="tel" id="phone" class="form-control @error('phone') is-invalid @enderror"
-                        name="phone" value="{{ old('phone') }}" required>
+                        name="phone" value="{{ old('phone') }}">
                     @error('phone')
-                    <div class="invalid-feedback">{{ $message }}</div>
+                    <div style="color: red;">{{ $message }}</div>
                     @enderror
                 </div>
 
                 <div class="form-group">
                     <label for="bloodType">Blood Type</label>
-                    <select id="bloodType" class="form-control @error('bloodType') is-invalid @enderror" name="bloodType" required>
+                    <select id="bloodType" class="form-control @error('bloodType') is-invalid @enderror" name="bloodType">
                         <option value="">Select blood type</option>
                         <option value="A+" @selected(old('bloodType')=='A+' )>A+</option>
                         <option value="A-" @selected(old('bloodType')=='A-' )>A-</option>
                         <!-- other options -->
                     </select>
                     @error('bloodType')
-                    <div class="invalid-feedback">{{ $message }}</div>
+                    <div style="color: red;">{{ $message }}</div>
                     @enderror
                 </div>
 
@@ -74,7 +74,7 @@
                         <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Preview" class="avatar-preview"
                             id="avatarPreview">
                         @error('image')
-                        <div class="invalid-feedback">{{ $message }}</div>
+                        <div style="color: red;">{{ $message }}</div>
                         @enderror
                     </div>
                 </div>
@@ -82,24 +82,27 @@
                 <div class="form-group">
                     <label for="signupPassword">Password</label>
                     <input type="text" id="signupPassword" class="form-control @error('password') is-invalid @enderror"
-                        name="password" required>
+                        name="password">
                     <small style="color: var(--gray-text);">At least 8 characters with a number and special character</small>
                     @error('password')
-                    <div class="invalid-feedback">{{ $message }}</div>
+                    <div style="color: red;">{{ $message }}</div>
                     @enderror
                 </div>
 
                 <div class="form-group">
                     <label for="signupConfirm">Confirm Password</label>
-                    <input type="text" id="signupConfirm" class="form-control" name="password_confirmation" required>
+                    <input type="text" id="signupConfirm" class="form-control" name="password_confirmation">
                 </div>
 
                 <div style="display: flex; justify-content: space-between; align-items: center; margin: 1rem 0;">
                     <div>
-                        <input type="checkbox" id="rememberMe" required>
-                        <label for="rememberMe">I agree to the <a href="#" style="color: var(--primary-color);">Terms of
+                        <input type="checkbox" id="rememberMe" name="check" required>
+                        <label for="rememberMe">I agree to the <a href="" style="color: var(--primary-color);">Terms of
                                 Service</a> and <a href="#" style="color: var(--primary-color);">Privacy
                                 Policy</a></label>
+                        @error('check')
+                        <div style="color: red;">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary" name="submit" style="width: 100%; padding: 0.75rem;">

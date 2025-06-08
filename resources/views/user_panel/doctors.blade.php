@@ -30,9 +30,7 @@
         <div class="doctor-grid">
             <!-- Doctor Card 1 -->
             @foreach ($doctors as $doctor)
-
             <!-- Doctor Card 1 -->
-
             <div class="hospital-card">
                 <div class="col-md-6 col-lg-4">
                     <div class="card h-100 shadow-sm">

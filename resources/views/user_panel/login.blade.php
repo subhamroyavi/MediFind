@@ -11,14 +11,14 @@
                 <p>Login to your MediFind account to access your saved providers and more.</p>
             </div>
 
-            <form>
+            <form >
                 <div class="form-group">
                     <label for="loginEmail">Email Address</label>
-                    <input type="email" id="loginEmail" class="form-control" required>
+                    <input type="email" id="loginEmail" class="form-control" name="email">
                 </div>
                 <div class="form-group">
                     <label for="loginPassword">Password</label>
-                    <input type="password" id="loginPassword" class="form-control" required>
+                    <input type="password" id="loginPassword" class="form-control" name="password">
                 </div>
                 <div style="display: flex; justify-content: space-between; align-items: center; margin: 1rem 0;">
                     <div>
