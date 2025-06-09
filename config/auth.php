@@ -35,6 +35,7 @@ return [
     |
     */
 
+    
     'guards' => [
         'web' => [
             'driver' => 'session',
@@ -65,10 +66,10 @@ return [
             'model' => App\Models\User::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'users' => [
+            'driver' => 'database',
+            'table' => 'users',
+        ],
     ],
 
     /*

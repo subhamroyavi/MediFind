@@ -2,6 +2,16 @@
 
 @section('main-content')
 
+@if ($errors->any())
+<div class="alert alert-danger">
+    <ul class="mb-0">
+        @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
+
 <!-- Main Content -->
 <main class="section">
     <div class="container">
@@ -11,25 +21,25 @@
                 <p>Login to your MediFind account to access your saved providers and more.</p>
             </div>
 
-            <form >
+            <form action="{{ route('login-check') }}" method="POST">
+                @csrf
                 <div class="form-group">
                     <label for="loginEmail">Email Address</label>
-                    <input type="email" id="loginEmail" class="form-control" name="email">
+                    <input type="email" id="loginEmail" class="form-control" name="email" required>
                 </div>
                 <div class="form-group">
                     <label for="loginPassword">Password</label>
-                    <input type="password" id="loginPassword" class="form-control" name="password">
+                    <input type="password" id="loginPassword" class="form-control" name="password" required>
                 </div>
                 <div style="display: flex; justify-content: space-between; align-items: center; margin: 1rem 0;">
                     <div>
-                        <input type="checkbox" id="rememberMe">
+                        <input type="checkbox" id="rememberMe" name="remember">
                         <label for="rememberMe">Remember me</label>
                     </div>
                     <a href="forgot-password.html" style="color: var(--primary-color); font-size: 0.9rem;">Forgot password?</a>
                 </div>
                 <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.75rem;">Login</button>
             </form>
-
             <div class="divider">
                 <span>or login with</span>
             </div>

@@ -32,39 +32,39 @@ use App\Http\Controllers\AdminAmbulanceController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('/', [IndexController::class, 'index'])->name('index');
-Route::get('/medifind', [IndexController::class, 'index'])->name('index');
 
-Route::view('/medifind/login','user_panel.login')->name('login');
-
+Route::view('/medifind/login', 'user_panel.login')->name('login');
+Route::post('/medifind/login-check', [SignupController::class, 'login'])->name('login-check');
 Route::view('/medifind/signup', 'user_panel.signup')->name('signup');
-
 Route::post('/medifind/store', [SignupController::class, 'store'])->name('store-user');
 // Send OTP
 Route::post('/medifind/send-otp', [SignupController::class, 'sendOTP'])->name('send.otp');
 Route::get('/medifind/verify', [SignupController::class, 'otpPage'])->name('otp-page');
 // Verify OTP
 Route::post('/medifind/verify-otp', [SignupController::class, 'verifyOTP'])->name('verify.otp');
+Route::get('/medifind/logout', [SignupController::class, 'logout'])->name('logout');
 
-// Route::get('medifind/profile', [UserController::class, 'profile'])->name('profile');
-Route::view('/medifind/profile', 'user_panel.profile')->name('profile');
+Route::get('/medifind', [IndexController::class, 'index'])->name('index');
+Route::middleware(['userLoginCheck'])->group(function () {
 
-Route::get('/medifind/hospitals', [HospitalController::class, 'index'])->name('hospitals.view');
-Route::get('/medifind/hospital-details/{id}', [HospitalController::class, 'hospital_details'])->name('hospitals.details');
+    // Route::get('medifind/profile', [UserController::class, 'profile'])->name('profile');
+    Route::view('/medifind/profile', 'user_panel.profile')->name('profile');
 
-// Route::get('user_panel/hospitals-search', [HospitalController::class, 'hospital_details'])->name('hospitals-search');
+    Route::get('/medifind/hospitals', [HospitalController::class, 'index'])->name('hospitals.view');
+    Route::get('/medifind/hospital-details/{id}', [HospitalController::class, 'hospital_details'])->name('hospitals.details');
 
-Route::get('/medifind/doctors', [DoctorController::class, 'index'])->name('doctors');
-Route::get('/medifind/doctor-details/{id}', [DoctorController::class, 'doctor_details'])->name('doctor-details');
+    // Route::get('user_panel/hospitals-search', [HospitalController::class, 'hospital_details'])->name('hospitals-search');
 
-Route::get('/medifind/ambulances', [AmbulanceController::class, 'index'])->name('ambulances.view');
-Route::get('medifind/ambulance-search', [AmbulanceController::class, 'search'])->name('ambulance-search');
+    Route::get('/medifind/doctors', [DoctorController::class, 'index'])->name('doctors');
+    Route::get('/medifind/doctor-details/{id}', [DoctorController::class, 'doctor_details'])->name('doctor-details');
 
-Route::get('/medifind/about', [AboutController::class, 'about_index'])->name('about.view');
-Route::get('/medifind/emergency', [EmergencyController::class, 'emergency_index'])->name('emergency.view');
-Route::get('/medifind/contact', [ContactController::class, 'contact_index'])->name('contact.view');
+    Route::get('/medifind/ambulances', [AmbulanceController::class, 'index'])->name('ambulances.view');
+    Route::get('medifind/ambulance-search', [AmbulanceController::class, 'search'])->name('ambulance-search');
 
-
+    Route::get('/medifind/about', [AboutController::class, 'about_index'])->name('about.view');
+    Route::get('/medifind/emergency', [EmergencyController::class, 'emergency_index'])->name('emergency.view');
+    Route::get('/medifind/contact', [ContactController::class, 'contact_index'])->name('contact.view');
+});
 
 // --------------------------------------// login route-----------------------------------------------------------------
 

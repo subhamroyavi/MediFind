@@ -5,6 +5,7 @@
 <section class="hero">
     <div class="hero-content">
         <h1>Find the Best Healthcare Near You</h1>
+        <h1 >Welcome, <span style="color:#1e88e5;">{{ Auth::check() ? Auth::user()->first_name : '' }}</span></h1>
         <p>Discover top-rated hospitals, specialized treatments, and expert doctors in your local area.</p>
     </div>
 </section>

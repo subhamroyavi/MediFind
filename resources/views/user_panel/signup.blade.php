@@ -81,7 +81,7 @@
 
                 <div class="form-group">
                     <label for="signupPassword">Password</label>
-                    <input type="text" id="signupPassword" class="form-control @error('password') is-invalid @enderror"
+                    <input type="password" id="signupPassword" class="form-control @error('password') is-invalid @enderror"
                         name="password">
                     <small style="color: var(--gray-text);">At least 8 characters with a number and special character</small>
                     @error('password')
@@ -91,7 +91,7 @@
 
                 <div class="form-group">
                     <label for="signupConfirm">Confirm Password</label>
-                    <input type="text" id="signupConfirm" class="form-control" name="password_confirmation">
+                    <input type="password" id="signupConfirm" class="form-control" name="password_confirmation">
                 </div>
 
                 <div style="display: flex; justify-content: space-between; align-items: center; margin: 1rem 0;">

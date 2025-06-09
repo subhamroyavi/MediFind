@@ -17,13 +17,14 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var string
      */
     protected $table = 'users';
+    public $timestamps = false;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
-    protected $fillable = [  
+    protected $fillable = [
         'first_name',
         'last_name',
         'email',
@@ -51,10 +52,22 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var array<string, string>
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    // protected $casts = [
+    //     'email_verified_at' => 'datetime',
+    // ];
 
+    // protected $casts = [
+    //     'email_verified_at' => 'datetime',
+    //     'password' => 'hashed',
+    // ];
+
+    protected function casts(): array
+    {
+        return
+            [
+                'password' => 'hashed',
+            ];
+    }
     /**
      * Get the user's full name.
      *

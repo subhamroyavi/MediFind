@@ -4,10 +4,11 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Symfony\Component\HttpFoundation\Response;
-use App\Http\Controllers\AdminLoginController;
 
-class AdminLoginMiddleware
+class UserLoginMiddleware
 {
     /**
      * Handle an incoming request.
@@ -16,10 +17,10 @@ class AdminLoginMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!$request->session()->get('authenticated')) {
-            return redirect()->route('admin.login');
+        if (Auth::check()) {
+            return $next($request);
         }
-
-        return $next($request);
+      
+        return Redirect()->route('login');
     }
 }

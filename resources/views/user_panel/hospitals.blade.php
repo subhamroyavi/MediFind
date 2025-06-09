@@ -4,7 +4,6 @@
 <!-- Main Content -->
 <main class="section">
     <div class="container">
-
         <!-- Page Header -->
         <div class="section-title">
             <h2>Find Hospitals Near You</h2>
