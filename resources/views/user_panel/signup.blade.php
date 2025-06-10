@@ -50,13 +50,18 @@
                 </div>
 
                 <div class="form-group">
+                    @php
+                    $bloodGroups = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
+                    @endphp
+
                     <label for="bloodType">Blood Type</label>
                     <select id="bloodType" class="form-control @error('bloodType') is-invalid @enderror" name="bloodType">
                         <option value="">Select blood type</option>
-                        <option value="A+" @selected(old('bloodType')=='A+' )>A+</option>
-                        <option value="A-" @selected(old('bloodType')=='A-' )>A-</option>
-                        <!-- other options -->
+                        @foreach ($bloodGroups as $group)
+                        <option value="{{ $group }}" @selected(old('bloodType')==$group )>{{ $group }}</option>
+                        @endforeach
                     </select>
+
                     @error('bloodType')
                     <div style="color: red;">{{ $message }}</div>
                     @enderror

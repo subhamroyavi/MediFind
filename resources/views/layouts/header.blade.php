@@ -37,10 +37,9 @@
                 </ul>
 
                 <div class="auth-buttons">
-                    @if (Auth::check())
+                    @if (Auth::check() && session()->get('authenticated'))
                         
                     <a href="{{ route('profile')}}" class="btn btn-login">Profile</a>
-                    <a href="{{ route('logout')}}" class="btn btn-login">Logout</a>
                     @else
                     <a href="{{ route('login')}}" class="btn btn-login">Login</a>
                     <a href="{{ route('signup')}}" class="btn btn-signup">Sign Up</a>

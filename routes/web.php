@@ -1,25 +1,29 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
+
+
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\IndexController;
-
-
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\SignupController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\HospitalController;
 use App\Http\Controllers\AmbulanceController;
+
 use App\Http\Controllers\EmergencyController;
 use App\Http\Controllers\AdminLoginController;
 use App\Http\Controllers\AdminDoctorController;
-
 use App\Http\Controllers\AdminHospitalController;
 use App\Http\Controllers\AdminAmbulanceController;
+use App\Http\Controllers\ForgotPasswordController;
 
 
 /*
@@ -33,9 +37,14 @@ use App\Http\Controllers\AdminAmbulanceController;
 |
 */
 
+Route::get('/', function () {
+    return redirect()->route('index');  // Correct redirect
+});
+Route::get('/medifind', [IndexController::class, 'index'])->name('index');
+
 Route::view('/medifind/login', 'user_panel.login')->name('login');
-Route::post('/medifind/login-check', [SignupController::class, 'login'])->name('login-check');
 Route::view('/medifind/signup', 'user_panel.signup')->name('signup');
+Route::post('/medifind/login-check', [SignupController::class, 'login'])->name('login-check');
 Route::post('/medifind/store', [SignupController::class, 'store'])->name('store-user');
 // Send OTP
 Route::post('/medifind/send-otp', [SignupController::class, 'sendOTP'])->name('send.otp');
@@ -44,11 +53,18 @@ Route::get('/medifind/verify', [SignupController::class, 'otpPage'])->name('otp-
 Route::post('/medifind/verify-otp', [SignupController::class, 'verifyOTP'])->name('verify.otp');
 Route::get('/medifind/logout', [SignupController::class, 'logout'])->name('logout');
 
-Route::get('/medifind', [IndexController::class, 'index'])->name('index');
+Route::view('/medifind/forgot-password', 'user_panel.foggetPassword')->name('forgot-password');
+Route::post('/send-otp', [ForgotPasswordController::class, 'sendOtp'])->name('forgot-email-sendOTP');
+Route::post('/verify-otp', [ForgotPasswordController::class, 'verifyOtp'])->name('forgot-email-verifyOTP');
+Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'])->name('forgot-email-resetPassword');
+
+
 Route::middleware(['userLoginCheck'])->group(function () {
 
     // Route::get('medifind/profile', [UserController::class, 'profile'])->name('profile');
     Route::view('/medifind/profile', 'user_panel.profile')->name('profile');
+    Route::post('/medifind/profile/update',  [UserController::class, 'updateProfile'])->name('profile-update');
+    Route::post('/medifind/profile/change-password',  [UserController::class, 'changePassword'])->name('change-password');
 
     Route::get('/medifind/hospitals', [HospitalController::class, 'index'])->name('hospitals.view');
     Route::get('/medifind/hospital-details/{id}', [HospitalController::class, 'hospital_details'])->name('hospitals.details');
@@ -60,11 +76,10 @@ Route::middleware(['userLoginCheck'])->group(function () {
 
     Route::get('/medifind/ambulances', [AmbulanceController::class, 'index'])->name('ambulances.view');
     Route::get('medifind/ambulance-search', [AmbulanceController::class, 'search'])->name('ambulance-search');
-
-    Route::get('/medifind/about', [AboutController::class, 'about_index'])->name('about.view');
-    Route::get('/medifind/emergency', [EmergencyController::class, 'emergency_index'])->name('emergency.view');
-    Route::get('/medifind/contact', [ContactController::class, 'contact_index'])->name('contact.view');
 });
+Route::get('/medifind/about', [AboutController::class, 'about_index'])->name('about.view');
+Route::get('/medifind/emergency', [EmergencyController::class, 'emergency_index'])->name('emergency.view');
+Route::get('/medifind/contact', [ContactController::class, 'contact_index'])->name('contact.view');
 
 // --------------------------------------// login route-----------------------------------------------------------------
 

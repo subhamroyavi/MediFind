@@ -7,10 +7,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+
+
+
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory, Notifiable;
-
+    // use HasFactory, Notifiable;
+    use Notifiable;
     /**
      * The table associated with the model.
      *
@@ -24,18 +27,21 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'first_name',
-        'last_name',
-        'email',
-        'phone',
-        'bloodType',
-        'image',
-        'gender',
-        'address',
-        'password',
-        'status',
-    ];
+        // protected $fillable = [
+        //     'first_name',
+        //     'last_name',
+        //     'email',
+        //     'phone',
+        //     'bloodType',
+        //     'image',
+        //     'gender',
+        //     'address',
+        //     'password',
+        //     'status',
+        //     'dob'
+        //   ];
+
+    protected $guarded = [];
 
     /**
      * The attributes that should be hidden for serialization.

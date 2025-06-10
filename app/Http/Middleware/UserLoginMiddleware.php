@@ -17,7 +17,7 @@ class UserLoginMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check()) {
+        if (Auth::check() && $request->session()->get('authenticated')) {
             return $next($request);
         }
       

@@ -2,331 +2,310 @@
 
 @section('main-content')
 
- <!-- Main Content -->
- <main class="section">
-        <div class="container">
-            <div class="breadcrumb">
-                <a href="index.html">Home</a>
-                <span>/</span>
-                <a href="profile.html">My Profile</a>
-            </div>
-
-            <div class="profile-header">
-                <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Profile Photo" class="profile-avatar" id="profileAvatar">
-                <div>
-                    <h1 id="profileName">Sarah Johnson</h1>
-                    <p>Member since <span id="memberSince">January 2023</span></p>
-                    <div class="profile-actions">
-                        <button class="btn btn-primary" id="editProfileBtn">Edit Profile</button>
-                        <button class="btn btn-secondary" id="cancelEditBtn" style="display: none;">Cancel</button>
-                    </div>
+<!-- Main Content -->
+<main class="section">
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="index.html">Home</a>
+            <span>/</span>
+            <a href="profile.html">My Profile</a>
+        </div>
+        @php
+        $user = Auth::user();
+        @endphp
+        <div class="profile-header">
+            <img src="{{ asset('storage/' . $user->image) }}" alt="Profile Photo" class="profile-avatar" id="profileAvatar">
+            <div>
+                <h1 id="profileName">{{ $user->first_name.' '.$user->last_name }}</h1>
+                <p>Member since <span id="memberSince"></span></p>
+                <div class="profile-actions">
+                    <button class="btn btn-primary" id="editProfileBtn">Edit Profile</button>
+                    <button class="btn btn-secondary" id="cancelEditBtn" style="display: none;">Cancel</button>
                 </div>
             </div>
+        </div>
 
-            <!-- Personal Information Section -->
-            <div class="profile-section">
-                <h2>Personal Information</h2>
-                
-                <div class="profile-details" id="personalInfoView">
+        <!-- Personal Information Section -->
+        <div class="profile-section">
+            <h2>Personal Information</h2>
+
+            <div id="personalInfoView">
+                <div class="profile-details">
                     <div class="detail-item">
                         <label>Full Name</label>
-                        <div class="value" id="viewFullName">Sarah Marie Johnson</div>
+                        <div class="value" id="viewFullName">{{ $user->first_name.' '.$user->last_name }}</div>
+                        <label>Blood Type : {{ $user->bloodType ?? 'Not specified' }}</label>
+
                     </div>
                     <div class="detail-item">
                         <label>Date of Birth</label>
-                        <div class="value" id="viewDob">May 15, 1985</div>
+                        <div class="value" id="viewDob">{{ $user->dob ?? Null }}</div>
                     </div>
                     <div class="detail-item">
                         <label>Gender</label>
-                        <div class="value" id="viewGender">Female</div>
+                        <div class="value" id="viewGender">{{ $user->gender ?? 'Not specified' }}</div>
+
                     </div>
                     <div class="detail-item">
                         <label>Email</label>
-                        <div class="value" id="viewEmail">sarah.johnson@example.com</div>
+                        <div class="value" id="viewEmail">{{ $user->email }}</div>
                     </div>
                     <div class="detail-item">
                         <label>Phone</label>
-                        <div class="value" id="viewPhone">(555) 123-4567</div>
+                        <div class="value" id="viewPhone">{{ $user->phone ?? 'Not specified' }}</div>
                     </div>
                     <div class="detail-item">
                         <label>Address</label>
-                        <div class="value" id="viewAddress">123 Main St, Apt 4B<br>Cityville, ST 12345</div>
+                        <div class="value" id="viewAddress">
+                            @if($user->address)
+                            {{ $user->address }}<br>
+
+                            @else
+                            Not specified
+                            @endif
+                        </div>
                     </div>
                 </div>
-                
-                <form class="edit-form" id="personalInfoForm">
-                    <div class="form-group">
-                        <label for="fullName">Full Name</label>
-                        <input type="text" id="fullName" class="form-control" value="Sarah Marie Johnson" required>
+            </div>
+
+            <form class="edit-form" id="personalInfoForm" style="display: none;" action="{{ route('profile-update') }}" method="post" enctype="multipart/form-data">
+                @csrf
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" name="first_name" class="form-control" value="{{ $user->first_name }}" required>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group col-md-6">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" name="last_name" class="form-control" value="{{ $user->last_name }}" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
                         <label for="dob">Date of Birth</label>
-                        <input type="date" id="dob" class="form-control" value="1985-05-15" required>
+                        <input type="date" id="dob" name="dob" class="form-control" value="{{ $user->dob ?? Null }}">
+
+                        <label for="dob">Blood Groub</label>
+                        <select id="gender" name="gender" class="form-control">
+                            <option value="">Select</option>
+                            <option value="Male" {{ $user->gender == 'Male' ? 'selected' : '' }}>Male</option>
+                            <option value="Female" {{ $user->gender == 'Female' ? 'selected' : '' }}>Female</option>
+                            <option value="Other" {{ $user->gender == 'Other' ? 'selected' : '' }}>Other</option>
+                        </select>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group col-md-6">
+                        @php
+                        $bloodGroups = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
+                        @endphp
+                        <label for="bloodType">Blood Group</label>
+                        <select id="bloodType" name="bloodType" class="form-control">
+                            <option value="">Select</option>
+                            @foreach ($bloodGroups as $group)
+                            <option value="{{ $group }}" {{ $user->bloodType == $group ? 'selected' : '' }}>{{ $group }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
                         <label for="gender">Gender</label>
-                        <select id="gender" class="form-control" required>
-                            <option value="female" selected>Female</option>
-                            <option value="male">Male</option>
-                            <option value="other">Other</option>
-                            <option value="prefer-not-to-say">Prefer not to say</option>
+                        <select id="gender" name="gender" class="form-control">
+                            <option value="">Select</option>
+                            <option value="Male" {{ $user->gender == 'Male' ? 'selected' : '' }}>Male</option>
+                            <option value="Female" {{ $user->gender == 'Female' ? 'selected' : '' }}>Female</option>
+                            <option value="Other" {{ $user->gender == 'Other' ? 'selected' : '' }}>Other</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" class="form-control" value="sarah.johnson@example.com" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="phone">Phone</label>
-                        <input type="tel" id="phone" class="form-control" value="5551234567" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="address">Address</label>
-                        <textarea id="address" class="form-control" rows="3" required>123 Main St, Apt 4B
-Cityville, ST 12345</textarea>
-                    </div>
-                    <div class="upload-avatar">
-                        <div>
-                            <label for="avatarUpload">Profile Photo</label>
-                            <input type="file" id="avatarUpload" accept="image/*" style="display: none;">
-                            <button type="button" class="btn btn-secondary" onclick="document.getElementById('avatarUpload').click()">Choose Image</button>
-                        </div>
-                        <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Preview" class="avatar-preview" id="avatarPreview">
-                    </div>
-                    <div class="form-group" style="margin-top: 1.5rem;">
-                        <button type="submit" class="btn btn-primary">Save Changes</button>
-                        <button type="button" class="btn btn-secondary" id="cancelPersonalEdit">Cancel</button>
-                    </div>
-                </form>
-            </div>
-
-            <!-- Medical Information Section -->
-            <div class="profile-section">
-                <h2>Medical Information</h2>
-                
-                <div id="medicalInfoView">
-                    <div class="profile-details">
-                        <div class="detail-item">
-                            <label>Blood Type</label>
-                            <div class="value" id="viewBloodType">A+</div>
-                        </div>
-                        <div class="detail-item">
-                            <label>Allergies</label>
-                            <div class="value" id="viewAllergies">Penicillin, Peanuts</div>
-                        </div>
-                        <div class="detail-item">
-                            <label>Current Medications</label>
-                            <div class="value" id="viewMedications">Lisinopril 10mg daily</div>
-                        </div>
-                    </div>
-                    
-                    <h3 style="margin-top: 2rem;">Medical History</h3>
-                    <div id="medicalHistoryList">
-                        <div class="medical-history-item">
-                            <strong>Hypertension</strong> - Diagnosed 2018, controlled with medication
-                        </div>
-                        <div class="medical-history-item">
-                            <strong>Appendectomy</strong> - 2002, no complications
-                        </div>
-                    </div>
                 </div>
-                
-                <form class="edit-form" id="medicalInfoForm">
-                    <div class="form-group">
-                        <label for="bloodType">Blood Type</label>
-                        <select id="bloodType" class="form-control" required>
-                            <option value="">Select blood type</option>
-                            <option value="A+" selected>A+</option>
-                            <option value="A-">A-</option>
-                            <option value="B+">B+</option>
-                            <option value="B-">B-</option>
-                            <option value="AB+">AB+</option>
-                            <option value="AB-">AB-</option>
-                            <option value="O+">O+</option>
-                            <option value="O-">O-</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="allergies">Allergies</label>
-                        <textarea id="allergies" class="form-control" rows="2">Penicillin, Peanuts</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="medications">Current Medications</label>
-                        <textarea id="medications" class="form-control" rows="2">Lisinopril 10mg daily</textarea>
-                    </div>
-                    
-                    <h3 style="margin-top: 2rem;">Medical History</h3>
-                    <div id="editMedicalHistory">
-                        <div class="medical-history-item">
-                            <div class="form-group">
-                                <label>Condition</label>
-                                <input type="text" class="form-control" value="Hypertension" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Details</label>
-                                <textarea class="form-control" rows="2">Diagnosed 2018, controlled with medication</textarea>
-                            </div>
-                            <button type="button" class="btn btn-secondary" style="margin-top: 0.5rem;">Remove</button>
-                        </div>
-                        <div class="medical-history-item">
-                            <div class="form-group">
-                                <label>Condition</label>
-                                <input type="text" class="form-control" value="Appendectomy" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Details</label>
-                                <textarea class="form-control" rows="2">2002, no complications</textarea>
-                            </div>
-                            <button type="button" class="btn btn-secondary" style="margin-top: 0.5rem;">Remove</button>
-                        </div>
-                    </div>
-                    <button type="button" class="btn btn-primary" id="addHistoryItem" style="margin-top: 1rem;">
-                        <i class="fas fa-plus"></i> Add Medical History
-                    </button>
-                    
-                    <div class="form-group" style="margin-top: 1.5rem;">
-                        <button type="submit" class="btn btn-primary">Save Changes</button>
-                        <button type="button" class="btn btn-secondary" id="cancelMedicalEdit">Cancel</button>
-                    </div>
-                </form>
-            </div>
-
-            <!-- Emergency Contacts Section -->
-            <div class="profile-section">
-                <h2>Emergency Contacts</h2>
-                
-                <div id="emergencyContactsView">
-                    <div class="profile-details">
-                        <div class="detail-item">
-                            <label>Primary Contact</label>
-                            <div class="value">
-                                <strong>Michael Johnson</strong> (Spouse)<br>
-                                (555) 987-6543<br>
-                                michael.johnson@example.com
-                            </div>
-                        </div>
-                        <div class="detail-item">
-                            <label>Secondary Contact</label>
-                            <div class="value">
-                                <strong>Emily Parker</strong> (Sister)<br>
-                                (555) 456-7890<br>
-                                emily.parker@example.com
-                            </div>
-                        </div>
-                    </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" class="form-control" value="{{ $user->email }}" required>
                 </div>
-                
-                <form class="edit-form" id="emergencyContactsForm">
-                    <h3>Primary Emergency Contact</h3>
-                    <div class="form-group">
-                        <label for="primaryContactName">Name</label>
-                        <input type="text" id="primaryContactName" class="form-control" value="Michael Johnson" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="primaryContactRelation">Relationship</label>
-                        <input type="text" id="primaryContactRelation" class="form-control" value="Spouse" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="primaryContactPhone">Phone</label>
-                        <input type="tel" id="primaryContactPhone" class="form-control" value="5559876543" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="primaryContactEmail">Email</label>
-                        <input type="email" id="primaryContactEmail" class="form-control" value="michael.johnson@example.com">
-                    </div>
-                    
-                    <h3 style="margin-top: 2rem;">Secondary Emergency Contact</h3>
-                    <div class="form-group">
-                        <label for="secondaryContactName">Name</label>
-                        <input type="text" id="secondaryContactName" class="form-control" value="Emily Parker">
-                    </div>
-                    <div class="form-group">
-                        <label for="secondaryContactRelation">Relationship</label>
-                        <input type="text" id="secondaryContactRelation" class="form-control" value="Sister">
-                    </div>
-                    <div class="form-group">
-                        <label for="secondaryContactPhone">Phone</label>
-                        <input type="tel" id="secondaryContactPhone" class="form-control" value="5554567890">
-                    </div>
-                    <div class="form-group">
-                        <label for="secondaryContactEmail">Email</label>
-                        <input type="email" id="secondaryContactEmail" class="form-control" value="emily.parker@example.com">
-                    </div>
-                    
-                    <div class="form-group" style="margin-top: 1.5rem;">
-                        <button type="submit" class="btn btn-primary">Save Changes</button>
-                        <button type="button" class="btn btn-secondary" id="cancelEmergencyEdit">Cancel</button>
-                    </div>
-                </form>
-            </div>
-
-            <!-- Account Settings Section -->
-            <div class="profile-section">
-                <h2>Account Settings</h2>
-                
-                <div id="accountSettingsView">
-                    <div class="profile-details">
-                        <div class="detail-item">
-                            <label>Password</label>
-                            <div class="value">********</div>
-                        </div>
-                        <div class="detail-item">
-                            <label>Account Status</label>
-                            <div class="value">Active</div>
-                        </div>
-                        <div class="detail-item">
-                            <label>Two-Factor Authentication</label>
-                            <div class="value">Disabled</div>
-                        </div>
-                    </div>
-                    
-                    <div class="profile-actions" style="margin-top: 2rem;">
-                        <button class="btn btn-secondary" id="changePasswordBtn">Change Password</button>
-                        <button class="btn btn-secondary" id="enable2FABtn">Enable 2FA</button>
-                        <button class="btn btn-danger" id="deleteAccountBtn">Delete Account</button>
-                    </div>
+                <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <input type="tel" id="phone" name="phone" class="form-control" value="{{ $user->phone }}">
                 </div>
-                
-                <form class="edit-form" id="changePasswordForm">
-                    <div class="form-group">
-                        <label for="currentPassword">Current Password</label>
-                        <input type="password" id="currentPassword" class="form-control" required>
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <input type="text" id="address" name="address" class="form-control" value="{{ $user->address }}" placeholder="Street address">
+                </div>
+                <!-- <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="city">City</label>
+                        <input type="text" id="city" name="city" class="form-control" value="{{ $user->city ?? null }}">
                     </div>
-                    <div class="form-group">
-                        <label for="newPassword">New Password</label>
-                        <input type="password" id="newPassword" class="form-control" required>
+                    <div class="form-group col-md-4">
+                        <label for="state">State</label>
+                        <input type="text" id="state" name="state" class="form-control" value="{{ $user->state ?? null}}">
                     </div>
-                    <div class="form-group">
-                        <label for="confirmPassword">Confirm New Password</label>
-                        <input type="password" id="confirmPassword" class="form-control" required>
+                    <div class="form-group col-md-2">
+                        <label for="postal_code">ZIP</label>
+                        <input type="text" id="postal_code" name="postal_code" class="form-control" value="{{ $user->postal_code ?? null }}">
                     </div>
-                    <div class="form-group" style="margin-top: 1.5rem;">
-                        <button type="submit" class="btn btn-primary">Update Password</button>
-                        <button type="button" class="btn btn-secondary" id="cancelPasswordChange">Cancel</button>
+                </div> -->
+                <div class="upload-avatar">
+                    <div>
+                        <label for="avatarUpload">Profile Photo</label>
+                        <input type="file" id="avatarUpload" name="image" accept="image/*" style="display: none;">
+                        <button type="button" class="btn btn-secondary" onclick="document.getElementById('avatarUpload').click()">Choose Image</button>
                     </div>
-                </form>
-            </div>
+                    <img src="{{ asset('storage/' . $user->image) }}" alt="Preview" class="avatar-preview" id="avatarPreview">
+                </div>
+                <div class="form-group" style="margin-top: 1.5rem;">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <button type="button" class="btn btn-secondary" id="cancelPersonalEdit">Cancel</button>
+                </div>
+            </form>
         </div>
-    </main>
 
-    <!-- Delete Account Modal -->
-    <div id="deleteAccountModal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <h2>Delete Your Account</h2>
-            <p>Are you sure you want to delete your account? This action cannot be undone.</p>
-            <p>All your data, including medical records and appointment history, will be permanently deleted.</p>
-            
-            <div class="form-group" style="margin-top: 1.5rem;">
-                <label for="confirmDelete">Type "DELETE" to confirm</label>
-                <input type="text" id="confirmDelete" class="form-control" required>
+
+
+        <!-- Account Settings Section -->
+        @if (session('success'))
+        <div style="color: green;">
+            {{ session('success') }}
+        </div>
+        @endif
+        @if ($errors->any())
+        <div style="color: red;">
+            <ul class="list-disc pl-5">
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
+        <div class="profile-section">
+            <h2>Account Settings</h2>
+            <div id="accountSettingsView">
+                <div class="profile-details">
+                    <div class="detail-item">
+                        <label>Password</label>
+                        <div class="value">********</div>
+
+                    </div>
+                    <div class="detail-item">
+                        <label>Account Status</label>
+                        <div class="value" style="color: green;">{{ $user->status ? 'Active' : 'Deactive'}}</div>
+                    </div>
+                    <div class="detail-item">
+                        <label>Two-Factor Authentication</label>
+                        <div class="value"></div>
+                    </div>
+                </div>
+
+                <div class="profile-actions" style="margin-top: 2rem;">
+                    <button class="btn btn-secondary" id="changePasswordBtn">Change Password</button>
+                    <!-- <button class="btn btn-secondary" id="enable2FABtn"> 2FA</button> -->
+                    <button class="btn btn-danger" id="deleteAccountBtn"><a href="{{ route('logout') }}">Logout</a></button>
+                </div>
             </div>
-            
-            <div style="display: flex; gap: 1rem; margin-top: 2rem;">
-                <button class="btn btn-danger" id="confirmDeleteBtn">Delete Account</button>
-                <button class="btn btn-secondary" id="cancelDeleteBtn">Cancel</button>
-            </div>
+            <form class="edit-form" id="changePasswordForm" style="display: none;" action="{{ route('change-password') }}" method="POST">
+                @csrf
+                <input type="hidden" id="currentPassword" name="email" value="{{ $user->email }}">
+
+                <div class="form-group">
+                    <label for="currentPassword">Current Password</label>
+                    <input type="password" id="currentPassword" name="current_password" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">New Password</label>
+                    <input type="password" id="newPassword" name="password" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm New Password</label>
+                    <input type="password" id="confirmPassword" name="password_confirmation" class="form-control">
+                </div>
+
+                <div class="form-group" style="margin-top: 1.5rem;">
+                    <button type="submit" class="btn btn-primary">Update Password</button>
+                    <button type="button" class="btn btn-secondary" id="cancelPasswordChange">Cancel</button>
+                </div>
+            </form>
         </div>
     </div>
+</main>
 
 
+@endsection
+
+@section('js-content')
+<script src="{{ asset('js/main.js') }}"></script>
+<script src="{{ asset('js/mobile.menu.js') }}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const editProfileBtn = document.getElementById('editProfileBtn');
+        const cancelEditBtn = document.getElementById('cancelEditBtn');
+        const personalInfoForm = document.getElementById('personalInfoForm');
+        const personalInfoView = document.getElementById('personalInfoView');
+        const cancelPersonalEdit = document.getElementById('cancelPersonalEdit');
+
+        const changePasswordBtn = document.getElementById('changePasswordBtn');
+        const cancelPasswordChange = document.getElementById('cancelPasswordChange');
+        const changePasswordForm = document.getElementById('changePasswordForm');
+        const accountSettingsView = document.getElementById('accountSettingsView');
+
+        const avatarUpload = document.getElementById('avatarUpload');
+        const avatarPreview = document.getElementById('avatarPreview');
+
+        // Format and display "Member Since" from server-created date
+        const memberSince = document.getElementById('memberSince');
+        const createdAt = "{{ $user->created_at }}";
+        if (memberSince && createdAt) {
+            const date = new Date(createdAt);
+            const formatted = date.toLocaleDateString('en-IN', {
+                year: 'numeric',
+                month: 'long'
+            });
+            memberSince.innerText = formatted;
+        }
+
+        // Show form and hide view for profile edit
+        editProfileBtn?.addEventListener('click', () => {
+            personalInfoForm.style.display = 'block';
+            personalInfoView.style.display = 'none';
+            editProfileBtn.style.display = 'none';
+            cancelEditBtn.style.display = 'inline-block';
+        });
+
+        // Cancel profile edit
+        cancelEditBtn?.addEventListener('click', () => {
+            personalInfoForm.style.display = 'none';
+            personalInfoView.style.display = 'block';
+            editProfileBtn.style.display = 'inline-block';
+            cancelEditBtn.style.display = 'none';
+        });
+
+        cancelPersonalEdit?.addEventListener('click', () => {
+            personalInfoForm.style.display = 'none';
+            personalInfoView.style.display = 'block';
+            editProfileBtn.style.display = 'inline-block';
+            cancelEditBtn.style.display = 'none';
+        });
+
+        // Password form toggle
+        changePasswordBtn?.addEventListener('click', () => {
+            changePasswordForm.style.display = 'block';
+            accountSettingsView.style.display = 'none';
+        });
+
+        cancelPasswordChange?.addEventListener('click', () => {
+            changePasswordForm.style.display = 'none';
+            accountSettingsView.style.display = 'block';
+        });
+
+        // Image preview
+        avatarUpload?.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    avatarPreview.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    });
+</script>
+
+<!-- Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 @endsection

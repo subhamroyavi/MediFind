@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Session;
 
 class SignupController extends Controller
 {
@@ -65,7 +66,7 @@ class SignupController extends Controller
 
     public function verifyOTP(Request $request)
     {
-        // dd($request);
+        // dd($request->toArray());
         $userData = $request->validate([
             'first_name' => 'required',
             'last_name' => 'required',
@@ -97,25 +98,45 @@ class SignupController extends Controller
     }
     public function login(Request $request)
     {
+        // Validate the incoming request data
         $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
-
+  
         if (Auth::attempt($credentials)) {
-            
+            $request->session()->regenerate();
+
+            $user = Auth::user();
+            session([
+                'authenticated' => true,
+                'user_id' => $user->id,
+                'user_email' => $user->email,
+            ]);
+
             return redirect()->route('index');
-            //    return 'done';
         }
         return back()->withErrors([
-            'email' => 'Invalid credentials.',
+            'email' => 'Invalid credentials !',
         ])->withInput();
+
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        // dd(Auth::user());
-        Auth::logout();
-        return redirect()->route('login');
+        Session::forget('authenticated');
+        Session::forget('user_id');
+        Session::forget('user_email');
+
+        return redirect()->route('index');
     }
+
 }
+
+
+
+
+
+
+
+
