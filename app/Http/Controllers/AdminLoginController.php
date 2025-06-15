@@ -37,8 +37,8 @@ class AdminLoginController extends Controller
             'last_name' => $validated['last_name'],
             'email' => $validated['email'],
             'phone' => $validated['phone'],
-            // 'password' => bcrypt($validated['password']),
-            'password' => Hash::make($validated['password']),
+            'password' => $validated['password'],
+            // 'password' => Hash::make($validated['password']),
             'status' => 1
         ]);
 
@@ -60,6 +60,7 @@ class AdminLoginController extends Controller
 
     public function loginCheck(Request $request)
     {
+        dd($request->all());
         $validated = $request->validate([
             'email' => 'required|email',
             'password' => 'required|min:6|max:20'

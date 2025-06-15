@@ -7,13 +7,12 @@
 <head>
 
     <meta charset="utf-8" />
-    <title>MediFind | Admin & Dashboard </title>
+    <title>Starter page | Tocly - Admin & Dashboard Template</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesdesign" name="author" />
-    <!-- App favicon -->
-    <!-- <link rel="shortcut icon" href="{{asset('admin_panel/assets/images/favicon.ico')}}"> -->
-
+    <!-- Layout Js -->
+    <script src="{{ asset('admin_panel/assets/js/layout.js') }}"></script>
     <!-- plugin css -->
     <link href="{{ asset('admin_panel/assets/libs/jsvectormap/css/jsvectormap.min.css') }}" rel="stylesheet" type="text/css" />
 
@@ -41,8 +40,10 @@
     <!-- FixedColumns CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/4.3.0/css/fixedColumns.dataTables.min.css">
 
+    <!-- Bootstrap CSS -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> -->
 
-
+</head>
 
 <body data-sidebar="colored">
 
@@ -57,44 +58,35 @@
                     <div class="navbar-brand-box">
                         <a href="index.html" class="logo logo-dark">
                             <span class="logo-sm">
-                                <img src="{{asset('admin_panel/assets/images/logo-dark.png')}}" alt="logo-sm-dark" height="24">
+                                <img src="{{ asset('admin_panel/assets/images/logo-dark.png') }}" alt="logo-sm-dark" height="24">
                             </span>
                             <span class="logo-lg">
-                                <img src="{{asset('admin_panel/assets/images/logo-sm-dark.png')}}" alt="logo-dark" height="25">
+                                <img src="{{ asset('admin_panel/assets/images/logo-sm-dark.png') }}" alt="logo-dark" height="25">
                             </span>
                         </a>
 
                         <a href="index.html" class="logo logo-light">
                             <span class="logo-sm">
-                                <img src="{{asset('admin_panel/assets/images/logo-light.png')}}" alt="logo-sm-light" height="24">
+                                <img src="{{ asset('admin_panel/assets/images/logo-light.png') }}" alt="logo-sm-light" height="24">
                             </span>
                             <span class="logo-lg">
-                                <img src="{{asset('admin_panel/assets/images/logo-sm-light.png')}}" alt="logo-light" height="25">
+                                <img src="{{ asset('admin_panel/assets/images/logo-sm-light.png') }}" alt="logo-light" height="25">
                             </span>
                         </a>
                     </div>
 
                     <button type="button" class="btn btn-sm px-3 font-size-24 header-item waves-effect vertical-menu-btn" id="vertical-menu-btn">
-                        <!-- <i class="ri-menu-2-line align-middle"></i> -->
                         <i class="fa-solid fa-align-left"></i>
                     </button>
 
                     <!-- start page title -->
                     <div class="page-title-box align-self-center d-none d-md-block">
-                        <h4 class="page-title mb-0"><i class="fas fa-heartbeat"></i>MediFind</h4>
+                        <h4 class="page-title mb-0">Admin Panel</h4>
                     </div>
                     <!-- end page title -->
                 </div>
 
                 <div class="d-flex">
-
-                    <!-- App Search-->
-                    <form class="app-search d-none d-lg-block">
-                        <div class="position-relative">
-                            <input type="text" class="form-control" placeholder="Search...">
-                            <span class="fa-solid fa-magnifying-glass"></span>
-                        </div>
-                    </form>
 
                     <div class="dropdown d-none d-lg-inline-block ms-1">
                         <button type="button" class="btn header-item noti-icon waves-effect" data-toggle="fullscreen">
@@ -117,58 +109,26 @@
         <div class="vertical-menu">
 
             <!-- LOGO -->
-            <!-- <div class="navbar-brand-box">
+            <div class="navbar-brand-box">
                 <a href="index.html" class="logo logo-dark">
                     <span class="logo-sm">
-                        <img src="{{asset('admin_panel/assets/images/logo-sm-dark.png')}}" alt="logo-sm-dark" height="24">
+                        <img src="{{ asset('admin_panel/assets/images/logo-sm-dark.png') }}" alt="logo-sm-dark" height="24">
                     </span>
                     <span class="logo-lg">
-                        <img src="{{asset('admin_panel/assets/images/logo-dark.png')}}" alt="logo-dark" height="22">
+                        <img src="{{ asset('admin_panel/assets/images/logo-dark.png') }}" alt="logo-dark" height="22">
                     </span>
                 </a>
 
                 <a href="index.html" class="logo logo-light">
                     <span class="logo-sm">
-                        <img src="{{asset('admin_panel/assets/images/logo-sm-light.png')}}" alt="logo-sm-light" height="24">
+                        <img src="{{ asset('admin_panel/assets/images/logo-sm-light.png') }}" alt="logo-sm-light" height="24">
                     </span>
                     <span class="logo-lg">
-                        <img src="{{asset('admin_panel/assets/images/logo-light.png')}}" alt="logo-light" height="22">
-                    </span>
-                </a>
-
-            </div> -->
-
-            <div class="navbar-brand-box">
-                <!-- Dark Logo Variant -->
-                <a href="{{ route('admin.dashboard') }}" class="logo logo-dark">
-                    <span class="logo-sm">
-                        <h4 class="page-title mb-0">
-                            <i class="fas fa-heartbeat me-2"></i>
-                        </h4>
-                    </span>
-                    <span class="logo-lg">
-                        <h4 class="page-title mb-0">
-                            <i class="fas fa-heartbeat me-2"></i>MediFind
-                        </h4>
-                    </span>
-                </a>
-
-                <!-- Light Logo Variant -->
-                <a href="{{ route('admin.dashboard') }}" class="logo logo-light">
-                    <span class="logo-sm">
-                        <h4 class="page-title mb-0">
-                            <i class="fas fa-heartbeat me-2"></i>
-                        </h4>
-                    </span>
-                    <span class="logo-lg">
-                        <h4 class="page-title mb-0">
-                            <i class="fas fa-heartbeat me-2"></i>MediFind
-                        </h4>
+                        <img src="{{ asset('admin_panel/assets/images/logo-light.png') }}" alt="logo-light" height="22">
                     </span>
                 </a>
             </div>
 
-            <!-- Vertical Menu Button (unchanged) -->
             <button type="button" class="btn btn-sm px-3 font-size-24 header-item waves-effect vertical-menu-btn" id="vertical-menu-btn">
                 <i class="fa-solid fa-align-left"></i>
             </button>
@@ -177,7 +137,6 @@
 
                 <!--- Sidemenu -->
                 <div id="sidebar-menu">
-
 
                     <!-- Left Menu Start -->
                     <ul class="metismenu list-unstyled" id="side-menu">
@@ -235,40 +194,44 @@
             </div>
 
             <div class="dropdown px-3 sidebar-user sidebar-user-info">
-                <button type="button" class="btn w-100 px-0 border-0" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button type="button"
+                    class="btn w-100 px-0 border-0"
+                    id="page-header-user-dropdown"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false">
                     <span class="d-flex align-items-center">
                         <div class="flex-shrink-0">
-                            <img src="admin_panel/assets/images/users/avatar-2.jpg" class="img-fluid header-profile-user rounded-circle" alt="">
+                            <!-- <img src="{{ asset('admin_panel/assets/images/users/avatar-2.jpg') }}" -->
+                            <img src="{{ asset('storage/' . Auth::user()->image) }}"
+                                class="img-fluid header-profile-user rounded-circle"
+                                alt="User Avatar"
+                                loading="lazy">
                         </div>
-
                         <div class="flex-grow-1 ms-2 text-start">
-                            <span class="ms-1 fw-medium user-name-text">Subham Roy</span>
+                            <span class="ms-1 fw-medium user-name-text">{{ Auth::user()->first_name.' '.Auth::user()->last_name }}</span>
                         </div>
-
                         <div class="flex-shrink-0 text-end">
                             <i class="fa-solid fa-ellipsis-vertical"></i>
                         </div>
                     </span>
                 </button>
-                <div class="dropdown-menu dropdown-menu-end">
-                    <!-- item-->
-                    <a class="dropdown-item" href="pages-profile.html"><i class="mdi mdi-account-circle text-muted font-size-16 align-middle me-1"></i> <span class="align-middle">Profile</span></a>
-
-
+                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="page-header-user-dropdown">
+                    <a class="dropdown-item" href="pages-profile.html">
+                        <i class="fas fa-user-circle text-muted me-2"></i>
+                        <span>Profile</span>
+                    </a>
                     <div class="dropdown-divider"></div>
-
-                    <a class="dropdown-item" href="#"><span class="badge bg-primary mt-1 float-end">New</span><i class="mdi mdi-cog-outline text-muted font-size-16 align-middle me-1"></i> <span class="align-middle">Settings</span></a>
-
-                    <a class="dropdown-item" href="auth-lock-screen.html"><i class="mdi mdi-lock text-muted font-size-16 align-middle me-1"></i> <span class="align-middle">Lock screen</span></a>
-
-                    <a class="dropdown-item" href="{{route('admin.logout')}}"><i class="mdi mdi-lock text-muted font-size-16 align-middle me-1"></i> <span class="align-middle">Log Out</span></a>
+                    <a class="dropdown-item" href="{{ route('admin.logout') }}">
+                        <i class="fas fa-lock text-muted me-2"></i>
+                        <span>Logout</span>
+                    </a>
                 </div>
             </div>
 
+
+
         </div>
         <!-- Left Sidebar End -->
-
-
 
         <!-- ============================================================== -->
         <!-- Start right Content here -->
@@ -305,7 +268,6 @@
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
             @yield('js-content')
 
-
         </div>
         <!-- end main content-->
 
@@ -324,13 +286,13 @@
                 </a>
             </div>
 
-            <!-- Settings -->
+            
             <hr class="mt-0" />
             <h6 class="text-center mb-0">Choose Layouts</h6>
 
             <div class="p-4">
                 <div class="mb-2">
-                    <img src="{{asset('admin_panel/assets/images/layouts/layout-1.jpg')}}" class="img-fluid img-thumbnail" alt="layout-1">
+                    <img src="{{ asset('admin_panel/assets/images/layouts/layout-1.jpg') }}" class="img-fluid img-thumbnail" alt="layout-1">
                 </div>
 
                 <div class="form-check form-switch mb-3">
@@ -339,10 +301,10 @@
                 </div>
 
                 <div class="mb-2">
-                    <img src="{{asset('admin_panel/assets/images/layouts/layout-2.jpg')}}" class="img-fluid img-thumbnail" alt="layout-2">
+                    <img src="{{ asset('admin_panel/assets/images/layouts/layout-2.jpg') }}" class="img-fluid img-thumbnail" alt="layout-2">
                 </div>
                 <div class="form-check form-switch mb-3">
-                    <input class="form-check-input theme-choice" type="checkbox" id="dark-mode-switch" data-bsStyle="admin_panel/assets/css/bootstrap-dark.min.css" data-appStyle="admin_panel/assets/css/app-dark.min.html">
+                    <input class="form-check-input theme-choice" type="checkbox" id="dark-mode-switch" data-bsStyle="assets/css/bootstrap-dark.min.css" data-appStyle="assets/css/app-dark.min.html">
                     <label class="form-check-label" for="dark-mode-switch">Dark Mode</label>
                 </div>
             </div>
@@ -391,7 +353,6 @@
 
     <!-- Datatable init js -->
     <script src="{{ asset('admin_panel/assets/js/pages/datatables.init.js') }}"></script>
-    <script src="{{ asset('admin_panel/assets/js/app.js') }}"></script>
 
     <!-- Required datatable js -->
     <script src="{{ asset('admin_panel/assets/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
@@ -421,12 +382,22 @@
 
     <!-- jQuery (required for DataTables) -->
     <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
-
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- DataTables JS -->
     <!-- <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script> -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var userDropdown = document.getElementById('page-header-user-dropdown');
+            var dropdownMenu = new bootstrap.Dropdown(userDropdown);
 
-    </head>
+            userDropdown.addEventListener('click', function(e) {
+                e.preventDefault();
+                dropdownMenu.toggle();
+            });
+        });
+    </script>
 </body>
 
 <!-- Mirrored from themesdesign.in/tocly/layouts/5.3.1/pages-starter.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 24 Nov 2023 08:53:06 GMT -->

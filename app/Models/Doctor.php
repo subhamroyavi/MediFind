@@ -29,17 +29,22 @@ class Doctor extends Model
         'image'
     ];
 
-    public function locations()
-    {
-        return $this->hasOne(Location::class, 'entity_id');
-    }
+    // public function locations()
+    // {
+    //     return $this->hasOne(Location::class, 'entity_id');
+    // }
 
-    public function educations() {
-    return $this->hasMany(Education::class, 'doctor_id')->orderBy('date', 'DESC');
-}
+    public function educations()
+    {
+        return $this->hasMany(Education::class, 'doctor_id', 'doctor_id')->orderBy('date', 'DESC');
+    }
 
     public function experiences()
     {
-        return $this->hasMany(Experience::class, 'doctor_id')->orderBy('end_date', 'DESC');
+        return $this->hasMany(Experience::class, 'doctor_id', 'doctor_id')->orderBy('end_date', 'DESC');
+    }
+    public function locations()
+    {
+        return $this->hasOne(Location::class, 'entity_id', 'doctor_id');
     }
 }

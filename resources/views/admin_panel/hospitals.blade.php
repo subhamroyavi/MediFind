@@ -31,48 +31,38 @@
                             <tr>
                                 <th>Id</th>
                                 <th scope="col" style="width: 20%;">hospital</th>
-                                <th scope="col" style="width: 20%;">Contact</th>
-                                <th scope="col" style="width: 20%;">Facilities</th>
-                                <th scope="col">Services</th>
-                                <th scope="col" style="width: 20%;">Openning Hours</th>
-                                <th scope="col">Organization</th>
-                                <th scope="col" style="width: 8%;">Status</th>
+                                <th scope="col" style="width: 20%;">Contact Details</th>
+                                <th scope="col" style="width: 20%;">Location</th>
                                 <th scope="col" style="width: 12%;">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($hospitals as $hospital)
-                            <tr>
+                            <tr class="{{ $hospital->status ? 'table-success' : 'table-danger' }} p-2">
                                 <td>
                                     <p class="fw-medium mb-0">{{ $hospital->hospital_id }}</p>
                                 </td>
                                 <td>
                                     <img src="{{ asset('storage/' . $hospital->image) }}" alt="hospital"
                                         class="avatar-xs rounded-circle me-2">
-                                    <a href="#" class="text-body align-middle fw-medium">
-                                        {{ $hospital->hospital_name }}
+                                    <a href="" class="text-body align-middle fw-medium">
+                                        {{ $hospital->hospital_name }} ({{ $hospital->organization_type == 'government' ? 'Govt.' : ($hospital->organization_type == 'private' ? 'Pvt.' : 'Public') }})
                                     </a>
                                 </td>
                                 <td>
-                                    <span class="badge bg-info" type="button" data-bs-toggle="modal" data-bs-target="#contact_details{{ $hospital->hospital_id }}">
+                                    <span type="button" data-bs-toggle="modal" data-bs-target="#contact_details{{ $hospital->hospital_id }}">
                                         {{
-                                                $hospital->contacts->where('contact_type', 'email')->first()?->value 
+                                             $hospital->contacts->where('contact_type', 'email')->first()?->value 
                                                 ?? $hospital->contacts->where('contact_type', 'phone')->first()?->value 
                                                 ?? 'N/A' 
                                             }}
                                     </span>
                                 </td>
-                                <td><span class="badge bg-info" type="button" data-bs-toggle="modal" data-bs-target="#facilities_details{{ $hospital->hospital_id }}">Click me</span></td>
-                                <td><span class="badge bg-info" type="button" data-bs-toggle="modal" data-bs-target="#services_details{{ $hospital->hospital_id }}">Click me</span></td>
-                                <td><span class="badge bg-info" type="button" data-bs-toggle="modal" data-bs-target="#location_details{{ $hospital->hospital_id }}">{{ $hospital->location ? $hospital->location->city . ', ' . $hospital->location->state : 'N/A' }}</span>
+
+                                <td><span type="button" data-bs-toggle="modal" data-bs-target="#location_details{{ $hospital->hospital_id }}">{{ $hospital->location ? $hospital->location->city : 'N/A' }}, <br>{{ $hospital->location ? $hospital->location->state : 'N/A' }} </span>
 
                                 </td>
-                                <td>{{ ucfirst($hospital->organization_type) }}</td>
-                                <td>
-                                    <span class="badge {{ $hospital->status ? 'badge-soft-success' : 'badge-soft-danger' }} p-2">
-                                        {{ $hospital->status ? 'Active' : 'Inactive' }}
-                                    </span>
-                                </td>
+
                                 <td>
                                     <div class="d-flex gap-2">
                                         <a href="{{ route('admin.hospital.edit', $hospital->hospital_id) }}"
@@ -91,152 +81,6 @@
                                     </div>
                                 </td>
                             </tr>
-
-                            <!-- services Details Modal -->
-                            <div class="modal fade" id="services_details{{ $hospital->hospital_id }}" tabindex="-1" role="dialog" aria-labelledby="servicesModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-scrollable">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="servicesModalLabel">
-                                                <img src="{{ asset('storage/' . $hospital->image) }}" alt="{{ $hospital->hospital_name }}" class="avatar-xs rounded-circle me-2">
-                                                <a href="#javascript: void(0);" class="text-body align-middle fw-medium">{{ $hospital->hospital_name }}</a> services
-                                            </h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-
-
-                                        <div class="modal-body">
-                                            <div class="tab-pane" id="facility-info" role="tabpanel">
-                                                @if(isset($hospital->services) && count($hospital->services) > 0)
-                                                @foreach($hospital->services as $service)
-                                                <div class="contact-entry mb-4 border p-3">
-                                                    <div class="row">
-                                                        <div class="col-lg-12">
-                                                            <label class="form-label">service Description</label>
-                                                            <div class="form-control-plaintext">
-                                                                {{ $service->service_name ?? 'N/A' }}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                @endforeach
-                                                @else
-                                                <div class="text-muted">No services available.</div>
-                                                @endif
-
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-light waves-effect" data-bs-dismiss="modal">Close</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Facilites Details Modal -->
-                            <div class="modal fade" id="facilities_details{{ $hospital->hospital_id }}" tabindex="-1" role="dialog" aria-labelledby="facilitiesModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-scrollable">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="facilitiesModalLabel">
-                                                <img src="{{ asset('storage/' . $hospital->image) }}" alt="{{ $hospital->hospital_name }}" class="avatar-xs rounded-circle me-2">
-                                                <a href="#javascript: void(0);" class="text-body align-middle fw-medium">{{ $hospital->hospital_name }}</a> Facilities
-                                            </h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-
-
-                                        <div class="modal-body">
-                                            <div class="tab-pane" id="facility-info" role="tabpanel">
-                                                @if(isset($hospital->facilities) && count($hospital->facilities) > 0)
-                                                @foreach($hospital->facilities as $facility)
-                                                <div class="contact-entry mb-4 border p-3">
-                                                    <div class="row">
-                                                        <div class="col-lg-12">
-                                                            <label class="form-label">Facility Description</label>
-                                                            <div class="form-control-plaintext">
-                                                                {{ $facility->description ?? 'N/A' }}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                @endforeach
-                                                @else
-                                                <div class="text-muted">No Facilities available.</div>
-                                                @endif
-
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-light waves-effect" data-bs-dismiss="modal">Close</button>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Contact Details Modal -->
-                            <div class="modal fade" id="contact_details{{ $hospital->hospital_id }}" tabindex="-1" role="dialog" aria-labelledby="contactModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-scrollable">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="contactModalLabel">
-                                                <img src="{{ asset('storage/' . $hospital->image) }}" alt="{{ $hospital->hospital_name }}" class="avatar-xs rounded-circle me-2">
-                                                <a href="#javascript: void(0);" class="text-body align-middle fw-medium">{{ $hospital->hospital_name }}</a> Contact Details
-                                            </h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-
-                                        <div class="modal-body">
-                                            <div class="tab-pane" id="contact-info" role="tabpanel">
-                                                @if(isset($hospital->contacts) && count($hospital->contacts) > 0)
-                                                @foreach($hospital->contacts as $contact)
-                                                <div class="contact-entry mb-4 border p-3">
-                                                    <div class="row">
-                                                        <div class="col-lg-4">
-                                                            <div class="mb-3">
-                                                                <label class="form-label">Contact Type</label>
-                                                                <input type="text" class="form-control" readonly value="{{ ucfirst($contact->contact_type ?? 'N/A') }}">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-6">
-                                                            <div class="mb-3">
-                                                                <label class="form-label">Value</label>
-                                                                <input type="text" class="form-control" readonly value="{{ $contact->value ?? 'N/A' }}">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-2">
-                                                            <div class="mb-3">
-                                                                <label class="form-label">Primary</label>
-                                                                <input type="text" class="form-control" readonly value="{{ $contact->is_primary ? 'Yes' : 'No' }}">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                @endforeach
-                                                @else
-                                                <div class="text-muted">No contact information available.</div>
-                                                @endif
-
-                                                <div class="row mt-4">
-                                                    <div class="col-lg-6">
-                                                        <div class="mb-3">
-                                                            <label class="form-label">Website Link</label>
-                                                            <input type="text" class="form-control" readonly value="{{ $hospital->website_link ?? 'N/A' }}">
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-light waves-effect" data-bs-dismiss="modal">Close</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
 
                             <!-- Location Details Modal  -->
                             <div class="modal fade " id="location_details{{ $hospital->hospital_id }}" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
@@ -384,6 +228,7 @@
 @endsection
 
 @section('js-content')
+
 <style>
     /* Custom styling for the DataTable */
     .dataTables_wrapper {

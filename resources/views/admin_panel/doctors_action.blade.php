@@ -2,6 +2,40 @@
 
 @section('main-content')
 
+<!-- Hospitals Table Header Card -->
+<div class="card">
+    <div class="card-header border-0 align-items-center d-flex pb-0">
+        <h4 class="card-title mb-0 flex-grow-1">Doctor Form</h4>
+
+        <!-- Add New User Button -->
+        <div class="app-search d-none d-lg-block">
+            <div class="position-relative">
+                <h4 class="card-title mb-0 flex-grow-1">
+                    <a href="{{ url()->previous() }}" class="btn btn-outline-primary waves-effect waves-light">
+                        <i class="fa-solid fa-arrow-left me-2"></i>Back
+                    </a>
+                </h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (session('error'))
+<div class="alert alert-danger">
+    {{ session('error') }}
+</div>
+@endif
+
+@if ($errors->any())
+<div class="alert alert-danger">
+    <ul class="mb-0">
+        @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
+
 <div class="row">
     <div class="col-lg-12">
         <div class="card">
@@ -88,7 +122,7 @@
 
                             <div class="row">
 
-                               <div class="col-lg-6">
+                                <div class="col-lg-6">
                                     <div class="mb-3">
                                         <label class="form-label" for="image">Profile Image</label>
                                         <input type="file" class="form-control @error('image') is-invalid @enderror"
@@ -332,162 +366,162 @@
                         </div>
 
                         <!-- Experience Information Tab -->
-<div class="tab-pane" id="experience-info" role="tabpanel">
-    <div id="experience-container">
-        @if(isset($doctor->experiences) && count($doctor->experiences) > 0)
-        @foreach($doctor->experiences as $index => $experience)
-        <div class="experience-entry mb-4 border p-3">
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="mb-3">
-                        <label class="form-label" for="experiences[{{ $index }}][position]">Position <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control @error('experiences.'.$index.'.position') is-invalid @enderror"
-                            name="experiences[{{ $index }}][position]"
-                            value="{{ old('experiences.'.$index.'.position', $experience->position) }}">
-                        @error('experiences.'.$index.'.position')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="mb-3">
-                        <label class="form-label" for="experiences[{{ $index }}][new_hospital_name]">Hospital</label>
-                        <input type="text" class="form-control @error('experiences.'.$index.'.new_hospital_name') is-invalid @enderror"
-                            id="new_hospital_name_{{ $index }}" name="experiences[{{ $index }}][new_hospital_name]"
-                            placeholder="Enter new hospital name" value="{{ old('experiences.'.$index.'.new_hospital_name', $experience->hospital_name) }}">
-                        @error('experiences.'.$index.'.new_hospital_name')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="mb-3">
-                        <label class="form-label" for="experiences[{{ $index }}][start_year]">Start Year</label>
-                        <input type="text" class="form-control @error('experiences.'.$index.'.start_year') is-invalid @enderror"
-                            name="experiences[{{ $index }}][start_year]"
-                            placeholder="YYYY"
-                            value="{{ old('experiences.'.$index.'.start_year', $experience->start_date) }}">
-                        @error('experiences.'.$index.'.start_year')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="mb-3">
-                        <label class="form-label" for="experiences[{{ $index }}][end_year]">End Year</label>
-                        <input type="text" class="form-control @error('experiences.'.$index.'.end_year') is-invalid @enderror"
-                            name="experiences[{{ $index }}][end_year]"
-                            placeholder="YYYY"
-                            value="{{ old('experiences.'.$index.'.end_year', $experience->end_date) }}">
-                        @error('experiences.'.$index.'.end_year')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="mb-3">
-                        <label class="form-label" for="experiences[{{ $index }}][status]">Status</label>
-                        <select class="form-select @error('experiences.'.$index.'.status') is-invalid @enderror"
-                            name="experiences[{{ $index }}][status]">
-                            <option value="1" {{ old('experiences.'.$index.'.status', $experience->status) == 1 ? 'selected' : '' }}>Active</option>
-                            <option value="0" {{ old('experiences.'.$index.'.status', $experience->status) == 0 ? 'selected' : '' }}>Inactive</option>
-                        </select>
-                        @error('experiences.'.$index.'.status')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-            </div>
-            <input type="hidden" name="experiences[{{ $index }}][experience_id]" value="{{ $experience->experience_id }}">
-            <button type="button" class="btn btn-sm btn-danger remove-experience">Remove</button>
-        </div>
-        @endforeach
-        @else
-        <div class="experience-entry mb-4 border p-3">
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="mb-3">
-                        <label class="form-label" for="experiences[0][position]">Position <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control @error('experiences.0.position') is-invalid @enderror"
-                            name="experiences[0][position]"
-                            value="{{ old('experiences.0.position') }}">
-                        @error('experiences.0.position')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="mb-3">
-                        <label class="form-label" for="experiences[0][new_hospital_name]">Hospital</label>
-                        <input type="text" class="form-control @error('experiences.0.new_hospital_name') is-invalid @enderror"
-                            id="new_hospital_name_0" name="experiences[0][new_hospital_name]"
-                            placeholder="Enter new hospital name" value="{{ old('experiences.0.new_hospital_name') }}">
-                        @error('experiences.0.new_hospital_name')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="mb-3">
-                        <label class="form-label" for="experiences[0][start_year]">Start Year</label>
-                        <input type="text" class="form-control @error('experiences.0.start_year') is-invalid @enderror"
-                            name="experiences[0][start_year]"
-                            placeholder="YYYY"
-                            value="{{ old('experiences.0.start_year') }}">
-                        @error('experiences.0.start_year')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="mb-3">
-                        <label class="form-label" for="experiences[0][end_year]">End Year</label>
-                        <input type="text" class="form-control @error('experiences.0.end_year') is-invalid @enderror"
-                            name="experiences[0][end_year]"
-                            placeholder="YYYY"
-                            value="{{ old('experiences.0.end_year') }}">
-                        @error('experiences.0.end_year')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="mb-3">
-                        <label class="form-label" for="experiences[0][status]">Status</label>
-                        <select class="form-select @error('experiences.0.status') is-invalid @enderror"
-                            name="experiences[0][status]">
-                            <option value="1" {{ old('experiences.0.status', 1) == 1 ? 'selected' : '' }}>Active</option>
-                            <option value="0" {{ old('experiences.0.status') == 0 ? 'selected' : '' }}>Inactive</option>
-                        </select>
-                        @error('experiences.0.status')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-            </div>
-            <button type="button" class="btn btn-sm btn-danger remove-experience">Remove</button>
-        </div>
-        @endif
-    </div>
-    <button type="button" id="add-experience" class="btn btn-sm btn-primary mb-3">Add Experience</button>
+                        <div class="tab-pane" id="experience-info" role="tabpanel">
+                            <div id="experience-container">
+                                @if(isset($doctor->experiences) && count($doctor->experiences) > 0)
+                                @foreach($doctor->experiences as $index => $experience)
+                                <div class="experience-entry mb-4 border p-3">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="experiences[{{ $index }}][position]">Position <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control @error('experiences.'.$index.'.position') is-invalid @enderror"
+                                                    name="experiences[{{ $index }}][position]"
+                                                    value="{{ old('experiences.'.$index.'.position', $experience->position) }}">
+                                                @error('experiences.'.$index.'.position')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="experiences[{{ $index }}][new_hospital_name]">Hospital</label>
+                                                <input type="text" class="form-control @error('experiences.'.$index.'.new_hospital_name') is-invalid @enderror"
+                                                    id="new_hospital_name_{{ $index }}" name="experiences[{{ $index }}][new_hospital_name]"
+                                                    placeholder="Enter new hospital name" value="{{ old('experiences.'.$index.'.new_hospital_name', $experience->hospital_name) }}">
+                                                @error('experiences.'.$index.'.new_hospital_name')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="experiences[{{ $index }}][start_year]">Start Year</label>
+                                                <input type="text" class="form-control @error('experiences.'.$index.'.start_year') is-invalid @enderror"
+                                                    name="experiences[{{ $index }}][start_year]"
+                                                    placeholder="YYYY"
+                                                    value="{{ old('experiences.'.$index.'.start_year', $experience->start_date) }}">
+                                                @error('experiences.'.$index.'.start_year')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="experiences[{{ $index }}][end_year]">End Year</label>
+                                                <input type="text" class="form-control @error('experiences.'.$index.'.end_year') is-invalid @enderror"
+                                                    name="experiences[{{ $index }}][end_year]"
+                                                    placeholder="YYYY"
+                                                    value="{{ old('experiences.'.$index.'.end_year', $experience->end_date) }}">
+                                                @error('experiences.'.$index.'.end_year')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="experiences[{{ $index }}][status]">Status</label>
+                                                <select class="form-select @error('experiences.'.$index.'.status') is-invalid @enderror"
+                                                    name="experiences[{{ $index }}][status]">
+                                                    <option value="1" {{ old('experiences.'.$index.'.status', $experience->status) == 1 ? 'selected' : '' }}>Active</option>
+                                                    <option value="0" {{ old('experiences.'.$index.'.status', $experience->status) == 0 ? 'selected' : '' }}>Inactive</option>
+                                                </select>
+                                                @error('experiences.'.$index.'.status')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="experiences[{{ $index }}][experience_id]" value="{{ $experience->experience_id }}">
+                                    <button type="button" class="btn btn-sm btn-danger remove-experience">Remove</button>
+                                </div>
+                                @endforeach
+                                @else
+                                <div class="experience-entry mb-4 border p-3">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="experiences[0][position]">Position <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control @error('experiences.0.position') is-invalid @enderror"
+                                                    name="experiences[0][position]"
+                                                    value="{{ old('experiences.0.position') }}">
+                                                @error('experiences.0.position')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="experiences[0][new_hospital_name]">Hospital</label>
+                                                <input type="text" class="form-control @error('experiences.0.new_hospital_name') is-invalid @enderror"
+                                                    id="new_hospital_name_0" name="experiences[0][new_hospital_name]"
+                                                    placeholder="Enter new hospital name" value="{{ old('experiences.0.new_hospital_name') }}">
+                                                @error('experiences.0.new_hospital_name')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="experiences[0][start_year]">Start Year</label>
+                                                <input type="text" class="form-control @error('experiences.0.start_year') is-invalid @enderror"
+                                                    name="experiences[0][start_year]"
+                                                    placeholder="YYYY"
+                                                    value="{{ old('experiences.0.start_year') }}">
+                                                @error('experiences.0.start_year')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="experiences[0][end_year]">End Year</label>
+                                                <input type="text" class="form-control @error('experiences.0.end_year') is-invalid @enderror"
+                                                    name="experiences[0][end_year]"
+                                                    placeholder="YYYY"
+                                                    value="{{ old('experiences.0.end_year') }}">
+                                                @error('experiences.0.end_year')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="experiences[0][status]">Status</label>
+                                                <select class="form-select @error('experiences.0.status') is-invalid @enderror"
+                                                    name="experiences[0][status]">
+                                                    <option value="1" {{ old('experiences.0.status', 1) == 1 ? 'selected' : '' }}>Active</option>
+                                                    <option value="0" {{ old('experiences.0.status') == 0 ? 'selected' : '' }}>Inactive</option>
+                                                </select>
+                                                @error('experiences.0.status')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-sm btn-danger remove-experience">Remove</button>
+                                </div>
+                                @endif
+                            </div>
+                            <button type="button" id="add-experience" class="btn btn-sm btn-primary mb-3">Add Experience</button>
 
-    <div class="row mt-4">
-        <div class="col-6">
-            <button type="button" class="btn btn-secondary" onclick="switchTab('education-info')">Previous: Education</button>
-        </div>
-        <div class="col-6 text-end">
-            <button type="button" class="btn btn-primary" onclick="switchTab('location-info')">Next: Location</button>
-        </div>
-    </div>
-</div>
+                            <div class="row mt-4">
+                                <div class="col-6">
+                                    <button type="button" class="btn btn-secondary" onclick="switchTab('education-info')">Previous: Education</button>
+                                </div>
+                                <div class="col-6 text-end">
+                                    <button type="button" class="btn btn-primary" onclick="switchTab('location-info')">Next: Location</button>
+                                </div>
+                            </div>
+                        </div>
 
                         <!-- Location Information Tab -->
                         <div class="tab-pane" id="location-info" role="tabpanel">

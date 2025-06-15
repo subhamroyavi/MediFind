@@ -11,7 +11,7 @@ class ServiceController extends Controller
     {
         $search = $request->search;
         $editService = null; // Initialize edit service variable
-        
+
         if ($search) {
             $services = Service::where('service_id', 'like', "%$search%")
                 ->orWhere('service_name', 'like', "%$search%")
@@ -24,24 +24,24 @@ class ServiceController extends Controller
     }
 
     public function create(Request $request)
-{
-    $validated = $request->validate([
-        'service_name' => 'required|string',
-    ]);
+    {
+        $validated = $request->validate([
+            'service_name' => 'required|string',
+        ]);
 
-    // dd($request->all());
+        // dd($request->all());
 
-    $Service = Service::create(['service_name' => $validated['service_name']]);
+        $Service = Service::create(['service_name' => $validated['service_name']]);
 
-    return redirect()->route('admin.services')->with('success', 'Service created successfully!');
-}
+        return redirect()->route('admin.services')->with('success', 'Service created successfully!');
+    }
 
-public function edit($id)
+    public function edit($id)
     {
         $editService = Service::where('service_id', $id)->firstOrFail();
         $services = Service::orderBy('created_at', 'DESC')->paginate(5);
         // dd($editService);
-        
+
         return view('admin_panel.medical-services', compact('services', 'editService'));
     }
 
@@ -60,9 +60,9 @@ public function edit($id)
         return redirect()->route('admin.services')->with('success', 'Service updated successfully!');
     }
 
-    public function destroy($id){
+    public function destroy($id)
+    {
         Service::findOrFail($id)->delete();
         return redirect()->route('admin.services')->with('done', 'deleted done');
-
     }
 }

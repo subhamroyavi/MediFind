@@ -1,6 +1,27 @@
 @extends('layouts.app')
 
 @section('main-content')
+<!-- Success Alert -->
+@if (session('success'))
+<div class="custom-alert custom-alert-success">
+    <div class="alert-content">
+        <span>{{ session('success') }}</span>
+        <button class="close-btn" aria-label="Close alert">&times;</button>
+    </div>
+</div>
+@endif
+
+<!-- Error Alerts -->
+@if ($errors->any())
+@foreach ($errors->all() as $error)
+<div class="custom-alert custom-alert-danger">
+    <div class="alert-content">
+        <span>{{ $error }}</span>
+        <button class="close-btn" aria-label="Close alert">&times;</button>
+    </div>
+</div>
+@endforeach
+@endif
 
 <!-- Main Content -->
 <main class="section">
@@ -85,13 +106,7 @@
                         <label for="dob">Date of Birth</label>
                         <input type="date" id="dob" name="dob" class="form-control" value="{{ $user->dob ?? Null }}">
 
-                        <label for="dob">Blood Groub</label>
-                        <select id="gender" name="gender" class="form-control">
-                            <option value="">Select</option>
-                            <option value="Male" {{ $user->gender == 'Male' ? 'selected' : '' }}>Male</option>
-                            <option value="Female" {{ $user->gender == 'Female' ? 'selected' : '' }}>Female</option>
-                            <option value="Other" {{ $user->gender == 'Other' ? 'selected' : '' }}>Other</option>
-                        </select>
+
                     </div>
                     <div class="form-group col-md-6">
                         @php
@@ -124,8 +139,8 @@
                     <input type="tel" id="phone" name="phone" class="form-control" value="{{ $user->phone }}">
                 </div>
                 <div class="form-group">
-                    <label for="address">Address</label>
-                    <input type="text" id="address" name="address" class="form-control" value="{{ $user->address }}" placeholder="Street address">
+                    <label for="address">Pincode</label>
+                    <input type="number" id="address" name="address" class="form-control" value="{{ $user->address }}" placeholder="Pincode">
                 </div>
                 <!-- <div class="form-row">
                     <div class="form-group col-md-6">
@@ -159,20 +174,7 @@
 
 
         <!-- Account Settings Section -->
-        @if (session('success'))
-        <div style="color: green;">
-            {{ session('success') }}
-        </div>
-        @endif
-        @if ($errors->any())
-        <div style="color: red;">
-            <ul class="list-disc pl-5">
-                @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-        @endif
+
         <div class="profile-section">
             <h2>Account Settings</h2>
             <div id="accountSettingsView">
@@ -187,8 +189,8 @@
                         <div class="value" style="color: green;">{{ $user->status ? 'Active' : 'Deactive'}}</div>
                     </div>
                     <div class="detail-item">
-                        <label>Two-Factor Authentication</label>
-                        <div class="value"></div>
+                        <label>Profile Status</label>
+                        <div class="value" style="color: green;">{{ $user->user_status == 'user' ? 'User' : ($user->user_status == 'Admin' ? 'Admin' : 'Post-Creator') }}</div>
                     </div>
                 </div>
 
@@ -228,6 +230,41 @@
 @endsection
 
 @section('js-content')
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Close buttons functionality
+        document.querySelectorAll('.close-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const alert = this.closest('.custom-alert');
+                alert.style.animation = 'fadeOut 0.3s forwards';
+                setTimeout(() => {
+                    alert.remove();
+                    repositionAlerts();
+                }, 300);
+            });
+        });
+
+        // Auto-dismiss after 5 seconds
+        document.querySelectorAll('.custom-alert').forEach(alert => {
+            setTimeout(() => {
+                alert.style.animation = 'fadeOut 0.3s forwards';
+                setTimeout(() => {
+                    alert.remove();
+                    repositionAlerts();
+                }, 300);
+            }, 5000);
+        });
+
+        // Reposition alerts when some are dismissed
+        function repositionAlerts() {
+            document.querySelectorAll('.custom-alert').forEach((alert, index) => {
+                alert.style.top = `${20 + (index * 60)}px`;
+            });
+        }
+    });
+</script>
+
 <script src="{{ asset('js/main.js') }}"></script>
 <script src="{{ asset('js/mobile.menu.js') }}"></script>
 <script>

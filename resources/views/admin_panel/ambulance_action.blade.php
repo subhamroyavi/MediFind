@@ -2,6 +2,40 @@
 
 @section('main-content')
 
+<!-- Hospitals Table Header Card -->
+<div class="card">
+    <div class="card-header border-0 align-items-center d-flex pb-0">
+        <h4 class="card-title mb-0 flex-grow-1">Ambulance Form</h4>
+
+        <!-- Add New User Button -->
+        <div class="app-search d-none d-lg-block">
+            <div class="position-relative">
+                <h4 class="card-title mb-0 flex-grow-1">
+                    <a href="{{ url()->previous() }}" class="btn btn-outline-primary waves-effect waves-light">
+                        <i class="fa-solid fa-arrow-left me-2"></i>Back
+                    </a>
+                </h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (session('error'))
+<div class="alert alert-danger">
+    {{ session('error') }}
+</div>
+@endif
+
+@if ($errors->any())
+<div class="alert alert-danger">
+    <ul class="mb-0">
+        @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
+
 <div class="row">
     <div class="col-lg-12">
         <div class="card">
@@ -318,22 +352,21 @@
                                 </div>
                             </div>
 
-           <div class="row">
-    <div class="col-12">
-        <div class="mb-3">
-            <label class="form-label" for="google_maps_link">Google Maps Link</label>
-            <textarea 
-                class="form-control @error('google_maps_link') is-invalid @enderror"
-                id="google_maps_link" 
-                name="google_maps_link"
-                rows="3"
-            >{{ old('google_maps_link', $ambulance->location->google_maps_link ?? '') }}</textarea>
-            @error('google_maps_link')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-        </div>
-    </div>
-</div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <label class="form-label" for="google_maps_link">Google Maps Link</label>
+                                        <textarea
+                                            class="form-control @error('google_maps_link') is-invalid @enderror"
+                                            id="google_maps_link"
+                                            name="google_maps_link"
+                                            rows="3">{{ old('google_maps_link', $ambulance->location->google_maps_link ?? '') }}</textarea>
+                                        @error('google_maps_link')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
                             <!-- Hidden fields for location relationship -->
                             @if(isset($ambulance->location))
                             <input type="hidden" name="location_id" value="{{ $ambulance->location->location_id }}">

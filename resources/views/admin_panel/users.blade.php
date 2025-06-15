@@ -2,287 +2,278 @@
 
 @section('main-content')
 <div class="row">
-    <div class="col-xl-12">
+    <div class="col-12">
+
+        <!-- Hospitals Table Header Card -->
         <div class="card">
             <div class="card-header border-0 align-items-center d-flex pb-0">
-                <h4 class="card-title mb-0 flex-grow-1">Users Management</h4>
+                <h4 class="card-title mb-0 flex-grow-1">Users Table</h4>
 
-                <!-- Search Form -->
-                <form class="app-search d-none d-lg-block" method="GET" action="{{ url()->current() }}">
+                <!-- Add New User Button -->
+                <div class="app-search d-none d-lg-block">
                     <div class="position-relative">
-                        <input type="text" class="form-control" name="search" placeholder="Search..."
-                            value="{{ request('search') }}">
-                        <button type="submit" class="btn btn-link position-absolute end-0 top-0 text-muted">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-header border-0 align-items-center d-flex pb-0">
-                <h4 class="card-title mb-0 flex-grow-1">
-                    <button type="button" class="btn btn-outline-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#addUserModal">
-                        <i class="fa-solid fa-plus me-2"></i>Add New User
-                    </button>
-                </h4>
-
-                <!-- Sort Dropdown -->
-                <div>
-                    <div class="dropdown">
-                        <a class="dropdown-toggle text-reset" href="#" data-bs-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                            <span class="fw-semibold">Sort By:</span>
-                            <span class="text-muted">Yearly<i class="fa-solid fa-chevron-down ms-1"></i></span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end">
-                            <a class="dropdown-item" href="#">Yearly</a>
-                            <a class="dropdown-item" href="#">Monthly</a>
-                            <a class="dropdown-item" href="#">Weekly</a>
-                            <a class="dropdown-item" href="#">Today</a>
-                        </div>
+                        <h4 class="card-title mb-0 flex-grow-1">
+                            <a href="" class="btn btn-outline-primary waves-effect waves-light">
+                                <i class="fa-solid fa-plus me-2"></i>Add New user
+                            </a>
+                        </h4>
                     </div>
                 </div>
             </div>
-
+        </div>
+        <div class="card">
             <div class="card-body">
-                <div class="table-responsive table-card">
-                    <table class="table table-hover table-nowrap align-middle mb-0">
-                        <thead class="bg-light">
-                            <tr class="text-muted text-uppercase">
-                                <th scope="col">User ID</th>
-                                <th scope="col">User Name</th>
-                                <th scope="col" style="width: 20%;">Email</th>
-                                <th scope="col">Phone</th>
-                                <th scope="col">Create Date</th>
-                                <th scope="col">Update Date</th>
-                                <th scope="col" style="width: 8%;">Status</th>
-                                <th scope="col" style="width: 12%;">Action</th>
+                <!-- Add wrapper div with horizontal scroll -->
+                <div class="table-responsive" style="overflow-x: auto;">
+
+                    <table id="datatable" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>User</th>
+                                <th>Contact Details</th>
+                                <th>User Info</th>
+                                <th>Pincode</th>
+                                <th>Profile Status</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
-
                         <tbody>
-                            @forelse($users as $key => $user)
-                            <tr>
-                                <td>
-                                    <p class="fw-medium mb-0">{{$user->id}}</p>
+                            @foreach ($users as $user)
+                            <tr class="{{ $user->status ? 'table-success' : 'table-danger' }} p-2">
+                                <td>{{ $user->id }}</td>
+                                <td><img src="{{ asset('storage/' . $user->image) }}" alt="{{$user->first_name}}"
+                                        class="avatar-xs rounded-circle me-2">
+                                    <a href=""
+                                        class="text-body align-middle fw-medium">{{ $user->first_name .' '. $user->last_name }}</a>
                                 </td>
+                                <td>{{ $user->phone }} <br> {{ $user->email }} </td>
+                                <td>Blood Group : {{ $user->bloodType }} <br>DOB : {{ $user->dob }} </td>
+                                <td>{{ $user->address }}</td>
+                                <td style="color: green;">{{ $user->user_status == 'User' ? 'User' : ($user->user_status == 'Admin' ? 'Admin' : 'Post-Creator') }}</td>
                                 <td>
-                                    <img src="{{ asset($user->image ? 'storage/'.$user->image : 'assets/images/users/avatar-1.jpg') }}"
-                                        alt="User Image" class="avatar-xs rounded-circle me-2">
-                                    <a href="{{ route('admin.users.show', $user->id) }}"
-                                        class="text-body align-middle fw-medium">{{ $user->first_name . ' ' . $user->last_name }}</a>
-                                </td>
-                                <td>{{$user->email}}</td>
-                                <td>{{$user->phone ?? 'N/A'}}</td>
-                                <td>{{ $user->created_at->format('M d, Y h:i A') }}</td>
-                                <td>{{$user->updated_at->format('M d, Y h:i A') }}</td>
+                                    <div class="d-flex gap-2">
+                                        <a href="javascript:void(0);"
+                                            class="btn btn-sm btn-primary disabled-link" title="View">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </a>
 
-                                <td>
-                                    <form action="{{ route('admin.users.toggle-status', $user->id) }}" method="POST" class="d-inline">
-                                        @csrf
-                                        <button type="submit" class="badge {{ $user->status ? 'badge-soft-success' : 'badge-soft-danger' }} p-2 border-0" style="cursor: pointer;">
-                                            {{ $user->status ? 'Active' : 'Inactive' }}
-                                        </button>
-                                    </form>
-                                </td>
-                                <td>
-                                    <div class="dropdown">
-                                        <button class="btn btn-light btn-sm dropdown" type="button"
-                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="fa-solid fa-ellipsis-vertical"></i>
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-end">
-                                            <li>
-                                                <a class="dropdown-item" href="{{ route('admin.users.show', $user->id) }}">
-                                                    <i class="mdi mdi-eye-outline font-size-16 align-middle me-2 text-muted"></i>
-                                                    View
-                                                </a>
-                                            </li>
+                                        <span type="button" class="btn btn-sm btn-success" data-bs-toggle="modal"
+                                            data-bs-target="#userModal{{ $user->id }}">
+                                            <i class="fa-solid fa-pencil"></i>
+                                        </span>
+                                        <a href="{{ route('admin.users.destroy', $user->id) }}"
+                                            class="btn btn-sm btn-danger" title="Delete">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </a>
 
-                                            <li>
-                                                <a class="dropdown-item" href="{{ route('admin.users.update', $user->id) }}">
-                                                    <i class="fa-solid fa-pen-to-square font-size-16 align-middle me-2 text-muted"></i>
-                                                    Edit
-                                                </a>
-                                            </li>
-                                            <li class="dropdown-divider"></li>
-                                            <li>
-                                                <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" class="d-inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="dropdown-item remove-item-btn" onclick="return confirm('Are you sure you want to delete this user?')">
-                                                        <i class="mdi mdi-trash-can-outline font-size-16 align-middle me-2 text-muted"></i>
-                                                        Delete
-                                                    </button>
-                                                </form>
-                                            </li>
-                                        </ul>
                                     </div>
                                 </td>
                             </tr>
-                            @empty
-                            <tr>
-                                <td colspan="8" class="text-center">No users found</td>
-                            </tr>
-                            @endforelse
-                        </tbody><!-- end tbody -->
-                    </table><!-- end table -->
-                </div><!-- end table responsive -->
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Pagination -->
-<div class="col-sm-auto ms-auto">
-    <div class="row align-items-center mb-4 gy-3">
-        <div class="col-md-5">
-            <p class="mb-0 text-muted">
-                Showing <b>{{ $users->firstItem() }}</b> to
-                <b>{{ $users->lastItem() }}</b> of
-                <b>{{ $users->total() }}</b> results
-            </p>
-        </div>
-        <div class="col-sm-auto ms-auto">
-            <nav aria-label="...">
-                <ul class="pagination mb-0">
-                    {{-- Previous Page Link --}}
-                    <li class="page-item {{ $users->onFirstPage() ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $users->previousPageUrl() }}" tabindex="-1" aria-disabled="{{ $users->onFirstPage() ? 'true' : 'false' }}">
-                            Previous
-                        </a>
-                    </li>
-
-                    {{-- Pagination Elements --}}
-                    @foreach ($users->getUrlRange(1, $users->lastPage()) as $page => $url)
-                    <li class="page-item {{ $users->currentPage() == $page ? 'active' : '' }}" aria-current="{{ $users->currentPage() == $page ? 'page' : '' }}">
-                        <a class="page-link" href="{{ $url }}">{{ $page }}</a>
-                    </li>
-                    @endforeach
-
-                    {{-- Next Page Link --}}
-                    <li class="page-item {{ !$users->hasMorePages() ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $users->nextPageUrl() }}" aria-disabled="{{ !$users->hasMorePages() ? 'true' : 'false' }}">
-                            Next
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </div>
-</div>
-
-<!-- Add User Modal -->
-<div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addUserModalLabel">Add New User</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form action="{{ route('admin.users.store') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="first_name" class="form-label">First Name</label>
-                        <input type="text" class="form-control" id="first_name" name="first_name" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="last_name" class="form-label">Last Name</label>
-                        <input type="text" class="form-control" id="last_name" name="last_name" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="phone" class="form-label">Phone</label>
-                        <input type="text" class="form-control" id="phone" name="phone">
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="password_confirmation" class="form-label">Confirm Password</label>
-                        <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="user_image" class="form-label">Profile Image</label>
-                        <input type="file" class="form-control" id="user_image" name="image">
-                    </div>
+                            <!-- Modal for each user -->
+                            <div class="modal fade" id="userModal{{ $user->id }}" tabindex="-1" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content p-4">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">User Status - {{ $user->first_name .' '. $user->last_name }}</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <form action="{{ route('admin.users-status.update', $user->id) }}" method="POST">
+                                            @csrf
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="mb-3">
+                                                            <label class="form-label">Status</label>
+                                                            <select class="form-select" name="status">
+                                                                <option value="1" {{ $user->status == 1 ? 'selected' : '' }}>Active</option>
+                                                                <option value="0" {{ $user->status == 0 ? 'selected' : '' }}>Inactive</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-primary">Save</button>
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save User</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 
-<!-- Status Toggle Confirmation -->
-<div class="modal fade" id="statusToggleModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Confirm Status Change</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>Are you sure you want to change this user's status?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <form id="statusToggleForm" method="POST">
-                    @csrf
-                    <button type="submit" class="btn btn-primary">Confirm</button>
-                </form>
             </div>
         </div>
-    </div>
-</div>
+    </div> <!-- end col -->
+</div> <!-- end row -->
+
+
+
 @endsection
 
-@section('scripts')
+@section('js-content')
+<style>
+    /* Custom styling for the DataTable */
+    .dataTables_wrapper {
+        padding-top: 10px;
+        position: relative;
+    }
+
+    /* Search box styling */
+    .dataTables_filter {
+        float: right;
+        margin-bottom: 15px;
+    }
+
+    .dataTables_filter input {
+        margin-left: 10px;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+        padding: 5px 10px;
+    }
+
+    /* Pagination styling */
+    .dataTables_paginate {
+        float: right;
+        margin-top: 15px;
+    }
+
+    .paginate_button {
+        padding: 5px 10px;
+        margin-left: 5px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .paginate_button.current {
+        background: #727cf5;
+        color: white;
+        border-color: #727cf5;
+    }
+
+    .paginate_button:hover {
+        background: #f1f1f1;
+    }
+
+    /* Scrollbar styling */
+    .dataTables_scrollBody {
+        overflow-x: auto !important;
+    }
+
+    .dataTables_scrollBody::-webkit-scrollbar {
+        height: 8px;
+    }
+
+    .dataTables_scrollBody::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    .dataTables_scrollBody::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 4px;
+    }
+
+    .dataTables_scrollBody::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+    /* Info text styling */
+    .dataTables_info {
+        padding-top: 15px;
+        float: left;
+    }
+
+    /* Length menu styling */
+    .dataTables_length {
+        float: left;
+        margin-bottom: 15px;
+    }
+
+    .dataTables_length select {
+        border-radius: 4px;
+        border: 1px solid #ddd;
+        padding: 5px;
+    }
+</style>
+
+<!-- <script>
+    function updateUserStatus(userId) {
+        const status = document.getElementById(`user-status-${userId}`).value;
+
+        // Here you would typically make an AJAX call to update the user status
+        fetch(`/users/${userId}/status`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({
+                    status: status
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Close the modal and optionally refresh the page or update the UI
+                    bootstrap.Modal.getInstance(document.getElementById(`user${userId}`)).hide();
+                    location.reload(); // or update the UI dynamically
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+</script> -->
+
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Status toggle confirmation
-        const statusToggleForms = document.querySelectorAll('form[action*="toggle-status"]');
+    $(document).ready(function() {
+        // Initialize with error handling and default sorting
+        initDataTable();
 
-        statusToggleForms.forEach(form => {
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-
-                // Show confirmation modal
-                const modal = new bootstrap.Modal(document.getElementById('statusToggleModal'));
-                modal.show();
-
-                // Set up the form in the modal to submit the original form
-                const confirmForm = document.getElementById('statusToggleForm');
-                confirmForm.action = form.action;
-
-                confirmForm.addEventListener('submit', function() {
-                    form.submit();
-                });
-            });
-        });
-
-        // Simple form validation for add user modal
-        const addUserForm = document.querySelector('#addUserModal form');
-        if (addUserForm) {
-            addUserForm.addEventListener('submit', function(e) {
-                const password = document.getElementById('password');
-                const confirmPassword = document.getElementById('password_confirmation');
-
-                if (password.value !== confirmPassword.value) {
-                    e.preventDefault();
-                    alert('Passwords do not match!');
-                    confirmPassword.focus();
+        function initDataTable() {
+            var table = $('#datatable').DataTable({
+                destroy: true, // Allows reinitialization
+                retrieve: true, // Prevents errors if already initialized
+                scrollX: true,
+                responsive: true,
+                dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                pagingType: "simple_numbers",
+                order: [
+                    [4, 'desc']
+                ],
+                lengthMenu: [
+                    [10, 25, 50, 100, -1],
+                    [10, 25, 50, 100, "All"]
+                ],
+                pageLength: 10,
+                order: [
+                    [0, 'desc']
+                ], // Sort by 5th column (Start date) in descending order
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search...",
+                    lengthMenu: "Show _MENU_ entries",
+                    info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                    infoEmpty: "Showing 0 to 0 of 0 entries",
+                    infoFiltered: "(filtered from _MAX_ total entries)",
+                    paginate: {
+                        first: "First",
+                        last: "Last",
+                        next: "Next",
+                        previous: "Previous"
+                    }
                 }
             });
+
+            // Suppress DataTables warnings in console
+            $.fn.dataTable.ext.errMode = 'none';
+
+            return table;
         }
     });
 </script>

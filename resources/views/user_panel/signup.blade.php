@@ -13,6 +13,7 @@
 
             <form action="{{ route('send.otp') }}" enctype="multipart/form-data" method="post">
                 @csrf
+                <input type="hidden" name="user_status" value="User">
                 <div class="form-group">
                     <label for="first_name">First Name</label>
                     <input type="text" id="first_name" class="form-control @error('first_name') is-invalid @enderror"
@@ -129,7 +130,7 @@
             </div>
 
             <div class="form-footer">
-                <p>Already have an account? <a href="login.html" style="color: var(--primary-color);">Log in</a></p>
+                <p>Already have an account? <a href="{{ route('login') }}" style="color: var(--primary-color);">Log in</a></p>
             </div>
         </div>
     </div>

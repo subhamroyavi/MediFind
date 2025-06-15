@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ambulance;
+use App\Models\Doctor;
+use App\Models\Hospital;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
@@ -82,8 +85,7 @@ class AdminController extends Controller
                 'phone' => $user->phone,
                 'status' => $user->status,
                 // 'image_url' => $user->image ? asset('storage/' . $user->image) : asset('assets/images/users/avatar-1.jpg'),
-                'created_at' => $user->created_at->format('M d, Y h:i A'),
-                'updated_at' => $user->updated_at->format('M d, Y h:i A'),
+
             ]
         ]);
     }
@@ -130,36 +132,50 @@ class AdminController extends Controller
         return redirect()->route('admin.users.view')->with('success', 'User updated successfully!');
     }
 
-    public function destroyUser(User $user)
+    public function destroyUser($user)
     {
-        try {
-            // Delete user image if exists
-            // if ($user->image) {
-            //     Storage::delete('public/' . $user->image);
-            // }
-
-            $user->delete();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'User deleted successfully!'
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Error deleting user: ' . $e->getMessage()
-            ], 500);
-        }
+        $User = User::findOrFail($user);
+        // dd($user);
+        $User->delete();
+        return back()->with('success', 'User deleted successfully.');
     }
 
     public function adminIndex()
     {
         $totalUsers = User::count();
         $activeUsers = User::where('status', true)->count();
-        $recentUsers = User::latest()->take(5)->get();
+        $inactiveUsers = User::where('status', false)->count();
+        // $recentUsers = User::latest()->take(5)->get();
 
-        return view('admin_panel.dashboard', compact('totalUsers', 'activeUsers', 'recentUsers'));
+        $totalHospitals = Hospital::count();
+        $activeHospitals = Hospital::where('status', true)->count();
+        $inactiveHospitals = Hospital::where('status', false)->count();
+
+        $totalDoctors = Doctor::count();
+        $activeDoctors = Doctor::where('status', true)->count();
+        $inactiveDoctors = Doctor::where('status', false)->count();
+
+        $totalAmbulances = Ambulance::count();
+        $activeAmbulances = Ambulance::where('status', true)->count();
+        $inactiveAmbulances = Ambulance::where('status', false)->count();
+
+        return view('admin_panel.dashboard', compact(
+            'totalUsers',
+            'activeUsers',
+            'inactiveUsers',
+            'totalHospitals',
+            'activeHospitals',
+            'inactiveHospitals',
+            'totalDoctors',
+            'activeDoctors',
+            'inactiveDoctors',
+            'totalAmbulances',
+            'activeAmbulances',
+            'inactiveAmbulances'
+        ));
     }
+
+ 
 
     public function index()
     {
@@ -169,5 +185,26 @@ class AdminController extends Controller
     public function create()
     {
         return view('admin_panel.hospital_Create');
+    }
+
+    public function updateUserStatus(Request $request, $user)
+    {
+        // dd($request);
+        $user = User::findOrFail($request->user);
+
+        $userData = $request->validate([
+            'status' => 'boolean',
+        ]);
+
+        $user->update($userData);
+
+        return redirect()->back()->with('success', 'Profile updated successfully!');
+    }
+
+    public function header(){
+        return view('layouts.admin.header');
+    }
+    public function header1(){
+        return view('layouts.admin.header1');
     }
 }

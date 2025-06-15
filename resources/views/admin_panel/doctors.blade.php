@@ -31,32 +31,24 @@
                             <tr>
                                 <th>Id</th>
                                 <th>Doctor</th>
-                                <th>Phone</th>
-                                <th>Email</th>
+                                <th>Contact Details</th>
                                 <th>Specialist</th>
-                                <th>Organization</th>
                                 <th>locations</th>
-                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($doctors as $doctor)
-                            <tr>
+                            <tr class="{{ $doctor->status ? 'table-success' : 'table-danger' }} p-2">
                                 <td>{{ $doctor->doctor_id }}</td>
                                 <td><img src="{{ asset('storage/' . $doctor->image) }}" alt="{{$doctor->first_name}}"
                                         class="avatar-xs rounded-circle me-2">
-                                    <a href="#javascript: void(0);"
+                                    <a href=""
                                         class="text-body align-middle fw-medium">{{ $doctor->first_name .' '. $doctor->last_name }}</a>
                                 </td>
-                                <td>{{ $doctor->phone }}</td>
-                                <td>{{ $doctor->email }}</td>
-                                <td>{{ $doctor->specialization }}</td>
-                                <td>{{ $doctor->organization_type }}</td>
-                                <td><span class="badge bg-info" type="button" data-bs-toggle="modal" data-bs-target=".locations_details{{ $doctor->doctor_id }}">{{ $doctor->locations ? $doctor->locations->city . ', ' . $doctor->locations->state : 'N/A' }}</span>
-
-                                <td><span class="badge {{ $doctor->status == 1 ? 'badge-soft-success' : 'badge-soft-danger' }}  p-2">{{ $doctor->status == 1 ? 'Active' : 'Deactive' }}</span></td>
-
+                                <td>{{ $doctor->phone }} <br> {{ $doctor->email }} </td>
+                                <td>{{ $doctor->organization_type == 'government' ? 'Govt.' : ($doctor->organization_type == 'private' ? 'Pvt.' : 'Public') }} {{ $doctor->specialization }}</td>
+                                <td><span class="text-body align-middle fw-medium" type="button" data-bs-toggle="modal" data-bs-target=".locations_details{{ $doctor->doctor_id }}">{{ $doctor->locations ? $doctor->locations->city : 'N/A' }}, <br>{{ $doctor->locations ? $doctor->locations->state : 'N/A' }} </span>
                                 <td>
                                     <div class="d-flex gap-2">
                                         <a href="{{ route('admin.doctors.edit', ['id' => $doctor->doctor_id]) }}"
@@ -99,7 +91,7 @@
                                                             <label class="form-label" for="address_line1">Address Line 1 <span class="text-danger">*</span></label>
                                                             <input type="text" class="form-control"
                                                                 readonly
-                                                                value="{{ $doctor->locations->address_line1 }}">
+                                                                value="{{ optional($doctor->locations)->address_line1 ?? '' }}">
 
                                                         </div>
                                                     </div>
@@ -108,7 +100,7 @@
                                                             <label class="form-label" for="address_line2">Address Line 2</label>
                                                             <input type="text" class="form-control"
                                                                 readonly
-                                                                value="{{ $doctor->locations->address_line2 }}">
+                                                                value="{{ optional($doctor->locations)->address_line2 ?? '' }}">
 
                                                         </div>
                                                     </div>
@@ -120,7 +112,7 @@
                                                             <label class="form-label" for="city">City <span class="text-danger">*</span></label>
                                                             <input type="text" class="form-control" readonly
 
-                                                                value="{{ $doctor->locations->city }}">
+                                                                value="{{ optional($doctor->locations)->city ?? '' }}">
 
                                                         </div>
                                                     </div>
@@ -128,7 +120,7 @@
                                                         <div class="mb-3">
                                                             <label class="form-label" for="district">District <span class="text-danger">*</span></label>
                                                             <input type="text" class="form-control" readonly
-                                                                value="{{ $doctor->locations->district }}">
+                                                                value="{{ optional($doctor->locations)->district ?? '' }}">
 
                                                         </div>
                                                     </div>
@@ -137,7 +129,7 @@
                                                             <label class="form-label" for="state">State <span class="text-danger">*</span></label>
                                                             <input type="text" class="form-control"
                                                                 readonly
-                                                                value="{{ $doctor->locations->state }}">
+                                                                value="{{ optional($doctor->locations)->state ?? '' }}">
 
                                                         </div>
                                                     </div>
@@ -149,7 +141,7 @@
                                                             <label class="form-label" for="pincode">Pincode <span class="text-danger">*</span></label>
                                                             <input type="text" class="form-control"
                                                                 readonly
-                                                                value="{{  $doctor->locations->pincode  }}">
+                                                                value="{{ optional($doctor->locations)->pincode ?? '' }}">
 
                                                         </div>
                                                     </div>
@@ -158,7 +150,7 @@
                                                             <label class="form-label" for="country">Country <span class="text-danger">*</span></label>
                                                             <input type="text" class="form-control"
                                                                 readonly
-                                                                value="{{ old('country', $doctor->locations->country ?? 'India') }}">
+                                                                value="{{ optional($doctor->locations)->country ?? 'India' }}">
 
                                                         </div>
                                                     </div>
@@ -168,7 +160,7 @@
                                                         <div class="mb-3">
                                                             <label class="form-label" for="pincode">Google Maps Link <span class="text-danger">*</span></label>
                                                             <input type="text" class="form-control" id="pincode" readonly
-                                                                value="{{ $doctor->locations->google_maps_link ?? 'N/A' }}">
+                                                                value="{{ optional($doctor->locations)->google_maps_link ?? '' }}">
                                                         </div>
 
                                                         <!-- Additional locations information can go here -->

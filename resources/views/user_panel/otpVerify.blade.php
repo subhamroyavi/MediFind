@@ -11,6 +11,7 @@
             </div>
             <form id="otpForm" method="post" enctype="multipart/form-data">
                 @csrf
+                <input type="hidden" name="user_status" value="{{ old('user_status', $userData['user_status'] ?? '') }}">
                 <input type="hidden" name="email" value="{{ old('email', $userData['email'] ?? '') }}">
                 <input type="hidden" name="first_name" value="{{ old('first_name', $userData['first_name'] ?? '') }}">
                 <input type="hidden" name="last_name" value="{{ old('last_name', $userData['last_name'] ?? '') }}">
@@ -89,6 +90,7 @@
                     bloodType: $('input[name="bloodType"]').val(),
                     image: $('input[name="image"]').val(),
                     password: $('input[name="password"]').val(),
+                    user_status: $('input[name="user_status"]').val(),
                     otp: $('input[name="otp"]').val()
                 },
 
@@ -122,8 +124,8 @@
             formData.append('phone', $('input[name="phone"]').val());
             formData.append('bloodType', $('select[name="bloodType"]').val());
             formData.append('password', $('input[name="password"]').val());
-
             formData.append('password', $('input[name="password"]').val());
+            formData.append('user_status', $('input[name="user_status"]').val());
 
             $.ajax({
                 url: "{{ route('send.otp') }}",

@@ -58,11 +58,10 @@
             </div>
 
             <div class="form-footer">
-                <p>Don't have an account? <a href="signup.html" style="color: var(--primary-color);">Sign up</a></p>
+                <p>Don't have an account? <a href="signup.html" style="color: var(--primary-color);"><a href="{{ route('signup') }}">Sign up</a></a></p>
             </div>
         </div>
     </div>
 </main>
-
 
 @endsection

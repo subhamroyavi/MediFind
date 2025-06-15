@@ -11,7 +11,8 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 
-class SignupController extends Controller
+
+class AdminSignupController extends Controller
 {
     public function sendOTP(Request $request)
     {
@@ -53,7 +54,7 @@ class SignupController extends Controller
         //     'message' => 'OTP sent successfully',
         //     'email' => $email // Return email for verification form
         // ]);
-        return view('user_panel.otpVerify', [
+        return view('admin_panel.otp', [
             'userData' => $userData,
             'email' => $userData['email'],
             'success' => 'OTP sent successfully!'
@@ -62,7 +63,7 @@ class SignupController extends Controller
 
     public function otpPage()
     {
-        return view('user_panel.otpVerify');
+        return view('admin_panel.otp');
     }
 
     public function verifyOTP(Request $request)
@@ -100,18 +101,25 @@ class SignupController extends Controller
             'message' => 'Invalid OTP'
         ], 422);
     }
-    public function login(Request $request)
+    public function loginCheck(Request $request)
     {
         // Validate the incoming request data
         $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
-  
-        if (Auth::attempt($credentials)) {
+
+        // Get user by email
+        $user = User::where('email', $credentials['email'])
+            ->where('user_status', 'Admin')
+            ->where('status', 1)
+            ->first();
+
+        // Check if user exists and password is correct
+        if ($user && Hash::check($credentials['password'], $user->password)) {
+            Auth::login($user); // manually log in the user
             $request->session()->regenerate();
 
-            $user = Auth::user();
             session([
                 'authenticated' => true,
                 'user_id' => $user->id,
@@ -123,7 +131,6 @@ class SignupController extends Controller
         return back()->withErrors([
             'email' => 'Invalid credentials !',
         ])->withInput();
-
     }
 
     public function logout(Request $request)
@@ -132,15 +139,6 @@ class SignupController extends Controller
         Session::forget('user_id');
         Session::forget('user_email');
 
-        return redirect()->route('index');
+        return redirect()->route('admin.login-page');
     }
-
 }
-
-
-
-
-
-
-
-

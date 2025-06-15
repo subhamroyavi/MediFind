@@ -31,40 +31,31 @@
                             <tr>
                                 <th>Id</th>
                                 <th scope="col" style="width: 20%;">ambulance</th>
-                                <th scope="col" style="width: 20%;">Email</th>
-                                <th scope="col" style="width: 20%;">Phone</th>
-                                <th scope="col">Vehicle No.</th>
+                                <th scope="col" style="width: 20%;">Contact Details</th>
+                                <th scope="col">Vehicle Details.</th>
                                 <th scope="col" style="width: 20%;">Location</th>
-                                <th scope="col">Organization</th>
-                                <th scope="col" style="width: 8%;">Status</th>
                                 <th scope="col" style="width: 12%;">Action</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody >
                             @foreach ($ambulances as $ambulance)
-                            <tr>
+                            <tr class="{{ $ambulance->status ? 'table-success' : 'table-danger' }} p-2">
                                 <td>
                                     <p class="fw-medium mb-0">{{ $ambulance->ambulance_id }}</p>
                                 </td>
                                 <td>
                                     <img src="{{ asset('storage/' . $ambulance->image) }}" alt="{{ $ambulance->first_name }}"
                                         class="avatar-xs rounded-circle me-2">
-                                    <a href="#" class="text-body align-middle fw-medium">
+                                    <a href="" class="text-body align-middle fw-medium">
                                         {{ $ambulance->first_name . ' ' . $ambulance->last_name }}
                                     </a>
                                 </td>
-                                <td>{{ $ambulance->email }}</td>
-                                <td>{{ $ambulance->phone }}</td>
-                                <td><span class="badge bg-info" type="button" data-bs-toggle="modal" data-bs-target=".vechicle_details{{ $ambulance->ambulance_id }}">{{ $ambulance->vehicle_number }}</span></td>
-                                <td><span class="badge bg-info" type="button" data-bs-toggle="modal" data-bs-target=".location_details{{ $ambulance->ambulance_id }}">{{ $ambulance->location ? $ambulance->location->city . ', ' . $ambulance->location->state : 'N/A' }}</span>
+                                <td>{{ $ambulance->phone }} <br> {{ $ambulance->email }}</td>
+                                <td><span class="text-body align-middle fw-medium" type="button" data-bs-toggle="modal" data-bs-target=".vechicle_details{{ $ambulance->ambulance_id }}">{{ $ambulance->organization_type == 'government' ? 'Govt.' : ($ambulance->organization_type == 'private' ? 'Pvt.' : 'Public') }} <br> {{ $ambulance->vehicle_number }}</span></td>
+                                <td><span class="text-body align-middle fw-medium" type="button" data-bs-toggle="modal" data-bs-target=".location_details{{ $ambulance->ambulance_id }}">{{ $ambulance->location ? $ambulance->location->city : 'N/A' }}, <br> {{ $ambulance->location ? $ambulance->location->state : 'N/A' }}</span>
 
                                 </td>
-                                <td>{{ ucfirst($ambulance->organization_type) }}</td>
-                                <td>
-                                    <span class="badge {{ $ambulance->status ? 'badge-soft-success' : 'badge-soft-danger' }} p-2">
-                                        {{ $ambulance->status ? 'Active' : 'Inactive' }}
-                                    </span>
-                                </td>
+                              
                                 <td>
                                     <div class="d-flex gap-2">
                                         <a href="{{ route('admin.ambulance.edit', $ambulance->ambulance_id) }}"
