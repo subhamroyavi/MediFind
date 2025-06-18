@@ -111,8 +111,8 @@ Route::middleware(['admin-loginCheck'])->group(function () {
 
     // User Management Routes
     Route::get('/admin-dashboard/users', [AdminController::class, 'adminUserView'])->name('admin.users');
-    // Route::post('/admin-dashboard/users', [AdminController::class, 'storeUser'])->name('admin.users.store');
-    // Route::get('/admin-dashboard/users/{user}', [AdminController::class, 'getUser'])->name('admin.users.show');
+    // Route::post('/admin-dashboard/users', [AdminController::class, 'updateUserStatus'])->name('admin.users-status.update');
+    Route::post('/admin-dashboard/users/{user}', [AdminController::class, 'updateUserStatus'])->name('admin.users-status.update');
     Route::get('/admin-dashboard/delete/{user}', [AdminController::class, 'destroyUser'])->name('admin.users.destroy');
     Route::post('/admin-dashboard/users/toggle-status', [AdminController::class, 'toggleStatus'])->name('admin.users.toggle-status');
     // Route::get('admin-dashboard/{user}/toggle-status', [AdminController::class, 'toggleStatus'])->name('admin.toggle-status');
