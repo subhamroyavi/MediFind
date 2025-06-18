@@ -35,9 +35,20 @@ return [
     |
     */
 
-    
+
+    // 'guards' => [
+    //     'web' => [
+    //         'driver' => 'session',
+    //         'provider' => 'users',
+    //     ],
+    // ],
+
     'guards' => [
-        'web' => [
+        'web' => [ // for normal users
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
+        'admin' => [ // for admin login
             'driver' => 'session',
             'provider' => 'users',
         ],

@@ -17,14 +17,12 @@ class AdminLoginMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // if (!$request->session()->get('authenticated')) {
-        //     return redirect()->route('admin.login');
-        // }
-        // return $next($request);
-        if (Auth::check() && $request->session()->get('authenticated')) {
+        $user = Auth::guard('admin')->user();
+
+        if ($user && in_array($user->user_status, ['Admin', 'Super-Admin'])) {
             return $next($request);
         }
-        return Redirect()->route('admin.login-page');
 
+        return redirect()->route('admin.login-page');
     }
 }

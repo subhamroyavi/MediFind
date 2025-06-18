@@ -17,10 +17,10 @@ class UserLoginMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && $request->session()->get('authenticated')) {
+        if (Auth::guard('web')->check()) {
             return $next($request);
         }
-      
-        return Redirect()->route('login');
+
+        return redirect()->route('login');
     }
 }

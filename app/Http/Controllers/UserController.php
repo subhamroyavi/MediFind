@@ -14,28 +14,6 @@ class UserController extends Controller
         return view('user_panel.profile');
     }
 
-    public function userUpdate(Request $request)
-    {
-        // dd($request->toArray());
-        $userData = $request->validate([
-            'first_name' => 'nullable',
-            'last_name' => 'nullable',
-            'email' => 'nullable|email',
-            'phone' => 'nullable|numeric',
-            'bloodType' => 'nullable',
-            'image' => 'nullable',
-            'address' => 'nullable',
-            'gender' => 'nullable',
-            'dob' => 'nullable',
-        ]);
-
-        if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('profiles', 'public');
-            $userData['image'] = $path;
-        }
-        User::update($userData);
-    }
-
     public function updateProfile(Request $request)
     {
         // dd($request->toArray());

@@ -48,7 +48,9 @@
 <body data-sidebar="colored">
 
     <!-- <body data-layout="horizontal" data-topbar="dark"> -->
-
+    @php
+    $adminUser = Auth::guard('admin')->user();
+    @endphp
     <!-- Begin page -->
     <div id="layout-wrapper">
         <header id="page-topbar">
@@ -202,13 +204,13 @@
                     <span class="d-flex align-items-center">
                         <div class="flex-shrink-0">
                             <!-- <img src="{{ asset('admin_panel/assets/images/users/avatar-2.jpg') }}" -->
-                            <img src="{{ asset('storage/' . Auth::user()->image) }}"
+                            <img src="{{ asset('storage/' . $adminUser->image) }}"
                                 class="img-fluid header-profile-user rounded-circle"
                                 alt="User Avatar"
                                 loading="lazy">
                         </div>
                         <div class="flex-grow-1 ms-2 text-start">
-                            <span class="ms-1 fw-medium user-name-text">{{ Auth::user()->first_name.' '.Auth::user()->last_name }}</span>
+                            <span class="ms-1 fw-medium user-name-text">{{ $adminUser->first_name.' '.$adminUser->last_name }}</span>
                         </div>
                         <div class="flex-shrink-0 text-end">
                             <i class="fa-solid fa-ellipsis-vertical"></i>
@@ -216,7 +218,7 @@
                     </span>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="page-header-user-dropdown">
-                    <a class="dropdown-item" href="pages-profile.html">
+                    <a class="dropdown-item" href="{{ route('admin.profile') }}">
                         <i class="fas fa-user-circle text-muted me-2"></i>
                         <span>Profile</span>
                     </a>
@@ -286,7 +288,7 @@
                 </a>
             </div>
 
-            
+
             <hr class="mt-0" />
             <h6 class="text-center mb-0">Choose Layouts</h6>
 

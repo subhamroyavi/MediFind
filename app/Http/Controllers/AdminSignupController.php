@@ -101,44 +101,41 @@ class AdminSignupController extends Controller
             'message' => 'Invalid OTP'
         ], 422);
     }
+
     public function loginCheck(Request $request)
     {
-        // Validate the incoming request data
         $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
 
-        // Get user by email
-        $user = User::where('email', $credentials['email'])
-            ->where('user_status', 'Admin')
+        $adminUser = User::where('email', $credentials['email'])
+            ->whereIn('user_status', ['Admin', 'Super-Admin']) // allow multiple roles
             ->where('status', 1)
             ->first();
 
-        // Check if user exists and password is correct
-        if ($user && Hash::check($credentials['password'], $user->password)) {
-            Auth::login($user); // manually log in the user
+        if ($adminUser && Hash::check($credentials['password'], $adminUser->password)) {
+            Auth::guard('admin')->login($adminUser); // Login using admin guard
             $request->session()->regenerate();
-
             session([
-                'authenticated' => true,
-                'user_id' => $user->id,
-                'user_email' => $user->email,
+                'admin_authenticated' => true,
             ]);
 
-            return redirect()->route('index');
+            return redirect()->route('admin.dashboard'); // or any route you want
         }
+
         return back()->withErrors([
-            'email' => 'Invalid credentials !',
+            'email' => 'Invalid credentials!',
         ])->withInput();
     }
 
     public function logout(Request $request)
     {
-        Session::forget('authenticated');
-        Session::forget('user_id');
-        Session::forget('user_email');
+        // Auth::guard('admin')->logout(); // logout from admin guard
+        // $request->session()->invalidate();
+        // $request->session()->regenerateToken();
 
+         Session::forget('admin_authenticated');
         return redirect()->route('admin.login-page');
     }
 }

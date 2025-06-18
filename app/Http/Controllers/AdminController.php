@@ -2,134 +2,71 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Ambulance;
+use App\Models\User;
 use App\Models\Doctor;
 use App\Models\Hospital;
+use App\Models\Ambulance;
 use Illuminate\Http\Request;
-use App\Models\User;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
     public function adminUserView(Request $request)
     {
-        $search = $request->search;
-        if ($search) {
-            $users = User::where('first_name', 'like', "%$search%")
-                ->orWhere('last_name', 'like', "%$search%")
-                ->orWhere('email', 'like', "%$search%")
-                ->orWhere('phone', 'like', "%$search%")
-                ->orderBy('created_at', 'DESC')->paginate(5)->withQueryString();
-        } else {
-            $users = User::orderBy('created_at', 'DESC')->paginate(5);
+        $users = User::orderBy('created_at', 'DESC')->paginate(5);
+
+        return view('admin_panel.users', compact('users'));
+    }
+
+    public function updateProfile(Request $request)
+    {
+        // dd($request->toArray());
+        $id =  Auth::guard('admin')->user()->id;
+        $user = User::findOrFail($id);
+
+        $userData = $request->validate([
+            'first_name' => 'nullable',
+            'last_name' => 'nullable',
+            'email' => 'nullable|email',
+            'phone' => 'nullable|numeric',
+            'bloodType' => 'nullable',
+            'image' => 'nullable',
+            'address' => 'nullable',
+            'gender' => 'nullable',
+            'dob' => 'nullable',
+        ]);
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('profiles', 'public');
+            $userData['image'] = $path;
         }
 
-        return view('admin_panel.users', compact('users', 'search'));
+        $user->update($userData);
+
+        return redirect()->back()->with('success', 'Profile updated successfully!');
     }
 
-    public function toggleStatus(Request $request)
+    public function changePassword(Request $request)
     {
-        // print_r($request->all());
-
-        $user = User::findOrFail($request->userId);
-        $user->status = !$user->status;
-        $user->save();
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Status updated successfully',
-            'status' => $user->status
-        ]);
-    }
-
-    public function storeUser(Request $request)
-    {
-        $validated = $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'phone' => 'nullable|string|max:20',
-            'password' => 'required|string|min:8|confirmed',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        $request->validate([
+            'current_password' => 'required',
+            'password' => 'required|confirmed',
         ]);
 
-        $user = new User();
-        $user->first_name = $validated['first_name'];
-        $user->last_name = $validated['last_name'];
-        $user->email = $validated['email'];
-        $user->phone = $validated['phone'];
-        $user->password = Hash::make($validated['password']);
-        $user->status = true;
+        $user = Auth::guard('admin')->user();
 
-        // if ($request->hasFile('image')) {
-        //     $path = $request->file('image')->store('public/users');
-        //     $user->image = str_replace('public/', '', $path);
-        // }
-
-        $user->save();
-
-        return redirect()->route('admin.users.view')->with('success', 'User created successfully!');
-    }
-
-    public function getUser(User $user)
-    {
-        return response()->json([
-            'success' => true,
-            'data' => [
-                'id' => $user->id,
-                'first_name' => $user->first_name,
-                'last_name' => $user->last_name,
-                'full_name' => $user->first_name . ' ' . $user->last_name,
-                'email' => $user->email,
-                'phone' => $user->phone,
-                'status' => $user->status,
-                // 'image_url' => $user->image ? asset('storage/' . $user->image) : asset('assets/images/users/avatar-1.jpg'),
-
-            ]
-        ]);
-    }
-
-    public function updateUser(Request $request, User $user)
-    {
-        $validated = $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'phone' => 'nullable|string|max:20',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'password' => 'nullable|string|min:8|confirmed',
-        ]);
-
-        $user->first_name = $validated['first_name'];
-        $user->last_name = $validated['last_name'];
-        $user->email = $validated['email'];
-        $user->phone = $validated['phone'];
-
-        if ($request->filled('password')) {
-            $user->password = Hash::make($validated['password']);
+        // Check if current password matches
+        if (!Hash::check($request->current_password, $user->password)) {
+            return back()->withErrors(['current_password' => 'Current password is incorrect.']);
         }
 
-        // if ($request->hasFile('image')) {
-        //     // Delete old image if exists
-        //     if ($user->image) {
-        //         Storage::delete('public/' . $user->image);
-        //     }
-
-        //     $path = $request->file('image')->store('public/users');
-        //     $user->image = str_replace('public/', '', $path);
-        // }
-
+        $user = User::where('email', $request->email)->first();
+        $user->password = Hash::make($request->password);
         $user->save();
 
-        if ($request->ajax()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'User updated successfully!'
-            ]);
-        }
-
-        return redirect()->route('admin.users.view')->with('success', 'User updated successfully!');
+        return redirect()->route('admin.profile')->with('success', 'Password updated successfully.');
     }
 
     public function destroyUser($user)
@@ -175,8 +112,6 @@ class AdminController extends Controller
         ));
     }
 
- 
-
     public function index()
     {
         return view('admin_panel.hospitals');
@@ -201,10 +136,12 @@ class AdminController extends Controller
         return redirect()->back()->with('success', 'Profile updated successfully!');
     }
 
-    public function header(){
+    public function header()
+    {
         return view('layouts.admin.header');
     }
-    public function header1(){
+    public function header1()
+    {
         return view('layouts.admin.header1');
     }
 }
